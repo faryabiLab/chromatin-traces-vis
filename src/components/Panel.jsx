@@ -7,7 +7,7 @@ import Dashboard from './Dashboard';
 
 const Panel = () => {
   const [plotData,setPlotData]=useState([]);
-  const [clicked,setClicked]=useState([0,0,0]);
+  const [clicked,setClicked]=useState({a:null,b:null});
   const [selected,setSelected]=useState('1');
   const [dataBys,setDataBys]=useState(new Map());
   useEffect(() => {
@@ -23,11 +23,16 @@ const Panel = () => {
   useEffect(()=>{
     const ret=dataProcess(dataBys.get(selected));
     setPlotData(ret);
-  },[selected]);
 
-  const updateClicked=(point)=>{
-    setClicked([point.x,point.y,point.z]);
+  },[selected,dataBys]);
+
+  const updateClicked=(pointA,pointB)=>{
+
+    setClicked({a:[pointA.x,pointA.y,pointA.z],b:[pointB.x,pointB.y,pointB.z]});
+    
   }
+
+  
   const updateSelected=(id)=>{
     setSelected(id.toString());
   }

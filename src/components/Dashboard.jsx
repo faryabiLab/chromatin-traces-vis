@@ -1,21 +1,5 @@
-import {useEffect, useState} from 'react';
 import { Select } from '@chakra-ui/react'
 const Dashboard = (props) => {
-  const [record,setRecord]=useState([]);
-  useEffect(()=>{
-    setRecord([...record,props.clicked]);
-  },[props.clicked]);
-  const addRecord=()=>{
-    return(
-      <ul>
-      {record.map((item,index)=>{
-        return(
-          <li key={index}>Clicked: x:{item[0]}, y:{item[1]}, z:{item[2]}</li>
-        )
-      })}
-      </ul>
-    )
-  }
 
   const renderOptions=(number)=>{
     let options=[];
@@ -30,7 +14,7 @@ const Dashboard = (props) => {
     <Select placeholder='Select option' onChange={(e)=>{props.selectHandler(e.target.value)}}>
       {renderOptions(244)}
     </Select>
-    {addRecord()}
+  
     
     </div>
   )
