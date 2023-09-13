@@ -1,5 +1,5 @@
 
-import{useRef,useState} from 'react';
+import{useEffect, useRef,useState} from 'react';
 import * as THREE from 'three';
 import {Html, OrbitControls,Line} from '@react-three/drei';
 import "../style.css";
@@ -9,9 +9,14 @@ const Plot = (props) => {
   const [pointA,setPointA]=useState(null);
   const [pointB,setPointB]=useState(null);
   const groupRef=useRef();
-  const lineRef=useRef();
+  //initialize pointA and pointB to null when selected changes
+  useEffect(()=>{
+    setPointA(null);
+    setPointB(null);
+  },[props.selected]);
   const data=props.data;
-  if(!data) return null;
+  if(!data||data.length===0) return null; 
+ 
   let points=[];
   for(let row of data){
     let point=new THREE.Vector3(row.pos.x,row.pos.y,row.pos.z);
@@ -36,7 +41,6 @@ const Plot = (props) => {
   const generatePairs=(point)=>{
     let a=null,b=null;
     if(!pointA&&!pointB){
-      console.log('new pair')
       a=point;
     }else if(!pointA||!pointB){
       if(!pointA){
@@ -46,17 +50,14 @@ const Plot = (props) => {
         a=pointA;
         b=point;
       }
-      console.log('complete pair')
       // props.clickHandler(pair);
     }else{
     //click on pointA
       if(equalVectors(pointA,point)){
-        console.log('click on pointA')
         a=null;
         b=pointB;
       }else if(equalVectors(pointB,point)){
-        //click on pointB or other points
-        //move B to A
+        //click on pointB 
         a=pointA;
         b=null;
       }else{
@@ -81,14 +82,19 @@ const Plot = (props) => {
       return 'black';
     }
   }
+
+  const calculateMidpoint=(pointA,pointB)=>{
+    if(!pointA||!pointB) return null;
+    return new THREE.Vector3((pointA.x+pointB.x)/2.0,(pointA.y+pointB.y)/2.0,(pointA.z+pointB.z)/2.0);
+  }
   const renderLine=()=>{
     if(!pointA||!pointB) return null;
     return(
       <>
-      <Line ref={lineRef} points={[pointA,pointB]} color="red" lineWidth={8} />
-      <Html scaleFactor={10} >
-      <div className="label">
-         <p>Hi</p>
+      <Line points={[pointA,pointB]} color="red" lineWidth={8} />
+      <Html scaleFactor={10} position={calculateMidpoint(pointA,pointB)} >
+      <div className="distance-panel">
+         <p>{pointA.distanceTo(pointB)}</p>
       </div>
       </Html>
       </>

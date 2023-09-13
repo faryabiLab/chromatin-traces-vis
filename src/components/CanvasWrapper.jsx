@@ -12,9 +12,10 @@ const CanvasWrapper = (props) => {
         far: 20000,
         position: [0,500,1000]
     } }>
-      <Component data={props.data} clickHandler={props.clickHandler}/>
+      <Component data={props.data} clickHandler={props.clickHandler} selected={props.selected}/>
       </Canvas>
       </div>
   )
 }
 export default CanvasWrapper;
+ 
