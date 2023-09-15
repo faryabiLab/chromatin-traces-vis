@@ -1,5 +1,6 @@
 import {
   Select,
+  Heading
 } from '@chakra-ui/react'
 import { useMemo } from 'react';
 import Heatmap from './Heatmap';
@@ -42,17 +43,19 @@ const Dashboard = (props) => {
   
   return (
     <div style={{ position: 'absolute', top: 0, right: 0, width: '40%', height: '100%' }}>
-      <h1>Dashboard</h1>
+      <Heading as='h1'>Dashboard</Heading>
+      <label>fov</label>
       <Select
-        placeholder="Select fov"
+        placeholder="select fov"
         onChange={(e) => {
           props.fovHandler(e.target.value);
         }}
       >
         {renderOptions(20)}
       </Select>
+      <label>allele</label>
       <Select
-        placeholder="Select s"
+        placeholder="select allele"
         onChange={(e) => {
           props.selectHandler(e.target.value);
         }}

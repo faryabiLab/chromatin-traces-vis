@@ -21,6 +21,7 @@ const Heatmap = ({data,width,height}) => {
 
   const allYGroups = useMemo(() => [...new Set(data.map((d) => d.y))], [data]);
   const allXGroups = useMemo(() => [...new Set(data.map((d) => d.x))], [data]);
+  
   const xScale = useMemo(() => {
     return d3
       .scaleBand()
@@ -32,7 +33,7 @@ const Heatmap = ({data,width,height}) => {
   const yScale = useMemo(() => {
     return d3
       .scaleBand()
-      .range([boundsHeight, 0])
+      .range([0,boundsHeight])
       .domain(allYGroups)
       .padding(0.01);
   }, [data, height]);
@@ -49,7 +50,7 @@ const Heatmap = ({data,width,height}) => {
     // Build the rectangles
   const allRects = data.map((d, i) => {
     return (
-      <rect onClick={()=>{console.log(d)}}
+      <rect onClick={()=>{console.log(d.value,colorScale(d.value))}}
         key={i}
         r={4}
         x={xScale(d.x)}
@@ -97,7 +98,7 @@ const Heatmap = ({data,width,height}) => {
 
   return (
         <div>
-        <label>Color Scale Max: {colorMax}</label>
+        <label>Color Scale Domain (default:0~{max})</label>
         <NumberInput step={50} defaultValue={colorMax} min={min} max={max*2} onChange={(e)=>{setColorMax(e)}}>
         <NumberInputField />
         <NumberInputStepper>

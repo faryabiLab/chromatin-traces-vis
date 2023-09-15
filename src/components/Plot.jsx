@@ -158,7 +158,7 @@ const Plot = (props) => {
             generatePairs(point);
           }}
         >
-          <sphereGeometry args={[10, 64, 16]} />
+          <sphereGeometry args={[15, 64, 16]} />
           <meshStandardMaterial color={colorClicked(point)} />
           <Html scaleFactor={10}>
             <div className="label">
@@ -184,7 +184,7 @@ const Plot = (props) => {
     <>
       <OrbitControls />
       <axesHelper args={[1500]} />
-     
+      <gridHelper args={[1500, 15]} />
       <ambientLight intensity={1.5} />
       <directionalLight position={center} intensity={2.5} />
 

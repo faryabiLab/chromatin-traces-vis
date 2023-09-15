@@ -54,7 +54,7 @@ const Panel = () => {
   };
 
   return (
-    <>
+    <div style={{display:'flex',width:'100%',height:'100%'}}>
       <CanvasWrapper
         component={Plot}
         data={plotData}
@@ -62,7 +62,7 @@ const Panel = () => {
         selected={selected}
       />
       <Dashboard data={plotData} clicked={clicked} selectHandler={updateS} fovHandler={updateFov} />
-    </>
+    </div>
   );
 };
 export default Panel;
