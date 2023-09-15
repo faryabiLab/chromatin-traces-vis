@@ -1,7 +1,20 @@
-import React, { useMemo } from 'react';
+import React, { useMemo,useState,useEffect } from 'react';
 import * as d3 from 'd3';
+import {
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
+} from '@chakra-ui/react'
 const MARGIN = { top: 10, right: 10, bottom: 30, left: 30 };
 const Heatmap = ({data,width,height}) => {
+  const [min, max] = d3.extent(data.map((d) => d.value));
+  const [colorMax,setColorMax] = useState(max);
+  useEffect(()=>{
+    const max = d3.extent(data.map((d) => d.value))[1];
+    setColorMax(max);
+  },[data])
   
   const boundsWidth = width - MARGIN.right - MARGIN.left;
   const boundsHeight = height - MARGIN.top - MARGIN.bottom;
@@ -24,14 +37,14 @@ const Heatmap = ({data,width,height}) => {
       .padding(0.01);
   }, [data, height]);
 
-  const [min, max] = d3.extent(data.map((d) => d.value));
+  
  
 
   // Color scale
   const colorScale = d3
     .scaleSequential()
     .interpolator(d3.interpolateInferno)
-    .domain([min, max]);
+    .domain([min, colorMax]);
 
     // Build the rectangles
   const allRects = data.map((d, i) => {
@@ -84,6 +97,14 @@ const Heatmap = ({data,width,height}) => {
 
   return (
         <div>
+        <label>Color Scale Max: {colorMax}</label>
+        <NumberInput step={50} defaultValue={colorMax} min={min} max={max*2} onChange={(e)=>{setColorMax(e)}}>
+        <NumberInputField />
+        <NumberInputStepper>
+          <NumberIncrementStepper />
+          <NumberDecrementStepper />
+        </NumberInputStepper>
+      </NumberInput>
             <svg width={width} height={height}>
             <g
           width={boundsWidth}
