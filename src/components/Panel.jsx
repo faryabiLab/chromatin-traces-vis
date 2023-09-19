@@ -1,17 +1,20 @@
 import * as d3 from 'd3';
-import { useEffect, useState } from 'react';
+import { useEffect, useState,useContext } from 'react';
 import { dataProcess } from '../utils/dataWrangler';
 import CanvasWrapper from './CanvasWrapper';
 import Plot from './Plot';
 import Dashboard from './Dashboard';
-
+import { DataContext } from '../store/data-context';
+import { TraceContext } from '../store/trace-context';
 const Panel = () => {
   const [plotData, setPlotData] = useState([]);
   const [clicked, setClicked] = useState({ a: null, b: null });
   const [selected, setSelected] = useState('1');
   const [selectedFov, setSelectedFov] = useState('1');
   const [dataBys, setDataBys] = useState(new Map());
-
+  const ddd = useContext(DataContext);
+  const ttt = useContext(TraceContext);
+  console.log("HIHIHIHIHI",ttt.selected);
   useEffect(() => {
     //on mount, load data
     //group rows by fov and s
@@ -27,7 +30,7 @@ const Panel = () => {
       //set default plot to be the first one
       const ret = dataProcess(dataBys.get('1').get('1'));
       setPlotData(ret);
-    });
+    }); 
   }, []);
 
   //update plot data when selected changes
