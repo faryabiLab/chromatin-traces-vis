@@ -1,12 +1,17 @@
 import {
   Select,
-  Heading
+  Heading,
+  Button,
 } from '@chakra-ui/react'
-import { useMemo } from 'react';
+import { useMemo,useContext,useState, useEffect, } from 'react';
 import Heatmap from './Heatmap';
-
-const Dashboard = (props) => {
-
+import { TraceContext } from '../store/trace-context';
+const Dashboard = () => {
+  const traceCtx=useContext(TraceContext);
+  const data=traceCtx.data;
+  const [fov,setFov]=useState(1);
+  const [allele,setAllele]=useState(1);
+  const selectedHandler=traceCtx.selectedHandler;
   const renderOptions = (number) => {
     let options = [];
     for (let i = 0; i < number; i++) {
@@ -24,6 +29,7 @@ const Dashboard = (props) => {
    * @returns map [{x:number,y:number,value:number}]
    */
   const generatePairwiseDistanceMap = (data) => {
+    if (!data || data.length === 0) return null;
     let map = [];
     for (let i = 0; i < data.length; i++) {
       for (let j = 0; j < data.length; j++) {
@@ -35,12 +41,11 @@ const Dashboard = (props) => {
         map.push({ x: i + 1, y: j + 1, value: dist });
       }
     }
-    return map;
-  }; 
-
-  const distanceMap = useMemo(() => generatePairwiseDistanceMap(props.data), [props.data]);
-
+    return map; 
+  };  
   
+  const distanceMap = useMemo(() => generatePairwiseDistanceMap(data), [data]);
+
   return (
     <div style={{ position: 'absolute', top: 0, right: 0, width: '40%', height: '100%' }}>
       <Heading as='h1'>Dashboard</Heading>
@@ -48,7 +53,7 @@ const Dashboard = (props) => {
       <Select
         placeholder="select fov"
         onChange={(e) => {
-          props.fovHandler(e.target.value);
+          setFov(e.target.value);
         }}
       >
         {renderOptions(20)}
@@ -57,13 +62,15 @@ const Dashboard = (props) => {
       <Select
         placeholder="select allele"
         onChange={(e) => {
-          props.selectHandler(e.target.value);
+          setAllele(e.target.value);
         }}
       >
         {renderOptions(300)}
       </Select>
-      
-      <Heatmap data={distanceMap} width={700} height={700} />
+      <Button variant='outline' onClick={() => {
+        selectedHandler(fov.toString(),allele.toString());
+      }}>Update allele</Button>
+      {distanceMap&&<Heatmap data={distanceMap} width={700} height={700} />}
     </div>
   );
 };
