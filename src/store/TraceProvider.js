@@ -10,7 +10,7 @@ const dataProcessWrapper=(database,fov,s)=>{
 
 const defaultTraceState = {
   data:[],
-  selected: { fov: '1', s: '1' },
+  selected: { fov: null, s: null },
   clicked: { a: null, b: null },
 };
 const traceReducer = (state, action) => {

@@ -1,5 +1,6 @@
-import React, { useMemo,useState,useEffect } from 'react';
+import React, { useMemo,useState,useEffect,useContext } from 'react';
 import * as d3 from 'd3';
+import { TraceContext } from '../store/trace-context';
 import {
   NumberInput,
   NumberInputField,
@@ -9,6 +10,15 @@ import {
 } from '@chakra-ui/react'
 const MARGIN = { top: 10, right: 10, bottom: 30, left: 30 };
 const Heatmap = ({data,width,height}) => {
+  const traceCtx=useContext(TraceContext);
+  const clicked=traceCtx.clicked;
+ 
+  const selected=traceCtx.selected; 
+  const hightlightA=clicked.a+1;
+  const hightlightB=clicked.b+1;
+  useEffect(()=>{
+    
+  },[selected])
   const [min, max] = d3.extent(data.map((d) => d.value));
   const [colorMax,setColorMax] = useState(max);
   useEffect(()=>{
@@ -50,16 +60,16 @@ const Heatmap = ({data,width,height}) => {
     // Build the rectangles
   const allRects = data.map((d, i) => {
     return (
-      <rect onClick={()=>{console.log(d.value,colorScale(d.value))}}
+      <rect onClick={()=>{console.log(d.x-1,d.y-1)}}
         key={i}
         r={4}
         x={xScale(d.x)}
         y={yScale(d.y)}
-        width={xScale.bandwidth()}
-        height={yScale.bandwidth()}
+        width={xScale.bandwidth()*0.95}
+        height={yScale.bandwidth()*0.95}
         opacity={1}
         fill={colorScale(d.value)}
-        rx={5}
+        rx={4}
         stroke={"white"}
       />
     );

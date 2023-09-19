@@ -13,6 +13,7 @@ const Plot = () => {
   const data=traceCtx.data;
   const selected=traceCtx.selected;
   const clickedHandler=traceCtx.clickedHandler;
+
   //initialize pointA and pointB to null when selected changes
   useEffect(() => {
     setPointA(null);
@@ -42,10 +43,10 @@ const Plot = () => {
   const generatePairs = (point) => {
     let a = null,
       b = null;
-    if (!pointA && !pointB) {
+    if (pointA===null && pointB===null) {
       a = point;
-    } else if (!pointA || !pointB) {
-      if (!pointA) {
+    } else if (pointA===null || pointB===null) {
+      if (pointA===null) {
         a = point;
         b = pointB;
       } else {
@@ -92,7 +93,7 @@ const Plot = () => {
     );
   };
   const renderLine = () => {
-    if (!pointA || !pointB) return null;
+    if (pointA===null || pointB===null) return null;
     const nodeA=points[pointA];
     const nodeB=points[pointB];
     return (

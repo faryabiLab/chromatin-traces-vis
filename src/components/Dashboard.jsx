@@ -3,7 +3,7 @@ import {
   Heading,
   Button,
 } from '@chakra-ui/react'
-import { useMemo,useContext,useState, useEffect, } from 'react';
+import { useMemo,useContext,useState, } from 'react';
 import Heatmap from './Heatmap';
 import { TraceContext } from '../store/trace-context';
 const Dashboard = () => {
