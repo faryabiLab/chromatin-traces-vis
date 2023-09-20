@@ -1,16 +1,21 @@
 import React, { useMemo,useState,useEffect,useContext } from 'react';
 import * as d3 from 'd3';
 import { TraceContext } from '../store/trace-context';
+import {TwitterPicker} from 'react-color';
 import {
   NumberInput,
   NumberInputField,
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
-  Button
+  Box,
+  Button,
+  useBoolean
 } from '@chakra-ui/react'
 const MARGIN = { top: 10, right: 10, bottom: 30, left: 30 };
 const Heatmap = ({data,width,height}) => {
+  const [showColorPicker,setShowColorPicker]=useBoolean(false);
+  const [color,setColor]=useState('#8EDFFF');
   const traceCtx=useContext(TraceContext);
   const clicked=traceCtx.clicked;
   const resetHandler=traceCtx.resetHandler;
@@ -52,13 +57,11 @@ const Heatmap = ({data,width,height}) => {
   }, [data, height]);
 
   
- 
-
   // Color scale
   const colorScale = d3
     .scaleLinear()
     .domain([min, colorMax])
-    .range(["red", "white"]);
+    .range([color.hex, "white"]);
 
     // Build the rectangles
   const allRects = data.map((d, i) => {
@@ -122,6 +125,12 @@ const Heatmap = ({data,width,height}) => {
 
   return (
         <div>
+        <label>Color:</label>
+        <Box w='30px' h='30px' onClick={setShowColorPicker.toggle} bg={color.hex}/>
+        {showColorPicker&&<TwitterPicker
+          color={color}
+          onChange={setColor}
+        />}
         <label>Color Scale Domain (default:0~{max})</label>
         <NumberInput step={50} defaultValue={colorMax} min={min} max={max*2} onChange={(e)=>{setColorMax(e)}}>
         <NumberInputField />
