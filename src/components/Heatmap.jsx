@@ -7,15 +7,18 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
+  Button
 } from '@chakra-ui/react'
 const MARGIN = { top: 10, right: 10, bottom: 30, left: 30 };
 const Heatmap = ({data,width,height}) => {
   const traceCtx=useContext(TraceContext);
   const clicked=traceCtx.clicked;
- 
+  const resetHandler=traceCtx.resetHandler;
+  const clickedHandler=traceCtx.clickedHandler;
   const selected=traceCtx.selected; 
   const hightlightA=clicked.a+1;
   const hightlightB=clicked.b+1;
+
   useEffect(()=>{
     
   },[selected])
@@ -37,7 +40,7 @@ const Heatmap = ({data,width,height}) => {
       .scaleBand()
       .range([0, boundsWidth])
       .domain(allXGroups)
-      .padding(0.01);
+      .padding(0.05);
   }, [data, width]);
 
   const yScale = useMemo(() => {
@@ -45,7 +48,7 @@ const Heatmap = ({data,width,height}) => {
       .scaleBand()
       .range([0,boundsHeight])
       .domain(allYGroups)
-      .padding(0.01);
+      .padding(0.05);
   }, [data, height]);
 
   
@@ -53,40 +56,49 @@ const Heatmap = ({data,width,height}) => {
 
   // Color scale
   const colorScale = d3
-    .scaleSequential()
-    .interpolator(d3.interpolateInferno)
-    .domain([min, colorMax]);
+    .scaleLinear()
+    .domain([min, colorMax])
+    .range(["red", "white"]);
 
     // Build the rectangles
   const allRects = data.map((d, i) => {
+    const isHightlight = (d.x<=hightlightA&&d.y===hightlightB)||(d.x===hightlightA&&d.y>=hightlightB);
     return (
-      <rect onClick={()=>{console.log(d.x-1,d.y-1)}}
+      <rect onClick={()=>{clickedHandler(d.x-1,d.y-1)}}
         key={i}
         r={4}
         x={xScale(d.x)}
         y={yScale(d.y)}
-        width={xScale.bandwidth()*0.95}
-        height={yScale.bandwidth()*0.95}
+        width={xScale.bandwidth()}
+        height={yScale.bandwidth()}
         opacity={1}
         fill={colorScale(d.value)}
-        rx={4}
-        stroke={"white"}
+        rx={1}
+        stroke={isHightlight?'orange ':"white"}
+        strokeWidth={isHightlight?3:1}
+        strokeOpacity={isHightlight?0.5:1}
       />
     );
   });
+ 
   const xLabels = allXGroups.map((name, i) => {
     const xPos = xScale(name) ?? 0;
+
     return (
+      
       <text
         key={i}
         x={xPos + xScale.bandwidth() / 2}
         y={boundsHeight + 10}
         textAnchor="middle"
         dominantBaseline="middle"
-        fontSize={10}
+        fontSize={name===hightlightA?18:10}
+        fill={name===hightlightA?'red':'black'}
+        fontWeight={name===hightlightA?'bold':'normal'}
       >
         {name}
       </text>
+
     );
   });
 
@@ -99,7 +111,9 @@ const Heatmap = ({data,width,height}) => {
         y={yPos + yScale.bandwidth() / 2}
         textAnchor="end"
         dominantBaseline="middle"
-        fontSize={10}
+        fontSize={name===hightlightB?18:10}
+        fill={name===hightlightB?'red':'black'}
+        fontWeight={name===hightlightB?'bold':'normal'}        
       >
         {name}
       </text>
@@ -125,8 +139,9 @@ const Heatmap = ({data,width,height}) => {
           {allRects}
           {xLabels}
           {yLabels}
-        </g>
+             </g>
             </svg>
+          <Button colorScheme='teal' variant='outline' onClick={resetHandler}>Clear</Button>
         </div>
     )
 }

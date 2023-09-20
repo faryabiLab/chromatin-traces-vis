@@ -1,5 +1,5 @@
 import { TraceContext } from './trace-context';
-import { useReducer,useContext,useEffect } from 'react';
+import { useReducer,useContext } from 'react';
 import { DataContext } from './data-context';
 import { dataProcess } from '../utils/dataWrangler';
 
@@ -11,14 +11,14 @@ const dataProcessWrapper=(database,fov,s)=>{
 const defaultTraceState = {
   data:[],
   selected: { fov: null, s: null },
-  clicked: { a: null, b: null },
+  clicked: { a: -1, b: -1 },
 };
 const traceReducer = (state, action) => {
   if (action.type === 'SELECT') {
     return {
       data:dataProcessWrapper(action.dataBys,action.fov,action.s),
       selected: { fov: action.fov, s: action.s },
-      clicked: state.clicked,
+      clicked: {a:-1,b:-1},
     };
   }
   if (action.type === 'CLICK') {
@@ -27,6 +27,14 @@ const traceReducer = (state, action) => {
       selected: state.selected,
       clicked: { a: action.a, b: action.b},
     };
+  }
+
+  if(action.type==='RESET'){
+    return {
+      data:state.data,
+      selected:state.selected,
+      clicked: {a:-1,b:-1},
+    }
   }
   return defaultTraceState;
 };
@@ -41,12 +49,16 @@ export function TraceProvider({ children }) {
   const clickTraceHandler = (a, b) => {
     dispatchTraceAction({ type: 'CLICK', a: a, b: b });
   };
+  const resetClickHandler=()=>{
+    dispatchTraceAction({type:'RESET'});
+  }
   const traceContext = {
     data:traceState.data,
     selected: traceState.selected,
     clicked: traceState.clicked,
     selectedHandler: selectTraceHandler,
     clickedHandler: clickTraceHandler,
+    resetHandler:resetClickHandler,
   };
 
   return <TraceContext.Provider value={traceContext}>{children}</TraceContext.Provider>;

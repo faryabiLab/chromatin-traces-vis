@@ -67,7 +67,7 @@ const Dashboard = () => {
       >
         {renderOptions(300)}
       </Select>
-      <Button variant='outline' onClick={() => {
+      <Button colorScheme='teal' variant='outline' onClick={() => {
         selectedHandler(fov.toString(),allele.toString());
       }}>Update allele</Button>
       {distanceMap&&<Heatmap data={distanceMap} width={700} height={700} />}

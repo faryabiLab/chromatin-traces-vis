@@ -7,19 +7,23 @@ import '../style.css';
 const Plot = () => {
   //index of the points that are clicked
   const traceCtx=useContext(TraceContext);
-  const [pointA, setPointA] = useState(null);
-  const [pointB, setPointB] = useState(null);
+  const [pointA, setPointA] = useState(-1);
+  const [pointB, setPointB] = useState(-1);
   const groupRef = useRef();
   const data=traceCtx.data;
   const selected=traceCtx.selected;
   const clickedHandler=traceCtx.clickedHandler;
-
+  const clicked=traceCtx.clicked;
   //initialize pointA and pointB to null when selected changes
   useEffect(() => {
-    setPointA(null);
-    setPointB(null);
+    setPointA(-1);
+    setPointB(-1);
   }, [selected]);
 
+  useEffect(() => {
+    setPointA(clicked.a);
+    setPointB(clicked.b);
+  },[clicked]);
   
   if (!data || data.length === 0) return null;
 
@@ -41,12 +45,12 @@ const Plot = () => {
   //check if pair is valid
   //point is the index of the point in the points array
   const generatePairs = (point) => {
-    let a = null,
-      b = null;
-    if (pointA===null && pointB===null) {
+    let a = -1,
+      b = -1;
+    if (pointA<0 && pointB<0) {
       a = point;
-    } else if (pointA===null || pointB===null) {
-      if (pointA===null) {
+    } else if (pointA<0 || pointB<0) {
+      if (pointA<0) {
         a = point;
         b = pointB;
       } else {
@@ -57,12 +61,12 @@ const Plot = () => {
     } else {
       //click on pointA
       if (pointA===point) {
-        a = null;
+        a = -1;
         b = pointB;
       } else if (pointB===point) {
         //click on pointB
         a = pointA;
-        b = null;
+        b = -1;
       } else {
         a = point;
       }
@@ -84,7 +88,7 @@ const Plot = () => {
   };
 
   const calculateMidpoint = (pointA, pointB) => {
-    if (!pointA || !pointB) return null;
+    if (pointA<0 || pointB<0) return null;
 
     return new THREE.Vector3(
       (pointA.x + pointB.x) / 2.0,
@@ -93,7 +97,7 @@ const Plot = () => {
     );
   };
   const renderLine = () => {
-    if (pointA===null || pointB===null) return null;
+    if (pointA<0 || pointB<0) return null;
     const nodeA=points[pointA];
     const nodeB=points[pointB];
     return (
