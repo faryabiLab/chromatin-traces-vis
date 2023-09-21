@@ -47,7 +47,7 @@ const Dashboard = () => {
   const distanceMap = useMemo(() => generatePairwiseDistanceMap(data), [data]);
 
   return (
-    <div style={{ position: 'absolute', top: 0, right: 0, width: '40%', height: '100%' }}>
+    <div>
       <Heading as='h1'>Dashboard</Heading>
       <label>fov</label>
       <Select
@@ -67,7 +67,7 @@ const Dashboard = () => {
       >
         {renderOptions(300)}
       </Select>
-      <Button colorScheme='teal' variant='outline' onClick={() => {
+      <Button margin={3} colorScheme='teal' variant='outline' onClick={() => {
         selectedHandler(fov.toString(),allele.toString());
       }}>Update allele</Button>
       {distanceMap&&<Heatmap data={distanceMap} width={700} height={700} />}

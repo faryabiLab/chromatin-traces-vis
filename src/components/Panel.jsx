@@ -1,15 +1,15 @@
 import CanvasWrapper from './CanvasWrapper';
 import Plot from './Plot';
 import Dashboard from './Dashboard';
-
+import styles from './Panel.module.css';
 const Panel = () => {
   
   return (
-    <div style={{display:'flex',width:'100%',height:'100%'}}>
-      <CanvasWrapper
+    <div className={styles.panel}>
+      <CanvasWrapper 
         component={Plot}
       />
-      <Dashboard />
+      <Dashboard/>
     </div>
   );
 };

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState,useContext } from 'react';
 import { TraceContext } from '../store/trace-context';
 import * as THREE from 'three';
 import { Html, OrbitControls, Line } from '@react-three/drei';
-import '../style.css';
+import styles from './Plot.module.css';
 
 const Plot = () => {
   //index of the points that are clicked
@@ -104,7 +104,7 @@ const Plot = () => {
       <>
         <Line points={[nodeA, nodeB]} color="red" lineWidth={8} />
         <Html scaleFactor={10} position={calculateMidpoint(nodeA, nodeB)}>
-          <div className="distance-panel">
+          <div className={styles.distancePanel}>
             <p>{nodeA.distanceTo(nodeB)}</p>
           </div>
         </Html>
@@ -124,7 +124,7 @@ const Plot = () => {
           <sphereGeometry args={[15, 64, 16]} />
           <meshStandardMaterial color={colorClicked(index)} />
           <Html scaleFactor={10}>
-            <div className="label">
+            <div className={styles.label}>
               <p>{index + 1}</p>
             </div>
           </Html>

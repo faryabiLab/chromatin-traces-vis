@@ -8,7 +8,7 @@ const CanvasWrapper = (props) => {
   const selected=traceCtx.selected;
   const showCanvas=selected.fov!==null&&selected.s!==null;
   return(
-    <div style={{position:'relative',width:'60%',height:'100%'}}>
+    <div>
     {!showCanvas&&<Welcome/>}
     {showCanvas&&<Canvas
         orthographic
