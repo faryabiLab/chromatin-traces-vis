@@ -6,6 +6,7 @@ import {
 import { useMemo,useContext,useState, } from 'react';
 import Heatmap from './Heatmap';
 import { TraceContext } from '../store/trace-context';
+import { generatePairwiseDistanceMap } from '../utils/displayUtils';
 const Dashboard = () => {
   const traceCtx=useContext(TraceContext);
   const data=traceCtx.data;
@@ -23,27 +24,7 @@ const Dashboard = () => {
     }
     return options;
   };
-  /**
-   * 
-   * @param data [{readout:number,pos:{x:number,y:number,z:number}}}}] 
-   * @returns map [{x:number,y:number,value:number}]
-   */
-  const generatePairwiseDistanceMap = (data) => {
-    if (!data || data.length === 0) return null;
-    let map = [];
-    for (let i = 0; i < data.length; i++) {
-      for (let j = 0; j < data.length; j++) {
-        const dist = Math.sqrt(
-          Math.pow(data[i].pos.x - data[j].pos.x, 2) +
-            Math.pow(data[i].pos.y - data[j].pos.y, 2) +
-            Math.pow(data[i].pos.z - data[j].pos.z, 2)
-        );
-        map.push({ x: i + 1, y: j + 1, value: dist });
-      }
-    }
-    return map; 
-  };  
-  
+
   const distanceMap = useMemo(() => generatePairwiseDistanceMap(data), [data]);
 
   return (

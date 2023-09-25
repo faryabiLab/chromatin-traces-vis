@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState,useContext } from 'react';
 import { TraceContext } from '../store/trace-context';
 import * as THREE from 'three';
-import { Html, OrbitControls, Line } from '@react-three/drei';
+import { Html, OrbitControls, Line, GizmoHelper,GizmoViewport } from '@react-three/drei';
 import styles from './Plot.module.css';
 
 const Plot = () => {
@@ -145,17 +145,19 @@ const Plot = () => {
 
   return (
     <>
-      <OrbitControls />
+      <OrbitControls makeDefault/>
       <axesHelper args={[1500]} />
       <gridHelper args={[1500, 15]} />
       <ambientLight intensity={1.5} />
-      <directionalLight position={center} intensity={2.5} />
-
+      <directionalLight position={center} intensity={2.5}/>
       <group ref={groupRef} position={center}>
         {renderPoints(points)}
         {renderTube(points)}
         {renderLine()}
       </group>
+      <GizmoHelper alignment="bottom-left" margin={[150, 150]}>
+        <GizmoViewport labelColor="black" axisHeadScale={1.5} />
+      </GizmoHelper>
     </>
   );
 };
