@@ -1,0 +1,24 @@
+.selector, .buttons{
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items:start;
+  gap:16px;
+  margin-top: 15px;
+}
+
+.selector label{
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.header{
+  text-align: center;
+}
+
+.buttons{
+  margin: 10px 0px;
+  display: flex;
+  flex-direction: row;
+
+}

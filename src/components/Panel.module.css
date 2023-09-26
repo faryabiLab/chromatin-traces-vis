@@ -1,10 +1,24 @@
-.panel{
-  display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
-  grid-gap:20px;
+.container{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
   overflow: hidden;
 }
-.wrapper{
-  width: 100%;
-  height: 100%;
+
+.one{
+  width:1000px;
+  height:1000px;
+  padding:10px auto;
+  margin:20px 10px;
+  background-color: rgb(245, 250, 255);
+}
+
+.two{
+  width:40%;
+  height:1100px;
+  padding:20px;
+  margin:20px;
+
 }

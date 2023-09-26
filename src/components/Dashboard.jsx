@@ -7,9 +7,11 @@ import { useMemo,useContext,useState, } from 'react';
 import Heatmap from './Heatmap';
 import { TraceContext } from '../store/trace-context';
 import { generatePairwiseDistanceMap } from '../utils/displayUtils';
+import styles from './Dashboard.module.css';
 const Dashboard = () => {
   const traceCtx=useContext(TraceContext);
   const data=traceCtx.data;
+  const resetHandler = traceCtx.resetHandler;
   const [fov,setFov]=useState(1);
   const [allele,setAllele]=useState(1);
   const selectedHandler=traceCtx.selectedHandler;
@@ -29,7 +31,9 @@ const Dashboard = () => {
 
   return (
     <div>
-      <Heading as='h1'>Dashboard</Heading>
+      <Heading as='h1' className={styles.header}>Dashboard</Heading>
+      <div>
+      <div className={styles.fov}>
       <label>fov</label>
       <Select
         placeholder="select fov"
@@ -39,6 +43,8 @@ const Dashboard = () => {
       >
         {renderOptions(20)}
       </Select>
+      </div>
+      <div className={styles.allele}>
       <label>allele</label>
       <Select
         placeholder="select allele"
@@ -48,10 +54,17 @@ const Dashboard = () => {
       >
         {renderOptions(300)}
       </Select>
-      <Button margin={3} colorScheme='teal' variant='outline' onClick={() => {
+      </div>
+      </div>
+      <div className={styles.buttons}>
+      <Button colorScheme='teal' variant='outline' onClick={() => {
         selectedHandler(fov.toString(),allele.toString());
       }}>Update allele</Button>
-      {distanceMap&&<Heatmap data={distanceMap} width={700} height={700} />}
+      <Button colorScheme="teal" variant="outline" onClick={resetHandler}>
+        Clear
+      </Button>
+      </div>
+      {distanceMap&&<Heatmap data={distanceMap} width={650} height={650} />}
     </div>
   );
 };

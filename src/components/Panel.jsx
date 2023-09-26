@@ -6,11 +6,15 @@ import styles from './Panel.module.css';
 const Panel = () => {
   
   return (
-    <div className={styles.panel}>
-      <CanvasWrapper className={styles.wrapper}
+    <div className={styles.container}>
+    <div>
+      <CanvasWrapper 
         component={Plot}
       />
-      <Dashboard/>
+    </div>
+    <div className={styles.two}>
+      <Dashboard className={styles.two}/>
+    </div>
     </div>
   );
 };

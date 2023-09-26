@@ -9,16 +9,15 @@ import {
   NumberIncrementStepper,
   NumberDecrementStepper,
   Box,
-  Button,
   useBoolean,
 } from '@chakra-ui/react';
-const MARGIN = { top: 10, right: 10, bottom: 30, left: 30 };
+const MARGIN = { top: 30, right: 10, bottom: 30, left: 50 };
 const Heatmap = ({ data, width, height }) => {
   const [showColorPicker, setShowColorPicker] = useBoolean(false);
   const [color, setColor] = useState('#0693E3');
   const traceCtx = useContext(TraceContext);
   const clicked = traceCtx.clicked;
-  const resetHandler = traceCtx.resetHandler;
+ 
   const clickedHandler = traceCtx.clickedHandler;
   const selected = traceCtx.selected;
   const hightlightA = clicked.a + 1;
@@ -156,9 +155,7 @@ const Heatmap = ({ data, width, height }) => {
           {yLabels}
         </g>
       </svg>
-      <Button colorScheme="teal" variant="outline" onClick={resetHandler}>
-        Clear
-      </Button>
+      
     </div>
   );
 };
