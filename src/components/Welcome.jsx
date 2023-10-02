@@ -1,10 +1,11 @@
-import {Text, Button} from '@chakra-ui/react';
+import {Text, Button, Spinner} from '@chakra-ui/react';
 import {useState, useContext, useEffect} from 'react';
 import { DataContext } from '../store/data-context';
 import styles from './Panel.module.css';
 const Welcome = () => {
   const [file, setFile] = useState();
   const [array, setArray] = useState([]);
+  const [isProccessing, setIsProcessing] = useState(false);
   const fileReader = new FileReader();
   const dataCtx=useContext(DataContext);
   const setDataBysHandler=dataCtx.setDataBysHandler;
@@ -39,7 +40,7 @@ const Welcome = () => {
       e.preventDefault();
 
       if (file) {
-    
+          setIsProcessing(true);
           fileReader.onload = function (event) {
               const csvOutput = event.target.result;
               csvFileToArray(csvOutput);
@@ -61,7 +62,23 @@ const Welcome = () => {
     >
       Welcome, Please upload...
     </Text>
-  <form>
+  <Text as='b' fontSize='2xl'>
+    The file should have the following columns:
+  </Text>
+  <Text as='li'>
+    x,y,z: coordinates
+  </Text>
+  <Text as='li'>
+    fov: field of view
+  </Text>
+  <Text as='li'>
+    s: allele
+  </Text>
+  <Text as='li'>
+    readout: step, only odd readouts(1,3,5,...) are plotted
+  </Text>
+ 
+  <form style={{margin:'20px'}}>
     <input
       type={'file'}
       id={'csvFileInput'}
@@ -74,6 +91,7 @@ const Welcome = () => {
       }}
       >IMPORT CSV</Button>}
   </form>
+  {isProccessing?<Spinner size="xl" color='red.500' />:null}
   </div>
  )
 };
