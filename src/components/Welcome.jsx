@@ -1,6 +1,7 @@
-import { Text, Button, Spinner, Highlight,Box } from '@chakra-ui/react';
+import { Text, Spinner, Highlight,Box, Checkbox } from '@chakra-ui/react';
 import { useState, useContext, useEffect } from 'react';
 import { DataContext } from '../store/data-context';
+import { TraceContext } from '../store/trace-context';
 import styles from './Panel.module.css';
 const Welcome = () => {
   const [file, setFile] = useState();
@@ -9,7 +10,8 @@ const Welcome = () => {
   const fileReader = new FileReader();
   const dataCtx = useContext(DataContext);
   const setDataBysHandler = dataCtx.setDataBysHandler;
-  const dataBys = dataCtx.dataBys;
+  const traceCtx = useContext(TraceContext);
+  const plotAllHandler = traceCtx.plotAllHandler;
   const handleFileUpload = (e) => {
     setFile(e.target.files[0]);
   };
@@ -88,9 +90,9 @@ const Welcome = () => {
           styles={{ px: '1', py: '0.8', rounded: 'full', bg: 'teal.100' }}
         >readout: step, only odd ones (1,3,5,...) are plotted</Highlight></Text>
 
-      <form style={{ margin: '20px' }}>
+      <form style={{ marginTop: '20px' }}>
         <input type={'file'} id={'csvFileInput'} accept={'.csv'} onChange={handleFileUpload} />
-        
+          <Checkbox onChange={(e)=>{plotAllHandler(e.target.checked)}}>plot all points</Checkbox>
           <Box
             as='button'
             p={2}

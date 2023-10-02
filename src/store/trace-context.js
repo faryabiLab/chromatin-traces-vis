@@ -5,5 +5,6 @@ export const TraceContext = React.createContext({
   clicked: { a: null, b: null },
   selectedHandler: () => {},
   clickedHandler: () => {},
+  isPlotAll:false,
 });
 
