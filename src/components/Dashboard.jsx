@@ -6,9 +6,6 @@ import {
 import {
   NumberInput,
   NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
 } from '@chakra-ui/react'
 
 import { useMemo,useContext,useState, } from 'react';
@@ -59,10 +56,6 @@ const Dashboard = () => {
         <NumberInputField onChange={(e) => {
           setAllele(e.target.value);
         }}/>
-        <NumberInputStepper>
-          <NumberIncrementStepper />
-          <NumberDecrementStepper />
-        </NumberInputStepper>
       </NumberInput>
   
       

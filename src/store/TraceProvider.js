@@ -20,6 +20,7 @@ const traceReducer = (state, action) => {
       data:dataProcessWrapper(action.dataBys,action.fov,action.s,state.isPlotAll),
       selected: { fov: action.fov, s: action.s },
       clicked: {a:-1,b:-1},
+      isPlotAll:state.isPlotAll,
     };
   }
   if (action.type === 'CLICK') {
@@ -27,6 +28,7 @@ const traceReducer = (state, action) => {
       data:state.data,
       selected: state.selected,
       clicked: { a: action.a, b: action.b},
+      isPlotAll:state.isPlotAll,
     };
   }
 
@@ -35,6 +37,7 @@ const traceReducer = (state, action) => {
       data:state.data,
       selected:state.selected,
       clicked: {a:-1,b:-1},
+      isPlotAll:state.isPlotAll,
     }
   }
 
