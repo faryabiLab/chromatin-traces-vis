@@ -1,10 +1,13 @@
-import {Text} from '@chakra-ui/react';
-import {useState} from 'react';
+import {Text, Button} from '@chakra-ui/react';
+import {useState, useContext, useEffect} from 'react';
+import { DataContext } from '../store/data-context';
 const Welcome = () => {
   const [file, setFile] = useState();
   const [array, setArray] = useState([]);
   const fileReader = new FileReader();
-
+  const dataCtx=useContext(DataContext);
+  const setDataBysHandler=dataCtx.setDataBysHandler;
+  const dataBys=dataCtx.dataBys;
   const handleFileUpload = (e) => {
       setFile(e.target.files[0]);
   };
@@ -25,6 +28,12 @@ const Welcome = () => {
     setArray(array);
   };
 
+  useEffect(()=>{
+    if(array.length>0){
+      setDataBysHandler(array);
+    }
+  },[array]);
+
   const handleOnSubmit = (e) => {
       e.preventDefault();
 
@@ -37,6 +46,7 @@ const Welcome = () => {
           fileReader.readAsText(file);
       }
   };
+
 
  return (
   <>
@@ -56,11 +66,11 @@ const Welcome = () => {
       accept={'.csv'}
       onChange={handleFileUpload}
       />
-      <button
+      {dataBys?"Uploaded":<Button
       onClick={(e)=>{
         handleOnSubmit(e);
       }}
-      >IMPORT CSV</button>
+      >IMPORT CSV</Button>}
   </form>
   </>
  )

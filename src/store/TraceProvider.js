@@ -40,11 +40,11 @@ const traceReducer = (state, action) => {
 };
 
 export function TraceProvider({ children }) {
-  const dataBys=useContext(DataContext);
+  const dataCtx=useContext(DataContext);
   const [traceState, dispatchTraceAction] = useReducer(traceReducer, defaultTraceState);
   
   const selectTraceHandler = (fov, s) => {
-    dispatchTraceAction({ type: 'SELECT', fov: fov, s: s, dataBys: dataBys });
+    dispatchTraceAction({ type: 'SELECT', fov: fov, s: s, dataBys: dataCtx.dataBys });
   };
   const clickTraceHandler = (a, b) => {
     dispatchTraceAction({ type: 'CLICK', a: a, b: b });
