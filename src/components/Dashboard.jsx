@@ -52,8 +52,9 @@ const Dashboard = () => {
           setAllele(e.target.value);
         }}
       >
-        {renderOptions(300)}
+        {renderOptions(500)}
       </Select>
+      
       </div>
       </div>
       <div className={styles.buttons}>
