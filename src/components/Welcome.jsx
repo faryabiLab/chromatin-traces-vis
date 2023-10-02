@@ -1,6 +1,7 @@
 import {Text, Button} from '@chakra-ui/react';
 import {useState, useContext, useEffect} from 'react';
 import { DataContext } from '../store/data-context';
+import styles from './Panel.module.css';
 const Welcome = () => {
   const [file, setFile] = useState();
   const [array, setArray] = useState([]);
@@ -38,6 +39,7 @@ const Welcome = () => {
       e.preventDefault();
 
       if (file) {
+    
           fileReader.onload = function (event) {
               const csvOutput = event.target.result;
               csvFileToArray(csvOutput);
@@ -49,7 +51,7 @@ const Welcome = () => {
 
 
  return (
-  <>
+  <div className={styles.wrapper}>
   <Text
       bgGradient='linear(to-l, #7928CA, #FF0080)'
       bgClip='text'
@@ -57,7 +59,7 @@ const Welcome = () => {
       fontWeight='extrabold'
       align='center'
     >
-      Welcome, Please select...
+      Welcome, Please upload...
     </Text>
   <form>
     <input
@@ -72,7 +74,7 @@ const Welcome = () => {
       }}
       >IMPORT CSV</Button>}
   </form>
-  </>
+  </div>
  )
 };
 export default Welcome;

@@ -6,8 +6,8 @@ import * as d3 from 'd3';
 
 export function DataProvider({children}){
   const [dataBys,setDataBys] = useState(null);
-  const [isDataLoaded,setIsDataLoaded]=useState(false);
-  // //load database
+
+  // load sample datasets
   // useEffect(() => {
   //   d3.csv(
   //     process.env.PUBLIC_URL + '/230902_Granta519cl27_24hdTAG_MYC5p_30mHyb_4phBl_30step_allfits.csv'
@@ -23,7 +23,6 @@ export function DataProvider({children}){
   // }, []);
 
   const setDataBysHandler=(data)=>{
-    setIsDataLoaded(false);
     const newDataBys = d3.group(
       data,
       (d)=>d.fov,
@@ -32,10 +31,11 @@ export function DataProvider({children}){
     setDataBys(newDataBys);
   }
 
+
+
   const dataContext={
     dataBys:dataBys,
     setDataBysHandler:setDataBysHandler,
-    isDataLoaded:isDataLoaded,
   };
 
   return (
