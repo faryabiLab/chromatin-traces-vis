@@ -18,6 +18,7 @@ export function DataProvider({children}){
       setDataBys(dataBys);
     });
   }, []);
+
   return (
     <DataContext.Provider value={dataBys}>
       {children}

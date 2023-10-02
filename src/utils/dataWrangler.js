@@ -12,6 +12,9 @@ const dataFilling=(prev,cur)=>{
         pos:{'x':prev.pos.x+stepX*i,'y':prev.pos.y+stepY*i,'z':prev.pos.z+stepZ*i},
       })
     }
+    if(n>1){
+      console.log('filling',prev,cur,fillingArray)
+    }
     return fillingArray;
 }
 
@@ -21,6 +24,7 @@ export function dataProcess(data) {
   for(let i=0;i<data.length;i++){
     const row=data[i];
    
+    //only plot odd readout
     if((+row.readout)%2!==0){
       result.push({
         readout:+row.readout,
@@ -28,7 +32,7 @@ export function dataProcess(data) {
       })
     }
   }
- 
+
   for(let i=1;i<result.length;i++){
     if(result[i].readout-result[i-1].readout>2){
       result.splice(i,0,...dataFilling(result[i-1],result[i]));
