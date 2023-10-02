@@ -3,6 +3,14 @@ import {
   Heading,
   Button,
 } from '@chakra-ui/react'
+import {
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
+} from '@chakra-ui/react'
+
 import { useMemo,useContext,useState, } from 'react';
 import Heatmap from './Heatmap';
 import { TraceContext } from '../store/trace-context';
@@ -46,14 +54,17 @@ const Dashboard = () => {
       </div>
       <div className={styles.allele}>
       <label>allele</label>
-      <Select
-        placeholder="select allele"
-        onChange={(e) => {
+     
+      <NumberInput defaultValue={1} min={1} max={20000}>
+        <NumberInputField onChange={(e) => {
           setAllele(e.target.value);
-        }}
-      >
-        {renderOptions(500)}
-      </Select>
+        }}/>
+        <NumberInputStepper>
+          <NumberIncrementStepper />
+          <NumberDecrementStepper />
+        </NumberInputStepper>
+      </NumberInput>
+  
       
       </div>
       </div>
