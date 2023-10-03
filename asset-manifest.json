@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/chromatin-traces-vis/static/css/main.83344153.css",
+    "main.js": "/chromatin-traces-vis/static/js/main.aa4e1399.js",
+    "static/js/988.8f527f39.chunk.js": "/chromatin-traces-vis/static/js/988.8f527f39.chunk.js",
+    "index.html": "/chromatin-traces-vis/index.html",
+    "main.83344153.css.map": "/chromatin-traces-vis/static/css/main.83344153.css.map",
+    "main.aa4e1399.js.map": "/chromatin-traces-vis/static/js/main.aa4e1399.js.map",
+    "988.8f527f39.chunk.js.map": "/chromatin-traces-vis/static/js/988.8f527f39.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.83344153.css",
+    "static/js/main.aa4e1399.js"
+  ]
+}
