@@ -4,6 +4,18 @@
 
 This is a web application to visualize chromatin traces and provide interactive features which can be accessed at https://faryabilab.github.io/chromatin-traces-vis/
 
+### How to use it
+1. Upload csv file with the following format
+    -   fov: field of view
+    -   s: allele
+    -   x,y,z: coordinates
+    -   readout: step
+2. By default, only odd readouts are plotted. Click on plot all points to plot all readouts.
+3. Click Import CSV to import your file
+4. Select fov and input allele number that you want to see
+5. Click on the heatmap to highlight the corresponding pairs of vertices 
+6. Click on the vertices in the 3D model to see the pairwise distance
+
 ### Technology 
 
 Web framework: React.js
@@ -16,19 +28,19 @@ UI component: chakra
 
 ### Components structure
 
-|----Panel
+|====Panel
 
-​		|----Welcome(upload file)
+​---------|====Welcome(upload file)
 
-​		|----CanvasWrapper
+---------|====CanvasWrapper
 
-​			|---- Welcome Select
+------------------​|==== Welcome Select
 
-​			|----Plot (3D model)
+​------------------|====Plot (3D model)
 
-​		|---Dashboard
+​---------|====Dashboard
 
-​			|----Heatmap
+​------------------|====Heatmap
 
 ### Store:
 
