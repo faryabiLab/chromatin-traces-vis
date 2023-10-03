@@ -20,7 +20,9 @@ const CanvasWrapper = (props) => {
           near: 0.1,
           far: 20000,
           position: [0,500,1000]
-      } }>
+      } }
+      gl={{preserveDrawingBuffer:true}}>
+        <color attach="background" args={['#F6FAFE']} />
         <Component/>
         </Canvas>}
       </div>

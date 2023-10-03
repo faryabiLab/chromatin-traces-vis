@@ -3,6 +3,8 @@ import { TraceContext } from '../store/trace-context';
 import * as THREE from 'three';
 import { Html, OrbitControls, Line, GizmoHelper,GizmoViewport } from '@react-three/drei';
 import styles from './Plot.module.css';
+import { useThree } from '@react-three/fiber'
+
 
 const Plot = () => {
   //index of the points that are clicked
@@ -14,6 +16,8 @@ const Plot = () => {
   const selected=traceCtx.selected;
   const clickedHandler=traceCtx.clickedHandler;
   const clicked=traceCtx.clicked;
+
+  const {gl, scene,camera} = useThree();
   //initialize pointA and pointB to null when selected changes
   useEffect(() => {
     setPointA(-1);
@@ -143,8 +147,42 @@ const Plot = () => {
     );
   };
 
+  const saveAsImage=()=>{
+    try{
+      const strName="image/jpeg";
+      const imgData=gl.domElement.toDataURL(strName);
+      const strDownloadName="image/octet-stream";
+      saveFile(imgData.replace(strName,strDownloadName),"fov-"+selected.fov+"-s-"+selected.s+"-"+"image.jpg");
+    } catch (e){
+      console.log(e);
+      return;
+    }
+  }
+
+  const saveFile=(strData, filename)=>{
+    var link = document.createElement('a');
+    if (typeof link.download === 'string') {
+        document.body.appendChild(link); //Firefox requires the link to be in the body
+        link.download = filename;
+        link.href = strData;
+        link.click();
+        document.body.removeChild(link); //remove the link when done
+    }
+  }
+
   return (
     <>
+    <Html>
+    <div
+      style={{
+        position: 'absolute',
+            top: '-400px', 
+            left: '-400px',
+            zIndex: 1, 
+      }}>
+      <button onClick={saveAsImage} className={styles.saveBtn}>Download Img</button>
+    </div>
+    </Html>
       <OrbitControls makeDefault/>
       <axesHelper args={[1500]} />
       <gridHelper args={[1500, 15]} />
