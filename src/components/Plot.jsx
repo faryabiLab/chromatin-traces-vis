@@ -153,7 +153,7 @@ const Plot = () => {
       const imgData=gl.domElement.toDataURL(strName);
       const strDownloadName="image/octet-stream";
       const pdf=new jsPDF();
-      pdf.addImage(imgData.replace(strName,strDownloadName),'JPEG',5,5,200,250);
+      pdf.addImage(imgData.replace(strName,strDownloadName),'JPEG',5,5,200,200);
       pdf.save("fov-"+selected.fov+"-s-"+selected.s+"-"+"image.pdf");
 
     } catch (e){
