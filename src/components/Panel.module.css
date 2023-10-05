@@ -28,3 +28,8 @@
   flex-direction: column;
 }
 
+.upload{
+  display:block;
+  align-self: center;
+  margin-top: 50px;
+}

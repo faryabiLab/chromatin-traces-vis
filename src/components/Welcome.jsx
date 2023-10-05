@@ -61,12 +61,13 @@ const Welcome = () => {
         fontWeight="extrabold"
         align="center"
       >
-        Welcome, Please upload...
+        ORCA Linkage Interactive Viewing Engine(OLIVE)
       </Text>
-      <Text as="b" fontSize="2xl">
-        The file should have the following columns:
+      <div className={styles.upload}>
+      <Text as="b" fontSize="3xl">
+        Welcome, Please upload file with the following columns:
       </Text>
-      <Text as="li">
+      <Text as="li" fontSize="xl">
         <Highlight
           query={['x', 'y', 'z']}
           styles={{ px: '1', py: '0.8', rounded: 'full', bg: 'teal.100' }}
@@ -74,17 +75,17 @@ const Welcome = () => {
           x,y,z: coordinates
         </Highlight>
       </Text>
-      <Text as="li">
+      <Text as="li" fontSize="xl">
       <Highlight
           query={['fov']}
           styles={{ px: '1', py: '0.8', rounded: 'full', bg: 'teal.100' }}
         >fov: field of view</Highlight></Text>
-      <Text as="li">
+      <Text as="li" fontSize="xl">
       <Highlight
           query={['s']}
           styles={{ px: '1', py: '0.8', rounded: 'full', bg: 'teal.100' }}
         >s: allele</Highlight></Text>
-      <Text as="li">
+      <Text as="li" fontSize="xl">
       <Highlight
           query={['readout']}
           styles={{ px: '1', py: '0.8', rounded: 'full', bg: 'teal.100' }}
@@ -112,6 +113,7 @@ const Welcome = () => {
     
       </form>
       {isProccessing ? <Spinner size="xl" color="red.500" /> : null}
+      </div>
     </div>
   );
 };

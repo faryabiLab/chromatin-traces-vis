@@ -50,7 +50,7 @@ const Dashboard = () => {
 
   return (
     <div>
-      <Heading as='h1' className={styles.header}>ORCA Linkage Interactive Viewing Engine</Heading>
+      <Heading as='h1' className={styles.header}>ORCA Linkage Interactive Viewing Engine(OLIVE)</Heading>
       <div>
       <div className={styles.fov}>
       <label>fov</label>
