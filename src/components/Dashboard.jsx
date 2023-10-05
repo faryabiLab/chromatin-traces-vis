@@ -3,32 +3,46 @@ import {
   Heading,
   Button,
 } from '@chakra-ui/react'
-import {
-  NumberInput,
-  NumberInputField,
-} from '@chakra-ui/react'
+
 
 import { useMemo,useContext,useState, } from 'react';
 import Heatmap from './Heatmap';
 import { TraceContext } from '../store/trace-context';
-import { generatePairwiseDistanceMap } from '../utils/displayUtils';
+import { DataContext } from '../store/data-context';
+import { generatePairwiseDistanceMap,refreshPage } from '../utils/displayUtils';
 import styles from './Dashboard.module.css';
 const Dashboard = () => {
+  const dataCtx=useContext(DataContext);
   const traceCtx=useContext(TraceContext);
   const data=traceCtx.data;
   const resetHandler = traceCtx.resetHandler;
   const [fov,setFov]=useState(1);
   const [allele,setAllele]=useState(1);
   const selectedHandler=traceCtx.selectedHandler;
-  const renderOptions = (number) => {
+  const renderOptions = () => {
     let options = [];
-    for (let i = 0; i < number; i++) {
+    const validFovs =Object.keys(dataCtx.keys);
+    for (let i = 0; i < validFovs.length; i++) {
       options.push(
-        <option value={i + 1} key={i}>
-          {i + 1}
+        <option value={validFovs[i]} key={i}>
+          {validFovs[i]}
         </option>
       );
     }
+    return options;
+  };
+
+  const renderAlleleOptions = () => {
+    let options = [];
+    const validAlleles = dataCtx.keys[fov];
+    if(validAlleles===undefined) return options;
+    for(let i=0;i<validAlleles.length;i++){
+      options.push(
+        <option value={validAlleles[i]} key={i}>
+          {validAlleles[i]}
+        </option>
+      );
+    };
     return options;
   };
 
@@ -52,12 +66,14 @@ const Dashboard = () => {
       <div className={styles.allele}>
       <label>allele</label>
      
-      <NumberInput defaultValue={1} min={1} max={20000}>
-        <NumberInputField onChange={(e) => {
+      <Select
+        placeholder="select allele"
+        onChange={(e) => {
           setAllele(e.target.value);
-        }}/>
-      </NumberInput>
-  
+        }}
+      >
+        {renderAlleleOptions()}
+      </Select>
       
       </div>
       </div>
@@ -67,6 +83,9 @@ const Dashboard = () => {
       }}>Update allele</Button>
       <Button colorScheme="teal" variant="outline" onClick={resetHandler}>
         Clear
+      </Button>
+      <Button colorScheme="red" variant="outline" onClick={refreshPage}>
+      Exit
       </Button>
       </div>
       {distanceMap&&<Heatmap data={distanceMap} width={650} height={650} />}

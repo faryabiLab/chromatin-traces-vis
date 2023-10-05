@@ -18,3 +18,7 @@ export function generatePairwiseDistanceMap(data) {
  }
  return map; 
 };  
+
+export function refreshPage() {
+  window.location.reload(false);
+}

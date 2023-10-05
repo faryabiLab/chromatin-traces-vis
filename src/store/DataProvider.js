@@ -6,7 +6,7 @@ import * as d3 from 'd3';
 
 export function DataProvider({children}){
   const [dataBys,setDataBys] = useState(null);
-
+  const [keys,setKeys] = useState(null);
   // load sample datasets
   // useEffect(() => {
   //   d3.csv(
@@ -22,19 +22,30 @@ export function DataProvider({children}){
   //   });
   // }, []);
 
+  const extractKeys=(data)=>{
+    const result={};
+    for(const fovKey of data.keys()){
+      if(fovKey!==undefined){
+        result[fovKey]=Array.from(data.get(fovKey).keys());
+      }
+    }
+    return result;
+  }
+
   const setDataBysHandler=(data)=>{
     const newDataBys = d3.group(
       data,
       (d)=>d.fov,
       (d)=>d.s
     );
+    setKeys(extractKeys(newDataBys));
     setDataBys(newDataBys);
   }
 
 
-
   const dataContext={
     dataBys:dataBys,
+    keys:keys,
     setDataBysHandler:setDataBysHandler,
   };
 
