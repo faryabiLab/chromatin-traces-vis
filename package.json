@@ -1,7 +1,7 @@
 {
   "name": "web-app",
   "version": "0.1.0",
-  "homepage":"https://faryabiLab.github.io/chromatin-traces-vis",
+  "homepage": "https://faryabiLab.github.io/chromatin-traces-vis",
   "private": true,
   "dependencies": {
     "@chakra-ui/react": "^2.8.1",
@@ -15,6 +15,7 @@
     "@testing-library/user-event": "^13.5.0",
     "d3": "^7.8.5",
     "framer-motion": "^10.16.4",
+    "jspdf": "^2.5.1",
     "react": "^18.2.0",
     "react-color": "^2.19.3",
     "react-dom": "^18.2.0",

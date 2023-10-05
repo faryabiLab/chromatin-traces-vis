@@ -4,7 +4,7 @@ import * as THREE from 'three';
 import { Html, OrbitControls, Line, GizmoHelper,GizmoViewport } from '@react-three/drei';
 import styles from './Plot.module.css';
 import { useThree } from '@react-three/fiber'
-
+import {jsPDF} from 'jspdf';
 
 const Plot = () => {
   //index of the points that are clicked
@@ -152,7 +152,10 @@ const Plot = () => {
       const strName="image/jpeg";
       const imgData=gl.domElement.toDataURL(strName);
       const strDownloadName="image/octet-stream";
-      saveFile(imgData.replace(strName,strDownloadName),"fov-"+selected.fov+"-s-"+selected.s+"-"+"image.jpg");
+      const pdf=new jsPDF();
+      pdf.addImage(imgData.replace(strName,strDownloadName),'JPEG',5,5,200,250);
+      pdf.save("fov-"+selected.fov+"-s-"+selected.s+"-"+"image.pdf");
+
     } catch (e){
       console.log(e);
       return;

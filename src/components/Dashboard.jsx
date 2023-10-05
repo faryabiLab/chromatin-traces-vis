@@ -36,7 +36,7 @@ const Dashboard = () => {
 
   return (
     <div>
-      <Heading as='h1' className={styles.header}>Dashboard</Heading>
+      <Heading as='h1' className={styles.header}>ORCA Linkage Interactive Viewing Engine</Heading>
       <div>
       <div className={styles.fov}>
       <label>fov</label>
