@@ -60,12 +60,13 @@ const Welcome = () => {
         fontSize="6xl"
         fontWeight="extrabold"
         align="center"
+        marginTop="50px"
       >
         ORCA Linkage Interactive Viewing Engine(OLIVE)
       </Text>
       <div className={styles.upload}>
       <Text as="b" fontSize="3xl">
-        Welcome, Please upload file with the following columns:
+        Welcome, Please upload csv file with the following columns:
       </Text>
       <Text as="li" fontSize="xl">
         <Highlight
@@ -93,7 +94,7 @@ const Welcome = () => {
 
       <form style={{ marginTop: '20px' }}>
         <input type={'file'} id={'csvFileInput'} accept={'.csv'} onChange={handleFileUpload} />
-          <Checkbox onChange={(e)=>{plotAllHandler(e.target.checked)}}>plot all points</Checkbox>
+          <Checkbox margin='10px' onChange={(e)=>{plotAllHandler(e.target.checked)}}>plot all points</Checkbox>
           <Box
             as='button'
             p={2}
@@ -104,6 +105,7 @@ const Welcome = () => {
             _hover={{
               bgGradient: 'linear(to-r, red.500, yellow.500)',
             }}
+            margin='5px'
             onClick={(e) => {
               handleOnSubmit(e);
             }}
