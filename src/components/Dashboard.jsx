@@ -18,7 +18,8 @@ const Dashboard = () => {
   const data=traceCtx.data;
   const resetHandler = traceCtx.resetHandler;
   const [fov,setFov]=useState(1);
-  const [allele,setAllele]=useState(1);
+  //allele is the index of the allele in the allele list:dataCtx.keys[fov]
+  const [allele,setAllele]=useState(0);
   const selectedHandler=traceCtx.selectedHandler;
   const renderOptions = () => {
     let options = [];
@@ -39,7 +40,7 @@ const Dashboard = () => {
     if(validAlleles===undefined) return options;
     for(let i=0;i<validAlleles.length;i++){
       options.push(
-        <option value={validAlleles[i]} key={i}>
+        <option value={i} key={i}>
           {validAlleles[i]}
         </option>
       );
@@ -48,17 +49,19 @@ const Dashboard = () => {
   };
 
   const preAlleleHandler=()=>{
-    if(allele===dataCtx.keys[fov][0]) return;
-    const newAllele=+allele-1;
-    setAllele(newAllele);
+    if(allele===0) return;
+    const newAlleleIndex=+allele-1;
+    const newAllele=dataCtx.keys[fov][newAlleleIndex];
+    setAllele(newAlleleIndex);
     selectedHandler(fov.toString(),newAllele.toString());
 
   }
 
   const nextAlleleHandler=()=>{
-    if(allele===dataCtx.keys[fov][-1]) return;
-    const newAllele=+allele+1;
-    setAllele(newAllele);
+    if(allele>=dataCtx.keys[fov].length-1) return;
+    const newAlleleIndex=+allele+1;
+    const newAllele=dataCtx.keys[fov][newAlleleIndex];
+    setAllele(newAlleleIndex);
     selectedHandler(fov.toString(),newAllele.toString());
   }
 
@@ -81,7 +84,6 @@ const Dashboard = () => {
       </div>
       <div className={styles.allele}>
       <label>allele</label>
-     
       <Select value={allele}
         placeholder="select allele"
         onChange={(e) => {
@@ -95,7 +97,7 @@ const Dashboard = () => {
       </div>
       <div className={styles.buttons}>
       <Button colorScheme='teal' variant='outline' onClick={() => {
-        selectedHandler(fov.toString(),allele.toString());
+        selectedHandler(fov.toString(),dataCtx.keys[fov][allele].toString());
       }}>Update allele</Button>
       <Button colorScheme="teal" variant="outline" onClick={resetHandler}>
         Clear
@@ -105,8 +107,8 @@ const Dashboard = () => {
       </Button>
       </div>
       <div className={styles.browse}>
-      <IconButton isDisabled={allele===dataCtx.keys[fov][0]?true:false} colorScheme='teal' variant='outline' aria-label='ArrowLeftIcon' icon={<ArrowLeftIcon/>} onClick={preAlleleHandler}/>
-      <IconButton colorScheme='teal' variant='outline' aria-label='ArrowRightIcon' icon={<ArrowRightIcon/>} onClick={nextAlleleHandler}/>
+      <IconButton isDisabled={allele===0?true:false} colorScheme='teal' variant='outline' aria-label='ArrowLeftIcon' icon={<ArrowLeftIcon/>} onClick={preAlleleHandler}/>
+      <IconButton isDisabled={allele===dataCtx.keys[fov].length-1?true:false}colorScheme='teal' variant='outline' aria-label='ArrowRightIcon' icon={<ArrowRightIcon/>} onClick={nextAlleleHandler}/>
       </div>
       {distanceMap&&<Heatmap data={distanceMap} width={650} height={650} />}
     </div>
