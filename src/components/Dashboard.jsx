@@ -48,15 +48,16 @@ const Dashboard = () => {
   };
 
   const preAlleleHandler=()=>{
-    if(allele===1) return;
-    const newAllele=allele-1;
+    if(allele===dataCtx.keys[fov][0]) return;
+    const newAllele=+allele-1;
     setAllele(newAllele);
     selectedHandler(fov.toString(),newAllele.toString());
 
   }
 
   const nextAlleleHandler=()=>{
-    const newAllele=allele+1;
+    if(allele===dataCtx.keys[fov][-1]) return;
+    const newAllele=+allele+1;
     setAllele(newAllele);
     selectedHandler(fov.toString(),newAllele.toString());
   }
@@ -104,7 +105,7 @@ const Dashboard = () => {
       </Button>
       </div>
       <div className={styles.browse}>
-      <IconButton colorScheme='teal' variant='outline' aria-label='ArrowLeftIcon' icon={<ArrowLeftIcon/>} onClick={preAlleleHandler}/>
+      <IconButton isDisabled={allele===dataCtx.keys[fov][0]?true:false} colorScheme='teal' variant='outline' aria-label='ArrowLeftIcon' icon={<ArrowLeftIcon/>} onClick={preAlleleHandler}/>
       <IconButton colorScheme='teal' variant='outline' aria-label='ArrowRightIcon' icon={<ArrowRightIcon/>} onClick={nextAlleleHandler}/>
       </div>
       {distanceMap&&<Heatmap data={distanceMap} width={650} height={650} />}
