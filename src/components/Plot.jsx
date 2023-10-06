@@ -28,8 +28,20 @@ const Plot = () => {
     setPointA(clicked.a);
     setPointB(clicked.b);
   },[clicked]);
-  
-  if (!data || data.length === 0) return null;
+  //only plot when there is data and data has at least 2 points
+  if (!data || data.length < 2) return (
+    <Html>
+    <div
+      style={{
+        position: 'absolute',
+            top: '-50px', 
+            left: '-100px',
+            zIndex: 1, 
+      }}>
+     <p>No data</p>
+    </div>
+    </Html>
+  )
 
   //convert data to list of THREE.Vector3
   let points = [];
