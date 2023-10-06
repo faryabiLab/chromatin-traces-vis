@@ -2,8 +2,9 @@ import {
   Select,
   Heading,
   Button,
+  IconButton,
 } from '@chakra-ui/react'
-
+import {ArrowLeftIcon,ArrowRightIcon} from '@chakra-ui/icons'
 
 import { useMemo,useContext,useState, } from 'react';
 import Heatmap from './Heatmap';
@@ -46,6 +47,20 @@ const Dashboard = () => {
     return options;
   };
 
+  const preAlleleHandler=()=>{
+    if(allele===1) return;
+    const newAllele=allele-1;
+    setAllele(newAllele);
+    selectedHandler(fov.toString(),newAllele.toString());
+
+  }
+
+  const nextAlleleHandler=()=>{
+    const newAllele=allele+1;
+    setAllele(newAllele);
+    selectedHandler(fov.toString(),newAllele.toString());
+  }
+
   const distanceMap = useMemo(() => generatePairwiseDistanceMap(data), [data]);
 
   return (
@@ -54,7 +69,7 @@ const Dashboard = () => {
       <div>
       <div className={styles.fov}>
       <label>fov</label>
-      <Select
+      <Select value={fov}
         placeholder="select fov"
         onChange={(e) => {
           setFov(e.target.value);
@@ -66,7 +81,7 @@ const Dashboard = () => {
       <div className={styles.allele}>
       <label>allele</label>
      
-      <Select
+      <Select value={allele}
         placeholder="select allele"
         onChange={(e) => {
           setAllele(e.target.value);
@@ -87,6 +102,10 @@ const Dashboard = () => {
       <Button colorScheme="red" variant="outline" onClick={refreshPage}>
       Exit
       </Button>
+      </div>
+      <div className={styles.browse}>
+      <IconButton colorScheme='teal' variant='outline' aria-label='ArrowLeftIcon' icon={<ArrowLeftIcon/>} onClick={preAlleleHandler}/>
+      <IconButton colorScheme='teal' variant='outline' aria-label='ArrowRightIcon' icon={<ArrowRightIcon/>} onClick={nextAlleleHandler}/>
       </div>
       {distanceMap&&<Heatmap data={distanceMap} width={650} height={650} />}
     </div>
