@@ -87,8 +87,10 @@ UI component: chakra
      -   [x] user upload csv file
      -   [x] Plot all points option
      -   [ ] uploaded file validation
-     -   [ ] only show existing alleles in selection
+     -   [x] only show existing alleles in selection
+     -   [x] select next/previous allele within the same fov
      -   [x] instructions in welcome page
+     -   [ ] reorganize dashboard page
      
 
 
