@@ -12,7 +12,7 @@ This is a web application to visualize chromatin traces and provide interactive 
     -   readout: step
 2. By default, only odd readouts are plotted. Click on plot all points to plot all readouts.
 3. Click Import CSV to import your file
-4. Select fov and input allele number that you want to see
+4. Select fov and allele number that you want to see
 5. Click on the heatmap to highlight the corresponding pairs of vertices 
 6. Click on the vertices in the 3D model to see the pairwise distance
 7. Click on DOWNLOAD IMG to download the current view as PDF file
