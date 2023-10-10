@@ -6,7 +6,7 @@ import {
 } from '@chakra-ui/react'
 import {ArrowLeftIcon,ArrowRightIcon} from '@chakra-ui/icons'
 
-import { useMemo,useContext,useState, } from 'react';
+import { useMemo,useContext,useState, useEffect, } from 'react';
 import Heatmap from './Heatmap';
 import { TraceContext } from '../store/trace-context';
 import { DataContext } from '../store/data-context';
@@ -21,6 +21,11 @@ const Dashboard = () => {
   //allele is the index of the allele in the allele list:dataCtx.keys[fov]
   const [allele,setAllele]=useState(0);
   const selectedHandler=traceCtx.selectedHandler;
+
+  useEffect(()=>{
+    selectedHandler(fov.toString(),dataCtx.keys[fov][allele].toString());
+  },[fov,allele]);
+
   const renderOptions = () => {
     let options = [];
     const validFovs =Object.keys(dataCtx.keys);
@@ -97,9 +102,11 @@ const Dashboard = () => {
       </div>
       </div>
       <div className={styles.buttons}>
-      <Button colorScheme='teal' variant='outline' onClick={() => {
+      {/* <Button colorScheme='teal' variant='outline' onClick={() => {
         selectedHandler(fov.toString(),dataCtx.keys[fov][allele].toString());
-      }}>Update allele</Button>
+      }}>Update allele</Button> */}
+      <IconButton isDisabled={allele===0?true:false} colorScheme='teal' variant='outline' aria-label='ArrowLeftIcon' icon={<ArrowLeftIcon/>} onClick={preAlleleHandler}/>
+      <IconButton isDisabled={allele===dataCtx.keys[fov].length-1?true:false}colorScheme='teal' variant='outline' aria-label='ArrowRightIcon' icon={<ArrowRightIcon/>} onClick={nextAlleleHandler}/>
       <Button colorScheme="teal" variant="outline" onClick={resetHandler}>
         Clear
       </Button>
@@ -107,10 +114,7 @@ const Dashboard = () => {
       Exit
       </Button>
       </div>
-      <div className={styles.browse}>
-      <IconButton isDisabled={allele===0?true:false} colorScheme='teal' variant='outline' aria-label='ArrowLeftIcon' icon={<ArrowLeftIcon/>} onClick={preAlleleHandler}/>
-      <IconButton isDisabled={allele===dataCtx.keys[fov].length-1?true:false}colorScheme='teal' variant='outline' aria-label='ArrowRightIcon' icon={<ArrowRightIcon/>} onClick={nextAlleleHandler}/>
-      </div>
+     
       {distanceMap&&<Heatmap data={distanceMap} width={650} height={650} />}
     </div>
   );
