@@ -3,6 +3,8 @@
 ### Project abstract
 
 This is a web application to visualize chromatin traces and provide interactive features which can be accessed at https://faryabilab.github.io/chromatin-traces-vis/
+<img width="2207" alt="image" src="https://github.com/faryabiLab/chromatin-traces-vis/assets/56408423/87039006-fe3b-4da3-8dcb-8ea30ad48790">
+
 
 ### How to use it
 1. Upload csv file with the following format
