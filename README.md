@@ -47,6 +47,7 @@ UI component: chakra
 **DataProvider**: load csv file and parse it into a map grouped by fov and s
 
 -   dataBys: map of data grouped by fov and s
+-   keys: mapping of fov number and valid allele numbers
 -   setDataBysHandler
 
 **TraceProvider**: Given the data by s, perform data wrangling
