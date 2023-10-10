@@ -77,6 +77,7 @@ const Dashboard = () => {
         placeholder="select fov"
         onChange={(e) => {
           setFov(e.target.value);
+          setAllele(0);
         }}
       >
         {renderOptions(20)}
