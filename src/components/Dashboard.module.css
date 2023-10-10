@@ -20,5 +20,13 @@
   margin: 10px 0px;
   display: flex;
   flex-direction: row;
+  justify-content:flex-start ;
+}
 
+.browse{
+  margin: 10px 0px;
+  gap:16px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
 }

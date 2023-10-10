@@ -12,7 +12,7 @@ This is a web application to visualize chromatin traces and provide interactive 
     -   readout: step
 2. By default, only odd readouts are plotted. Click on plot all points to plot all readouts.
 3. Click Import CSV to import your file
-4. Select fov and input allele number that you want to see
+4. Select fov and allele number that you want to see
 5. Click on the heatmap to highlight the corresponding pairs of vertices 
 6. Click on the vertices in the 3D model to see the pairwise distance
 7. Click on DOWNLOAD IMG to download the current view as PDF file
@@ -47,6 +47,7 @@ UI component: chakra
 **DataProvider**: load csv file and parse it into a map grouped by fov and s
 
 -   dataBys: map of data grouped by fov and s
+-   keys: mapping of fov number and valid allele numbers
 -   setDataBysHandler
 
 **TraceProvider**: Given the data by s, perform data wrangling
@@ -87,8 +88,10 @@ UI component: chakra
      -   [x] user upload csv file
      -   [x] Plot all points option
      -   [ ] uploaded file validation
-     -   [ ] only show existing alleles in selection
+     -   [x] only show existing alleles in selection
+     -   [x] select next/previous allele within the same fov
      -   [x] instructions in welcome page
+     -   [ ] reorganize dashboard page
      
 
 

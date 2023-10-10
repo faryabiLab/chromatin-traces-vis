@@ -2,10 +2,11 @@ import {
   Select,
   Heading,
   Button,
+  IconButton,
 } from '@chakra-ui/react'
+import {ArrowLeftIcon,ArrowRightIcon} from '@chakra-ui/icons'
 
-
-import { useMemo,useContext,useState, } from 'react';
+import { useMemo,useContext,useState, useEffect, } from 'react';
 import Heatmap from './Heatmap';
 import { TraceContext } from '../store/trace-context';
 import { DataContext } from '../store/data-context';
@@ -17,8 +18,14 @@ const Dashboard = () => {
   const data=traceCtx.data;
   const resetHandler = traceCtx.resetHandler;
   const [fov,setFov]=useState(1);
-  const [allele,setAllele]=useState(1);
+  //allele is the index of the allele in the allele list:dataCtx.keys[fov]
+  const [allele,setAllele]=useState(0);
   const selectedHandler=traceCtx.selectedHandler;
+
+  useEffect(()=>{
+    selectedHandler(fov.toString(),dataCtx.keys[fov][allele].toString());
+  },[fov,allele]);
+
   const renderOptions = () => {
     let options = [];
     const validFovs =Object.keys(dataCtx.keys);
@@ -38,13 +45,30 @@ const Dashboard = () => {
     if(validAlleles===undefined) return options;
     for(let i=0;i<validAlleles.length;i++){
       options.push(
-        <option value={validAlleles[i]} key={i}>
+        <option value={i} key={i}>
           {validAlleles[i]}
         </option>
       );
     };
     return options;
   };
+
+  const preAlleleHandler=()=>{
+    if(allele===0) return;
+    const newAlleleIndex=+allele-1;
+    const newAllele=dataCtx.keys[fov][newAlleleIndex];
+    setAllele(newAlleleIndex);
+    selectedHandler(fov.toString(),newAllele.toString());
+
+  }
+
+  const nextAlleleHandler=()=>{
+    if(allele>=dataCtx.keys[fov].length-1) return;
+    const newAlleleIndex=+allele+1;
+    const newAllele=dataCtx.keys[fov][newAlleleIndex];
+    setAllele(newAlleleIndex);
+    selectedHandler(fov.toString(),newAllele.toString());
+  }
 
   const distanceMap = useMemo(() => generatePairwiseDistanceMap(data), [data]);
 
@@ -54,10 +78,11 @@ const Dashboard = () => {
       <div>
       <div className={styles.fov}>
       <label>fov</label>
-      <Select
+      <Select value={fov}
         placeholder="select fov"
         onChange={(e) => {
           setFov(e.target.value);
+          setAllele(0);
         }}
       >
         {renderOptions(20)}
@@ -65,8 +90,7 @@ const Dashboard = () => {
       </div>
       <div className={styles.allele}>
       <label>allele</label>
-     
-      <Select
+      <Select value={allele}
         placeholder="select allele"
         onChange={(e) => {
           setAllele(e.target.value);
@@ -78,9 +102,11 @@ const Dashboard = () => {
       </div>
       </div>
       <div className={styles.buttons}>
-      <Button colorScheme='teal' variant='outline' onClick={() => {
-        selectedHandler(fov.toString(),allele.toString());
-      }}>Update allele</Button>
+      {/* <Button colorScheme='teal' variant='outline' onClick={() => {
+        selectedHandler(fov.toString(),dataCtx.keys[fov][allele].toString());
+      }}>Update allele</Button> */}
+      <IconButton isDisabled={allele===0?true:false} colorScheme='teal' variant='outline' aria-label='ArrowLeftIcon' icon={<ArrowLeftIcon/>} onClick={preAlleleHandler}/>
+      <IconButton isDisabled={allele===dataCtx.keys[fov].length-1?true:false}colorScheme='teal' variant='outline' aria-label='ArrowRightIcon' icon={<ArrowRightIcon/>} onClick={nextAlleleHandler}/>
       <Button colorScheme="teal" variant="outline" onClick={resetHandler}>
         Clear
       </Button>
@@ -88,6 +114,7 @@ const Dashboard = () => {
       Exit
       </Button>
       </div>
+     
       {distanceMap&&<Heatmap data={distanceMap} width={650} height={650} />}
     </div>
   );
