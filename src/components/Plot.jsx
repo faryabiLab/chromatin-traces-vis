@@ -98,8 +98,10 @@ const Plot = () => {
   const colorClicked = (point) => {
     if (pointA===point || pointB===point) {
       return 'red';
-    } else {
+    } else if(pointA===-1 || pointB===-1){
       return 'black';
+    } else {
+      return 'white'; ;
     }
   };
 
@@ -121,7 +123,7 @@ const Plot = () => {
         <Line points={[nodeA, nodeB]} color="red" lineWidth={8} />
         <Html scaleFactor={10} position={calculateMidpoint(nodeA, nodeB)}>
           <div className={styles.distancePanel}>
-            <p>{nodeA.distanceTo(nodeB)}</p>
+            <p>{nodeA.distanceTo(nodeB).toFixed(2)+' nm'}</p>
           </div>
         </Html>
       </>
@@ -149,12 +151,19 @@ const Plot = () => {
     });
   };
 
+  const tubeColor=()=>{
+    if(pointA===-1 || pointB===-1){
+      return 'gray';
+    } else {
+      return 'white';
+    }
+  }
   const renderTube = (points) => {
     const curve = new THREE.CatmullRomCurve3(points, false);
     return (
       <mesh>
         <tubeGeometry args={[curve, 256, 5, 64, false]}/>
-        <meshLambertMaterial color="grey"/>
+        <meshLambertMaterial color={tubeColor()}/>
       </mesh>
     );
   };
