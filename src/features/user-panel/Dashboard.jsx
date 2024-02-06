@@ -7,10 +7,10 @@ import {
 import {ArrowLeftIcon,ArrowRightIcon} from '@chakra-ui/icons'
 
 import { useMemo,useContext,useState, useEffect, } from 'react';
-import Heatmap from './Heatmap';
-import { TraceContext } from '../store/trace-context';
-import { DataContext } from '../store/data-context';
-import { generatePairwiseDistanceMap,refreshPage } from '../utils/displayUtils';
+import Heatmap from '../linkage/Heatmap';
+import { TraceContext } from '../../stores/trace-context';
+import { DataContext } from '../../stores/data-context';
+import { generatePairwiseDistanceMap,refreshPage } from '../../utils/displayUtils';
 import styles from './Dashboard.module.css';
 const Dashboard = () => {
   const dataCtx=useContext(DataContext);

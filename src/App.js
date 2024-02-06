@@ -1,8 +1,8 @@
-import Panel from './components/Panel';
+import Panel from './components/Layout/Panel';
 
 import {ChakraProvider} from '@chakra-ui/react';
-import {DataProvider} from './store/DataProvider';
-import {TraceProvider} from './store/TraceProvider';
+import {DataProvider} from './stores/DataProvider';
+import {TraceProvider} from './stores/TraceProvider';
 
 function App() {
   return (

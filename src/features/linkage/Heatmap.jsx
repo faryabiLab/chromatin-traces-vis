@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useEffect, useContext } from 'react';
 import * as d3 from 'd3';
-import { TraceContext } from '../store/trace-context';
+import { TraceContext } from '../../stores/trace-context';
 import { TwitterPicker } from 'react-color';
 import {
   NumberInput,

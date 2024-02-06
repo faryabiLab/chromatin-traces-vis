@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState,useContext } from 'react';
-import { TraceContext } from '../store/trace-context';
+import { TraceContext } from '../../../stores/trace-context';
 import * as THREE from 'three';
 import { Html, OrbitControls, Line, GizmoHelper,GizmoViewport } from '@react-three/drei';
-import styles from './Plot.module.css';
+import styles from '../Plot.module.css';
 import { useThree } from '@react-three/fiber'
 import {jsPDF} from 'jspdf';
 
