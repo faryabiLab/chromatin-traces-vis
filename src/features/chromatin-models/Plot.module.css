@@ -16,71 +16,62 @@
     font-family: Arial, Helvetica, sans-serif;
     font-size: 35px;
     position:absolute;
-    color:black;
-    padding:25px;
+    color:rgb(252, 249, 249);
+    padding:15px;
     white-space: nowrap;
     overflow:hidden;
     user-select: none;
+    background-color: rgba(0, 0, 0, 0.552);
+    border-radius: 20%;
 }
 
+  
+ 
+.saveBtn {
+  background-color: transparent;
+  border: 1px solid #266DB6;
+  box-sizing: border-box;
+  color: #00132C;
+  font-family: "Avenir Next LT W01 Bold",sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+  padding: 16px 23px;
+  position: relative;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
 
-.saveBtn{
-    appearance: button;
-    background-color: #1899D6;
-    border: solid transparent;
-    border-radius: 16px;
-    border-width: 0 0 4px;
-    box-sizing: border-box;
-    color: #FFFFFF;
-    cursor: pointer;
-    display: inline-block;
-    font-family: din-round,sans-serif;
-    font-size: 15px;
-    font-weight: 700;
-    letter-spacing: .8px;
-    line-height: 20px;
-    margin: 0;
-    outline: none;
-    overflow: visible;
-    padding: 13px 16px;
-    text-align: center;
-    text-transform: uppercase;
-    touch-action: manipulation;
-    transform: translateZ(0);
-    transition: filter .2s;
-    user-select: none;
-    -webkit-user-select: none;
-    vertical-align: middle;
-    white-space: nowrap;
-    width: 100%;
+.saveBtn:hover,
+.saveBtn:active {
+  outline: 0;
+}
+
+.saveBtn:hover {
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.saveBtn:before {
+  background-color: #D5EDF6;
+  content: "";
+  height: calc(100% + 3px);
+  position: absolute;
+  right: -7px;
+  top: -9px;
+  transition: background-color 300ms ease-in;
+  width: 100%;
+  z-index: -1;
+}
+
+.saveBtn:hover:before {
+  background-color: #6DCFF6;
+}
+
+@media (min-width: 768px) {
+  .saveBtn {
+    padding: 16px 32px;
   }
-  
-  .saveBtn:after {
-    background-clip: padding-box;
-    background-color: #1CB0F6;
-    border: solid transparent;
-    border-radius: 16px;
-    border-width: 0 0 4px;
-    bottom: -4px;
-    content: "";
-    left: 0;
-    position: absolute;
-    right: 0;
-    top: 0;
-    z-index: -1;
-  }
-  
-  .saveBtn:main,
-  .saveBtn:focus {
-    user-select: auto;
-  }
-  
-  .saveBtn:hover:not(:disabled) {
-    filter: brightness(1.1);
-    -webkit-filter: brightness(1.1);
-  }
-  
-  .saveBtn:disabled {
-    cursor: auto;
-  }
-  
+}
