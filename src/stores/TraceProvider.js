@@ -21,6 +21,7 @@ const traceReducer = (state, action) => {
       selected: { fov: action.fov, s: action.s },
       clicked: {a:-1,b:-1},
       isPlotAll:state.isPlotAll,
+      mode:state.mode,
     };
   }
   if (action.type === 'CLICK') {
@@ -29,6 +30,7 @@ const traceReducer = (state, action) => {
       selected: state.selected,
       clicked: { a: action.a, b: action.b},
       isPlotAll:state.isPlotAll,
+      mode:state.mode,
     };
   }
 
@@ -38,6 +40,7 @@ const traceReducer = (state, action) => {
       selected:state.selected,
       clicked: {a:-1,b:-1},
       isPlotAll:state.isPlotAll,
+      mode:state.mode,
     }
   }
 
@@ -47,8 +50,19 @@ const traceReducer = (state, action) => {
       selected:state.selected,
       clicked:state.clicked,
       isPlotAll:true,
+      mode:state.mode,
     }
   }
+  if(action.type==='MODE'){
+    return{
+      data:state.data,
+      selected:state.selected,
+      clicked:defaultTraceState.clicked,
+      isPlotAll:state.isPlotAll,
+      mode:action.nextMode
+    }
+  }
+  
   return defaultTraceState;
 };
 
@@ -68,15 +82,21 @@ export function TraceProvider({ children }) {
   const isPlotAllHandler=()=>{
     dispatchTraceAction({type:'PLOTALL'});
   }
+
+  const modeHandler = (nextMode) => {
+    dispatchTraceAction({ type: 'MODE',nextMode:nextMode });
+  };
   const traceContext = {
     data:traceState.data,
     selected: traceState.selected,
     clicked: traceState.clicked,
     isPlotAll:traceState.isPlotAll,
+    mode:traceState.mode,
     selectedHandler: selectTraceHandler,
     clickedHandler: clickTraceHandler,
     resetHandler:resetClickHandler,
     plotAllHandler:isPlotAllHandler,
+    modeHandler:modeHandler,
   };
 
   return <TraceContext.Provider value={traceContext}>{children}</TraceContext.Provider>;
