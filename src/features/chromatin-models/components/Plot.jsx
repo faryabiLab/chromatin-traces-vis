@@ -95,7 +95,7 @@ const Plot = () => {
     setPointA(a);
     setPointB(b);
 
-    if (a && b) {
+    if (a>-1 && b>-1) {
       clickedHandler(a, b);
     }
   };
@@ -201,7 +201,7 @@ const Plot = () => {
           }}
         >
           <button onClick={saveAsImage} className={styles.saveBtn}>
-            Download Img
+            Download PDF
           </button>
         </div>
       </Html>

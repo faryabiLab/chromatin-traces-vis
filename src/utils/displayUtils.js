@@ -8,11 +8,7 @@ export function generatePairwiseDistanceMap(data) {
  let map = [];
  for (let i = 0; i < data.length; i++) {
    for (let j = 0; j < data.length; j++) {
-     const dist = Math.sqrt(
-       Math.pow(data[i].pos.x - data[j].pos.x, 2) +
-         Math.pow(data[i].pos.y - data[j].pos.y, 2) +
-         Math.pow(data[i].pos.z - data[j].pos.z, 2)
-     );
+     const dist = calculatePairDistance(data[i], data[j]);
      map.push({ x: i + 1, y: j + 1, value: dist });
    }
  }
@@ -21,4 +17,12 @@ export function generatePairwiseDistanceMap(data) {
 
 export function refreshPage() {
   window.location.reload(false);
+}
+
+export function calculatePairDistance(a, b) {
+  return Math.sqrt(
+    Math.pow(a.pos.x - b.pos.x, 2) +
+      Math.pow(a.pos.y - b.pos.y, 2) +
+      Math.pow(a.pos.z - b.pos.z, 2)
+  );
 }

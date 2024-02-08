@@ -17,6 +17,7 @@ import { TraceContext } from '../../stores/trace-context';
 import { DataContext } from '../../stores/data-context';
 import { generatePairwiseDistanceMap, refreshPage } from '../../utils/displayUtils';
 import styles from './Dashboard.module.css';
+import Filter from './components/Filter';
 const Dashboard = () => {
   const dataCtx = useContext(DataContext);
   const traceCtx = useContext(TraceContext);
@@ -129,14 +130,14 @@ const Dashboard = () => {
           onClick={nextAlleleHandler}
         />
         <Button colorScheme="teal" variant="outline" onClick={resetHandler}>
-          Clear
+          Reset
         </Button>
         <Button colorScheme="red" variant="outline" onClick={refreshPage}>
           Exit
         </Button>
       </div>
 
-      
+      <Filter/>
       <Tabs isFitted defaultIndex={1} onChange={(index) => modeSelectHandler(index+1)}>
         <TabList>
           <Tab>One</Tab>
