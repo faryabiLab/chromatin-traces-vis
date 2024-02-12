@@ -16,13 +16,14 @@
     font-family: Arial, Helvetica, sans-serif;
     font-size: 35px;
     position:absolute;
-    color:rgb(252, 249, 249);
+    color:rgb(28, 4, 4);
     padding:15px;
     white-space: nowrap;
     overflow:hidden;
     user-select: none;
-    background-color: rgba(0, 0, 0, 0.552);
-    border-radius: 20%;
+    font-weight: bolder;
+
+    
 }
 
   

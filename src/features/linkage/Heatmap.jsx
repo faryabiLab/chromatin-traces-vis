@@ -113,7 +113,7 @@ const Heatmap = ({ data, width, height }) => {
       </text>
     );
   });
-
+  console.log(data);
   return (
     <div>
       <HStack>

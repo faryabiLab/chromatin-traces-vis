@@ -17,6 +17,7 @@
 }
 
 .buttons{
+  margin-left: 60px;
   display: flex;
   flex-direction: row;
   align-self: center;
@@ -28,4 +29,16 @@
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
+}
+
+.filter{
+  margin: 20px 0px;
+  gap:16px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.modeRadio{
+  margin: 10px 0px;
 }

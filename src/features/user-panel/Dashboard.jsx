@@ -87,7 +87,7 @@ const Dashboard = () => {
       <Heading as="h1" className={styles.header}>
         ORCA Linkage Interactive Viewing Engine(OLIVE)
       </Heading>
-      <Stack direction="row" spacing='20px'> 
+      <Stack direction="row" spacing='30px'> 
         <div className={styles.fov}>
           <label>fov</label>
           <Select
@@ -142,15 +142,18 @@ const Dashboard = () => {
         </Button>
       </div>
       </Stack>
-
+      <div className={styles.filter}>
       <Filter alleleHandler={setAllele}/>
+      </div>
+      <div className={styles.modeRadio}>
       <RadioGroup onChange={modeSelectHandler} value={currentMode}>
       <Stack direction='row'>
-        <Radio value='1'>Radius Analysis</Radio>
+      
         <Radio value='2' defaultChecked={true}>Pairwise Distance</Radio>
         <Radio value='3'>Perimeter Analysis</Radio>
       </Stack>
     </RadioGroup>
+    </div>
       
       {currentMode === '2' && distanceMap && <Heatmap data={distanceMap} width={650} height={650} />}
 

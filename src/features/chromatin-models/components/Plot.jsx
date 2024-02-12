@@ -16,11 +16,12 @@ const Plot = () => {
   const selected = traceCtx.selected;
   const clickedHandler = traceCtx.clickedHandler;
   const clicked = traceCtx.clicked;
-  const { color, tubeRadius, showDistance,sphereRadius } = useControls({
+  const { color, tubeRadius, showDistance,sphereRadius,radius } = useControls({
     color: 'red',
     tubeRadius: { value: 5, min: 0, max: 5, step: 0.5 },
     sphereRadius: { value: 15, min: 10, max: 25, step: 1 },
     showDistance: true,
+    radius: { value: 200 },
   });
 
   const { gl } = useThree();
@@ -100,11 +101,24 @@ const Plot = () => {
     }
   };
 
-  const colorClicked = (point) => {
+
+  const colorPoint = (point) => {
+    //default color
+    if(pointA===-1 && pointB===-1){
+      return 'black';
+    }
+    //color when point is clicked
     if (pointA === point || pointB === point) {
       return color;
-    } else if (pointA === -1 || pointB === -1) {
-      return 'black';
+    }else if (pointA === -1 || pointB === -1) {
+      //if one of the points is clicked
+      const existingPoint=pointA===-1?pointB:pointA;
+      //check if the point is within the radius
+      if(points[existingPoint].distanceTo(points[point])<radius){
+        return 'black';
+      }else{
+      return 'white';
+      }
     } else {
       return 'white';
     }
@@ -116,7 +130,7 @@ const Plot = () => {
     return new THREE.Vector3(
       (pointA.x + pointB.x) / 2.0,
       (pointA.y + pointB.y) / 2.0,
-      (pointA.z + pointB.z) / 2.0
+      (pointA.z + pointB.z) / 2.0,
     );
   };
   const renderLine = () => {
@@ -147,7 +161,7 @@ const Plot = () => {
           }}
         >
           <sphereGeometry args={[sphereRadius, 64, 16]} />
-          <meshStandardMaterial color={colorClicked(index)} />
+          <meshStandardMaterial color={colorPoint(index)} />
           <Html scaleFactor={10}>
             <div className={styles.label}>
               <p>{index + 1}</p>
