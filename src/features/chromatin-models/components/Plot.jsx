@@ -25,10 +25,10 @@ const Plot = () => {
 
   const { gl } = useThree();
   //initialize pointA and pointB to null when selected changes
-  useEffect(() => {
-    setPointA(-1);
-    setPointB(-1);
-  }, [selected]);
+  // useEffect(() => {
+  //   setPointA(-1);
+  //   setPointB(-1);
+  // }, [selected]);
 
   useEffect(() => {
     setPointA(clicked.a);

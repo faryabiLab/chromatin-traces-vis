@@ -19,7 +19,7 @@ const traceReducer = (state, action) => {
     return {
       data:dataProcessWrapper(action.dataBys,action.fov,action.s,state.isPlotAll),
       selected: { fov: action.fov, s: action.s },
-      clicked: {a:-1,b:-1},
+      clicked: state.clicked,
       isPlotAll:state.isPlotAll,
       mode:state.mode,
     };

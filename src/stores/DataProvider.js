@@ -58,11 +58,16 @@ export function DataProvider({children}){
     setKeys(keysDict);
   }
 
+  const resetHandler=()=>{
+    setKeys(extractKeys(dataBys));
+  }
+
   const dataContext={
     dataBys:dataBys,
     keys:keys,
     setDataBysHandler:setDataBysHandler,
     filterDataBysHandler:filterHandler,
+    resetHandler:resetHandler,
   };
 
   return (

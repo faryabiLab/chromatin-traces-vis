@@ -30,9 +30,11 @@ const Dashboard = () => {
   const [allele, setAllele] = useState(0);
   const selectedHandler = traceCtx.selectedHandler;
 
+
   useEffect(() => {
     selectedHandler(fov.toString(), dataCtx.keys[fov][allele].toString());
   }, [fov, allele]);
+
 
   const renderOptions = () => {
     let options = [];
@@ -137,7 +139,7 @@ const Dashboard = () => {
         </Button>
       </div>
 
-      <Filter/>
+      <Filter alleleHandler={setAllele}/>
       <Tabs isFitted defaultIndex={1} onChange={(index) => modeSelectHandler(index+1)}>
         <TabList>
           <Tab>One</Tab>
