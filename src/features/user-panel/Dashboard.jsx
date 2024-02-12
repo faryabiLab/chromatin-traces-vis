@@ -8,6 +8,7 @@ import {
   TabList,
   Tab,
   TabPanels,
+  Radio, RadioGroup,Stack,
 } from '@chakra-ui/react';
 import { ArrowLeftIcon, ArrowRightIcon } from '@chakra-ui/icons';
 
@@ -86,10 +87,11 @@ const Dashboard = () => {
       <Heading as="h1" className={styles.header}>
         ORCA Linkage Interactive Viewing Engine(OLIVE)
       </Heading>
-      <div>
+      <Stack direction="row" spacing='20px'> 
         <div className={styles.fov}>
           <label>fov</label>
           <Select
+            
             value={fov}
             placeholder="select fov"
             onChange={(e) => {
@@ -103,6 +105,7 @@ const Dashboard = () => {
         <div className={styles.allele}>
           <label>allele</label>
           <Select
+ 
             value={allele}
             placeholder="select allele"
             onChange={(e) => {
@@ -112,7 +115,7 @@ const Dashboard = () => {
             {renderAlleleOptions()}
           </Select>
         </div>
-      </div>
+  
       <div className={styles.buttons}>
     
         <IconButton
@@ -138,27 +141,19 @@ const Dashboard = () => {
           Exit
         </Button>
       </div>
+      </Stack>
 
       <Filter alleleHandler={setAllele}/>
-      <Tabs isFitted defaultIndex={1} onChange={(index) => modeSelectHandler(index+1)}>
-        <TabList>
-          <Tab>One</Tab>
-          <Tab>Two</Tab>
-          <Tab>Three</Tab>
-        </TabList>
+      <RadioGroup onChange={modeSelectHandler} value={currentMode}>
+      <Stack direction='row'>
+        <Radio value='1'>Radius Analysis</Radio>
+        <Radio value='2' defaultChecked={true}>Pairwise Distance</Radio>
+        <Radio value='3'>Perimeter Analysis</Radio>
+      </Stack>
+    </RadioGroup>
+      
+      {currentMode === '2' && distanceMap && <Heatmap data={distanceMap} width={650} height={650} />}
 
-        <TabPanels>
-          <TabPanel>
-            <p>{currentMode}</p>
-          </TabPanel>
-          <TabPanel>
-          {distanceMap && <Heatmap data={distanceMap} width={650} height={650} />}
-          </TabPanel>
-          <TabPanel>
-            <p>{currentMode}</p>
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
     </div>
   );
 };

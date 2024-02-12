@@ -17,10 +17,9 @@
 }
 
 .buttons{
-  margin: 10px 0px;
   display: flex;
   flex-direction: row;
-  justify-content:flex-start ;
+  align-self: center;
 }
 
 .browse{
