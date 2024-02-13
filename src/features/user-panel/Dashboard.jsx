@@ -3,12 +3,8 @@ import {
   Heading,
   Button,
   IconButton,
-  Tabs,
-  TabPanel,
-  TabList,
-  Tab,
-  TabPanels,
-  Radio, RadioGroup,Stack,
+  Stack,
+  Divider,
 } from '@chakra-ui/react';
 import { ArrowLeftIcon, ArrowRightIcon } from '@chakra-ui/icons';
 
@@ -24,8 +20,7 @@ const Dashboard = () => {
   const traceCtx = useContext(TraceContext);
   const data = traceCtx.data;
   const resetHandler = traceCtx.resetHandler;
-  const currentMode=traceCtx.mode;
-  const modeSelectHandler = traceCtx.modeHandler;
+
   const [fov, setFov] = useState(1);
   //allele is the index of the allele in the allele list:dataCtx.keys[fov]
   const [allele, setAllele] = useState(0);
@@ -83,13 +78,13 @@ const Dashboard = () => {
   const distanceMap = useMemo(() => generatePairwiseDistanceMap(data), [data]);
 
   return (
-    <div>
+    <div className={styles.dashboard}>
       <Heading as="h1" className={styles.header}>
         ORCA Linkage Interactive Viewing Engine(OLIVE)
       </Heading>
       <Stack direction="row" spacing='30px'> 
-        <div className={styles.fov}>
-          <label>fov</label>
+        <div className={styles.select}>
+          <label>FOV:</label>
           <Select
             
             value={fov}
@@ -102,8 +97,8 @@ const Dashboard = () => {
             {renderOptions(20)}
           </Select>
         </div>
-        <div className={styles.allele}>
-          <label>allele</label>
+        <div className={styles.select}>
+          <label>Allele:</label>
           <Select
  
             value={allele}
@@ -145,17 +140,10 @@ const Dashboard = () => {
       <div className={styles.filter}>
       <Filter alleleHandler={setAllele}/>
       </div>
-      <div className={styles.modeRadio}>
-      <RadioGroup onChange={modeSelectHandler} value={currentMode}>
-      <Stack direction='row'>
+     
+     <Divider />
       
-        <Radio value='2' defaultChecked={true}>Pairwise Distance</Radio>
-        <Radio value='3'>Perimeter Analysis</Radio>
-      </Stack>
-    </RadioGroup>
-    </div>
-      
-      {currentMode === '2' && distanceMap && <Heatmap data={distanceMap} width={650} height={650} />}
+      {distanceMap && <Heatmap data={distanceMap} width={650} height={650} />}
 
     </div>
   );

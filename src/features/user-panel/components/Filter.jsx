@@ -33,7 +33,7 @@ const Filter = ({alleleHandler}) => {
     </NumberInputStepper>
   </NumberInput>
   <span>nm</span>
-  <Button size='sm' colorScheme='teal' variant='ghost' onClick={()=>{
+  <Button colorScheme='teal' variant='ghost' onClick={()=>{
       toFilter(curFov,clicked.a,clicked.b,distance);
       selectedHandler(curFov.toString(),dataCtx.keys[curFov][0].toString());
       alleleHandler(0);
@@ -46,7 +46,7 @@ const Filter = ({alleleHandler}) => {
           position:'top-center'
         })
       }}>Filter</Button>
-    <Button size='sm' colorScheme='gray' variant='ghost' onClick={()=>{
+    <Button colorScheme='gray' variant='ghost' onClick={()=>{
       resetClickHandler();
       selectedHandler(curFov.toString(),dataCtx.keys[curFov][0].toString());
       alleleHandler(0);

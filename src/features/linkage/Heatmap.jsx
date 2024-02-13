@@ -113,23 +113,23 @@ const Heatmap = ({ data, width, height }) => {
       </text>
     );
   });
-  console.log(data);
+
   return (
-    <div>
+    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center',width: '100%'}}>
       <HStack>
         <label>Color:</label>
         <Box
           as="button"
           borderRadius="md"
-          px={4}
-          h={8}
+          px={3}
+          h={6}
           onClick={setShowColorPicker.toggle}
           bg={color}
           margin={3}
         />
-        {showColorPicker && <TwitterPicker color={color} onChange={handleColorChange} />}
+        {showColorPicker && <TwitterPicker color={color} onChange={handleColorChange} triangle='hide'/>}
 
-        <label>Color Scale Domain:</label>
+        <label>Color Scale Domain: 0 ~ </label>
         <NumberInput
           size="md"
           maxW={125}
