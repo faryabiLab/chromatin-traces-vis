@@ -3,10 +3,9 @@ export const TraceContext = React.createContext({
   data:null,
   selected: { fov: null, s: null },
   clicked: { a: null, b: null },
-  mode:2,
+  triplets: {a: null, b: null, c: null},
   selectedHandler: () => {},
   clickedHandler: () => {},
-  modeHandler: () => {},
   isPlotAll:false,
 });
 

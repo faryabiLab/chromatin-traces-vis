@@ -12,6 +12,7 @@ const defaultTraceState = {
   data:[],
   selected: { fov: null, s: null },
   clicked: { a: -1, b: -1 },
+  triplet: { a: -1, b: -1, c: -1 },
   isPlotAll:false,
 };
 const traceReducer = (state, action) => {
@@ -20,8 +21,8 @@ const traceReducer = (state, action) => {
       data:dataProcessWrapper(action.dataBys,action.fov,action.s,state.isPlotAll),
       selected: { fov: action.fov, s: action.s },
       clicked: state.clicked,
+      triplet: state.triplet,
       isPlotAll:state.isPlotAll,
-      mode:state.mode,
     };
   }
   if (action.type === 'CLICK') {
@@ -29,18 +30,27 @@ const traceReducer = (state, action) => {
       data:state.data,
       selected: state.selected,
       clicked: { a: action.a, b: action.b},
+      triplet: state.triplet,
       isPlotAll:state.isPlotAll,
-      mode:state.mode,
     };
   }
 
+  if (action.type === 'TRIPLET') {
+    return{
+      data:state.data,
+      selected: state.selected,
+      clicked: state.clicked,
+      triplet: {a:action.a,b:action.b,c:action.c},
+      isPlotAll:state.isPlotAll,
+    }
+  }
   if(action.type==='RESET'){
     return {
       data:state.data,
       selected:state.selected,
       clicked: {a:-1,b:-1},
+      triplet:{a:-1,b:-1,c:-1},
       isPlotAll:state.isPlotAll,
-      mode:state.mode,
     }
   }
 
@@ -49,19 +59,11 @@ const traceReducer = (state, action) => {
       data:state.data,
       selected:state.selected,
       clicked:state.clicked,
+      triplet:state.triplet,
       isPlotAll:true,
-      mode:state.mode,
     }
   }
-  if(action.type==='MODE'){
-    return{
-      data:state.data,
-      selected:state.selected,
-      clicked:defaultTraceState.clicked,
-      isPlotAll:state.isPlotAll,
-      mode:action.nextMode
-    }
-  }
+  
   
   return defaultTraceState;
 };
@@ -83,20 +85,21 @@ export function TraceProvider({ children }) {
     dispatchTraceAction({type:'PLOTALL'});
   }
 
-  const modeHandler = (nextMode) => {
-    dispatchTraceAction({ type: 'MODE',nextMode:nextMode });
-  };
+  const tripletHandler=(a,b,c)=>{
+    dispatchTraceAction({type:'TRIPLET',a:a,b:b,c:c});
+  }
+
   const traceContext = {
     data:traceState.data,
     selected: traceState.selected,
     clicked: traceState.clicked,
+    triplet:traceState.triplet,
     isPlotAll:traceState.isPlotAll,
-    mode:traceState.mode,
     selectedHandler: selectTraceHandler,
     clickedHandler: clickTraceHandler,
     resetHandler:resetClickHandler,
     plotAllHandler:isPlotAllHandler,
-    modeHandler:modeHandler,
+    tripletHandler:tripletHandler,
   };
 
   return <TraceContext.Provider value={traceContext}>{children}</TraceContext.Provider>;

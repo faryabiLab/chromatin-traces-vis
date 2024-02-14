@@ -11,17 +11,28 @@ const Plot = () => {
   const traceCtx = useContext(TraceContext);
   const [pointA, setPointA] = useState(-1);
   const [pointB, setPointB] = useState(-1);
+
+  const [pointX, setPointX] = useState(-1);
+  const [pointY, setPointY] = useState(-1);
+  const [pointZ, setPointZ] = useState(-1);
+
   const groupRef = useRef();
+
   const data = traceCtx.data;
   const selected = traceCtx.selected;
   const clickedHandler = traceCtx.clickedHandler;
   const clicked = traceCtx.clicked;
-  const { color, tubeRadius, showDistance,sphereRadius,radius } = useControls({
+
+  const triplet = traceCtx.triplet;
+  const tripletHandler=traceCtx.tripletHandler;
+
+  const { color, tubeRadius, showDistance,sphereRadius,radius, isPerimeter } = useControls({
     color: 'red',
     tubeRadius: { value: 5, min: 0, max: 5, step: 0.5 },
     sphereRadius: { value: 15, min: 10, max: 25, step: 1 },
     showDistance: true,
     radius: { value: 200 },
+    isPerimeter: false,
   });
 
   const { gl } = useThree();
@@ -35,8 +46,14 @@ const Plot = () => {
     setPointA(clicked.a);
     setPointB(clicked.b);
   }, [clicked]);
+
+  useEffect(() => {
+    setPointX(triplet.a);
+    setPointY(triplet.b);
+    setPointZ(triplet.c);
+  }, [triplet]);
   //only plot when there is data and data has at least 2 points
-  if (!data || data.length < 2)
+  if (!data || data.length < 3)
     return (
       <Html>
         <div
@@ -101,27 +118,85 @@ const Plot = () => {
     }
   };
 
+  const generateTriplet = (point) => {
+    let x=-1,y=-1,z=-1;
+    if (pointX < 0 && pointY < 0 && pointZ < 0) {
+      x=point;
+    } else if (pointX < 0 || pointY < 0 || pointZ < 0) {
+      if (pointX < 0) {
+        x=point;
+        y=pointY;
+        z=pointZ;
+       
+      } else if (pointY < 0) {
+        y=point;
+        x=pointX;
+        z=pointZ;
+
+      } else {
+        z=point;
+        x=pointX;
+        y=pointY;
+      }
+    } else{
+      if(point===pointX){
+        x=-1;
+        y=pointY;
+        z=pointZ;
+      }else if(point===pointY){
+        y=-1;
+        x=pointX;
+        z=pointZ;
+      }else if(point===pointZ){
+        z=-1;
+        x=pointX;
+        y=pointY;
+      }else{
+        x=point;
+      }
+    }
+    setPointX(x);
+    setPointY(y);
+    setPointZ(z);
+
+    if(x>-1 && y>-1 && z>-1){
+      tripletHandler(x,y,z);
+    }
+  };
+
 
   const colorPoint = (point) => {
-    //default color
-    if(pointA===-1 && pointB===-1){
-      return 'black';
-    }
-    //color when point is clicked
-    if (pointA === point || pointB === point) {
-      return color;
-    }else if (pointA === -1 || pointB === -1) {
-      //if one of the points is clicked
-      const existingPoint=pointA===-1?pointB:pointA;
-      //check if the point is within the radius
-      if(points[existingPoint].distanceTo(points[point])<radius){
+    if(isPerimeter){
+      if(pointX===-1 && pointY===-1 && pointZ===-1){
         return 'black';
-      }else{
-      return 'white';
       }
-    } else {
+      //color when point is clicked
+      if(pointX === point || pointY === point || pointZ === point){
+        return 'green';
+      }
+
       return 'white';
-    }
+    }else{
+      //default color
+      if(pointA===-1 && pointB===-1){
+        return 'black';
+      }
+      //color when point is clicked
+      if (pointA === point || pointB === point) {
+        return color;
+      }else if (pointA === -1 || pointB === -1) {
+        //if one of the points is clicked
+        const existingPoint=pointA===-1?pointB:pointA;
+        //check if the point is within the radius
+        if(points[existingPoint].distanceTo(points[point])<radius){
+          return 'black';
+        }else{
+        return 'white';
+        }
+      } else {
+        return 'white';
+      }
+  }
   };
 
   const calculateMidpoint = (pointA, pointB) => {
@@ -150,6 +225,28 @@ const Plot = () => {
       </>
     );
   };
+
+  const renderPlane=()=>{
+    if(pointX<0||pointY<0||pointZ<0){
+      return null;
+    }
+    const nodeX=points[pointX];
+    const nodeY=points[pointY];
+    const nodeZ=points[pointZ];
+    const perimeter=nodeX.distanceTo(nodeY)+nodeY.distanceTo(nodeZ)+nodeZ.distanceTo(nodeX);
+    return (
+      <>
+        <Line points={[nodeX, nodeY,nodeZ,nodeX]} color='green' lineWidth={8} />
+        <Html scaleFactor={10} position={calculateMidpoint(nodeX, nodeY)}>
+          {showDistance && (
+            <div className={styles.distancePanel}>
+              <p>{perimeter.toFixed(2) + ' nm'}</p>
+            </div>
+          )}
+        </Html>
+      </>
+    )
+  }
   const renderPoints = (points) => {
     return points.map((point, index) => {
       return (
@@ -157,7 +254,11 @@ const Plot = () => {
           key={index}
           position={point}
           onClick={(e) => {
+            if(isPerimeter){
+              generateTriplet(index);
+            }else{
             generatePairs(index);
+            }
           }}
         >
           <sphereGeometry args={[sphereRadius, 64, 16]} />
@@ -227,7 +328,7 @@ const Plot = () => {
       <group ref={groupRef} position={center}>
         {renderPoints(points)}
         {renderTube(points)}
-        {renderLine()}
+        {isPerimeter?renderPlane():renderLine()}
       </group>
       <GizmoHelper alignment="bottom-left" margin={[150, 150]}>
         <GizmoViewport labelColor="black" axisHeadScale={1.5} />
