@@ -3,7 +3,8 @@
 ### Project abstract
 
 This is a web application to visualize chromatin traces and provide interactive features which can be accessed at https://faryabilab.github.io/chromatin-traces-vis/
-<img width="2207" alt="image" src="https://github.com/faryabiLab/chromatin-traces-vis/assets/56408423/87039006-fe3b-4da3-8dcb-8ea30ad48790">
+<img width="2240" alt="image" src="https://github.com/faryabiLab/chromatin-traces-vis/assets/56408423/f97b2de4-9589-48e8-a327-68feb239bf2e">
+
 
 
 ### How to use it
@@ -16,8 +17,13 @@ This is a web application to visualize chromatin traces and provide interactive 
 3. Click Import CSV to import your file
 4. Select fov and allele number that you want to see
 5. Click on the heatmap to highlight the corresponding pairs of vertices 
-6. Click on the vertices in the 3D model to see the pairwise distance
-7. Click on DOWNLOAD IMG to download the current view as PDF file
+6. Click on the vertices in the 3D model
+    - Click one dot to do radius analysis by adjusting radius in GUI
+    - Click two dots to see linkage distance
+    - Click three dots after checking the perimeter option to see the perimeter
+7. Toggle options in GUI to customize the trace model
+8. (optional) Having clicked two nodes, by typing the threshold you can filter the alleles within the same fov that have the distance of this linkage smaller than this threshold
+9. Click on DOWNLOAD IMG to download the current view as PDF file
 ### Technology 
 
 Web framework: React.js
@@ -28,73 +34,9 @@ Data analysis: D3.js
 
 UI component: chakra
 
-### Components structure
-
-|====Panel
-
-​---------|====Welcome(upload file)
-
----------|====CanvasWrapper
-
-------------------​|==== Welcome Select
-
-​------------------|====Plot (3D model)
-
-​---------|====Dashboard
-
-​------------------|====Heatmap
-
-### Store:
-
-**DataProvider**: load csv file and parse it into a map grouped by fov and s
-
--   dataBys: map of data grouped by fov and s
--   keys: mapping of fov number and valid allele numbers
--   setDataBysHandler
-
-**TraceProvider**: Given the data by s, perform data wrangling
-
--   data: processed data of selected fov-s
--   selected: selected fov and s
--   clicked: clicked pair of nodes
--   plotAll: plot all the points or only odd points
--   selectedHandler
--   clickedHandler
--   resetHandler
 
 ### TODO Features
-
-1.   interactive 3D visualization of chromatin trace per for per allele 
-
-     -   [x] Click to color vertices pair
-
-     -   [x] Click on vertices show distance pairwise
-
-     -   [x] Click on vertices light up corresponding heat map rect
-     -   [x] gizmo helper
-     -   [ ] Color vertices of certain attributes
-     -   [ ] triangle perimeter mode
-
-2.   interactive heatmap visualization of pairwise distances
-
-     -   [x] Click on rect to highlight the x/y label
-
-     -   [x] Click on rect to color vertices pair in 3D model
-     -   [x] Filter distances given threshold using color scale
-
-     -   [x] Heatmap color palette choice
-     -   [x] Clear click choice
-
-3.   User interface
-
-     -   [x] user upload csv file
-     -   [x] Plot all points option
-     -   [ ] uploaded file validation
-     -   [x] only show existing alleles in selection
-     -   [x] select next/previous allele within the same fov
-     -   [x] instructions in welcome page
-     -   [ ] reorganize dashboard page
-     
+- [ ] Data Browser for database
 
 
 ## Data Process
@@ -105,17 +47,3 @@ UI component: chakra
 -   fill missing readout (linear filling)
 -   Output: `[pos:{x:number,:number,z:number},readout:number]`
 
-## Improvement
-
-### Structure
-
--   Divide Heatmap/Plot into smaller components
-
-### UI
-
--   Responsive layout
--   css modules
-
-### Performance
-
--   eliminate unecessary rendering
