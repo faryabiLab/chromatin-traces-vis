@@ -1,9 +1,9 @@
-import CanvasWrapper from './CanvasWrapper';
-import Plot from './Plot';
-import Dashboard from './Dashboard';
+import CanvasWrapper from '../../features/chromatin-models/components/CanvasWrapper';
+import Plot from '../../features/chromatin-models/components/Plot';
+import Dashboard from '../../features/user-panel/Dashboard';
 import styles from './Panel.module.css';
-import Welcome from './Welcome';
-import { DataContext } from '../store/data-context';
+import Welcome from '../../features/data-upload/components/FileUploader';
+import { DataContext } from '../../stores/data-context';
 import {useContext} from 'react';
 const Panel = () => {
   const dataCtx=useContext(DataContext);
@@ -18,7 +18,7 @@ const Panel = () => {
       />
     </div>
     <div className={styles.two}>
-      <Dashboard className={styles.two}/>
+      <Dashboard/>
     </div>
       </>
     :<Welcome/>}

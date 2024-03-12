@@ -1,9 +1,10 @@
-import { Text, Spinner, Highlight,Box, Checkbox } from '@chakra-ui/react';
+import { Text, Spinner, Box, Checkbox } from '@chakra-ui/react';
 import { useState, useContext, useEffect } from 'react';
-import { DataContext } from '../store/data-context';
-import { TraceContext } from '../store/trace-context';
-import styles from './Panel.module.css';
-const Welcome = () => {
+import { DataContext } from '../../../stores/data-context';
+import { TraceContext } from '../../../stores/trace-context';
+import Instructions from './Instructions';
+import styles from '../Uploader.module.css';
+const FileUploader = () => {
   const [file, setFile] = useState();
   const [array, setArray] = useState([]);
   const [isProccessing, setIsProcessing] = useState(false);
@@ -65,32 +66,7 @@ const Welcome = () => {
         ORCA Linkage Interactive Viewing Engine(OLIVE)
       </Text>
       <div className={styles.upload}>
-      <Text as="b" fontSize="3xl">
-        Welcome, Please upload csv file with the following columns:
-      </Text>
-      <Text as="li" fontSize="xl">
-        <Highlight
-          query={['x', 'y', 'z']}
-          styles={{ px: '1', py: '0.8', rounded: 'full', bg: 'teal.100' }}
-        >
-          x,y,z: coordinates
-        </Highlight>
-      </Text>
-      <Text as="li" fontSize="xl">
-      <Highlight
-          query={['fov']}
-          styles={{ px: '1', py: '0.8', rounded: 'full', bg: 'teal.100' }}
-        >fov: field of view</Highlight></Text>
-      <Text as="li" fontSize="xl">
-      <Highlight
-          query={['s']}
-          styles={{ px: '1', py: '0.8', rounded: 'full', bg: 'teal.100' }}
-        >s: allele</Highlight></Text>
-      <Text as="li" fontSize="xl">
-      <Highlight
-          query={['readout']}
-          styles={{ px: '1', py: '0.8', rounded: 'full', bg: 'teal.100' }}
-        >readout: step, only odd ones (1,3,5,...) are plotted</Highlight></Text>
+      <Instructions/>
 
       <form style={{ marginTop: '20px' }}>
         <input type={'file'} id={'csvFileInput'} accept={'.csv'} onChange={handleFileUpload} />
@@ -119,4 +95,4 @@ const Welcome = () => {
     </div>
   );
 };
-export default Welcome;
+export default FileUploader;

@@ -12,6 +12,7 @@ const defaultTraceState = {
   data:[],
   selected: { fov: null, s: null },
   clicked: { a: -1, b: -1 },
+  triplet: { a: -1, b: -1, c: -1 },
   isPlotAll:false,
 };
 const traceReducer = (state, action) => {
@@ -19,7 +20,8 @@ const traceReducer = (state, action) => {
     return {
       data:dataProcessWrapper(action.dataBys,action.fov,action.s,state.isPlotAll),
       selected: { fov: action.fov, s: action.s },
-      clicked: {a:-1,b:-1},
+      clicked: state.clicked,
+      triplet: state.triplet,
       isPlotAll:state.isPlotAll,
     };
   }
@@ -28,15 +30,26 @@ const traceReducer = (state, action) => {
       data:state.data,
       selected: state.selected,
       clicked: { a: action.a, b: action.b},
+      triplet: state.triplet,
       isPlotAll:state.isPlotAll,
     };
   }
 
+  if (action.type === 'TRIPLET') {
+    return{
+      data:state.data,
+      selected: state.selected,
+      clicked: state.clicked,
+      triplet: {a:action.a,b:action.b,c:action.c},
+      isPlotAll:state.isPlotAll,
+    }
+  }
   if(action.type==='RESET'){
     return {
       data:state.data,
       selected:state.selected,
       clicked: {a:-1,b:-1},
+      triplet:{a:-1,b:-1,c:-1},
       isPlotAll:state.isPlotAll,
     }
   }
@@ -46,9 +59,12 @@ const traceReducer = (state, action) => {
       data:state.data,
       selected:state.selected,
       clicked:state.clicked,
+      triplet:state.triplet,
       isPlotAll:true,
     }
   }
+  
+  
   return defaultTraceState;
 };
 
@@ -68,15 +84,22 @@ export function TraceProvider({ children }) {
   const isPlotAllHandler=()=>{
     dispatchTraceAction({type:'PLOTALL'});
   }
+
+  const tripletHandler=(a,b,c)=>{
+    dispatchTraceAction({type:'TRIPLET',a:a,b:b,c:c});
+  }
+
   const traceContext = {
     data:traceState.data,
     selected: traceState.selected,
     clicked: traceState.clicked,
+    triplet:traceState.triplet,
     isPlotAll:traceState.isPlotAll,
     selectedHandler: selectTraceHandler,
     clickedHandler: clickTraceHandler,
     resetHandler:resetClickHandler,
     plotAllHandler:isPlotAllHandler,
+    tripletHandler:tripletHandler,
   };
 
   return <TraceContext.Provider value={traceContext}>{children}</TraceContext.Provider>;

@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useEffect, useContext } from 'react';
 import * as d3 from 'd3';
-import { TraceContext } from '../store/trace-context';
+import { TraceContext } from '../../stores/trace-context';
 import { TwitterPicker } from 'react-color';
 import {
   NumberInput,
@@ -10,14 +10,15 @@ import {
   NumberDecrementStepper,
   Box,
   useBoolean,
+  HStack,
 } from '@chakra-ui/react';
-const MARGIN = { top: 30, right: 10, bottom: 30, left: 50 };
+const MARGIN = { top: 10, right: 10, bottom: 40, left: 50 };
 const Heatmap = ({ data, width, height }) => {
   const [showColorPicker, setShowColorPicker] = useBoolean(false);
   const [color, setColor] = useState('#0693E3');
   const traceCtx = useContext(TraceContext);
   const clicked = traceCtx.clicked;
- 
+
   const clickedHandler = traceCtx.clickedHandler;
   const selected = traceCtx.selected;
   const hightlightA = clicked.a + 1;
@@ -114,36 +115,40 @@ const Heatmap = ({ data, width, height }) => {
   });
 
   return (
-    <div>
-      <div>
+    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center',width: '100%'}}>
+      <HStack>
         <label>Color:</label>
         <Box
           as="button"
           borderRadius="md"
-          px={4}
-          h={8}
+          px={3}
+          h={6}
           onClick={setShowColorPicker.toggle}
           bg={color}
           margin={3}
         />
-        {showColorPicker && <TwitterPicker color={color} onChange={handleColorChange} />}
-      </div>
-      <label>Color Scale Domain (default:0~{max})</label>
-      <NumberInput
-        step={50}
-        defaultValue={colorMax}
-        min={min}
-        max={max}
-        onChange={(e) => {
-          setColorMax(e);
-        }}
-      >
-        <NumberInputField />
-        <NumberInputStepper>
-          <NumberIncrementStepper />
-          <NumberDecrementStepper />
-        </NumberInputStepper>
-      </NumberInput>
+        {showColorPicker && <TwitterPicker color={color} onChange={handleColorChange} triangle='hide'/>}
+
+        <label>Color Scale Domain: 0 ~ </label>
+        <NumberInput
+          size="md"
+          maxW={125}
+          step={50}
+          defaultValue={colorMax}
+          value={parseFloat(colorMax).toFixed(2)}
+          min={min}
+          max={parseFloat(max).toFixed(2)}
+          onChange={(e) => {
+            setColorMax(e);
+          }}
+        >
+          <NumberInputField />
+          <NumberInputStepper>
+            <NumberIncrementStepper />
+            <NumberDecrementStepper />
+          </NumberInputStepper>
+        </NumberInput>
+      </HStack>
       <svg width={width} height={height}>
         <g
           width={boundsWidth}
@@ -155,7 +160,6 @@ const Heatmap = ({ data, width, height }) => {
           {yLabels}
         </g>
       </svg>
-      
     </div>
   );
 };

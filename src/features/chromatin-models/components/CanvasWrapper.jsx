@@ -1,8 +1,8 @@
 import {Canvas} from '@react-three/fiber';
 import {useContext} from 'react';
-import { TraceContext } from '../store/trace-context';
+import { TraceContext } from '../../../stores/trace-context';
 import WelcomeSelect from './WelcomeSelect';
-import styles from './Panel.module.css';
+import styles from '../../../components/Layout/Panel.module.css';
 
 const CanvasWrapper = (props) => {
   const Component=props.component;

@@ -1,0 +1,54 @@
+
+.header{
+  text-align: center;
+  margin-bottom: 20px;
+  margin-top: 30px;
+}
+
+.buttons{
+  margin-left: 60px;
+  display: flex;
+  flex-direction: row;
+  align-self: center;
+  align-items: center;
+  gap: 16px;
+}
+
+.browse{
+  margin: 10px 0px;
+  gap:16px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.filter{
+  margin: 20px 0px;
+  gap:18px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.filter span{
+  font-size: 1.1rem;
+}
+
+.dashboard{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap:30px;
+}
+  
+.select{
+  display: flex;
+  flex-direction: row;
+  gap:20px;
+  align-items: center;
+}
+
+.select label{
+  font-size: 1.1rem;
+  font-weight: bold;
+}
