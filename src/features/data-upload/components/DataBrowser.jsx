@@ -34,7 +34,10 @@ const DataBrowser = () => {
               {row}
              </td>
              <td>
-              <button onClick={() => fetchCSV(row)}>Download</button>
+              <button onClick={() => fetchCSV(row)}>View</button>
+             </td>
+             <td>
+              <button>Download</button>
              </td>
             </tr>
           ))}

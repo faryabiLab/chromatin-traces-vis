@@ -20,8 +20,8 @@ const Dashboard = () => {
   const traceCtx = useContext(TraceContext);
   const data = traceCtx.data;
   const resetHandler = traceCtx.resetHandler;
-
-  const [fov, setFov] = useState(1);
+  const initialFov=Object.keys(dataCtx.keys)[0];
+  const [fov, setFov] = useState(initialFov);
   //allele is the index of the allele in the allele list:dataCtx.keys[fov]
   const [allele, setAllele] = useState(0);
   const selectedHandler = traceCtx.selectedHandler;
