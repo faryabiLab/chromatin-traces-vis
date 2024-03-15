@@ -26,13 +26,14 @@ const Plot = () => {
   const triplet = traceCtx.triplet;
   const tripletHandler=traceCtx.tripletHandler;
 
-  const { color, tubeRadius, showDistance,sphereRadius,radius, isPerimeter } = useControls({
+  const { color, isGrid, tubeRadius, showDistance,sphereRadius,radius, isPerimeter } = useControls({
     color: 'red',
-    tubeRadius: { value: 5, min: 0, max: 5, step: 0.5 },
-    sphereRadius: { value: 15, min: 10, max: 25, step: 1 },
-    showDistance: true,
-    radius: { value: 200 },
-    isPerimeter: false,
+    isGrid:{value:true,label:'Show Grid'},
+    tubeRadius: { value: 5, min: 0, max: 5, step: 0.5, label: 'Tube Size' },
+    sphereRadius: { value: 15, min: 10, max: 25, step: 1, label: 'Sphere Size' },
+    showDistance: {value:true,label:'Show Distance'},
+    radius: { value: 200,label:'Radius(nm)' },
+    isPerimeter: {value:false,label:'Perimeter Analysis'},
   });
 
   const { gl } = useThree();
@@ -322,7 +323,7 @@ const Plot = () => {
       </Html>
       <OrbitControls makeDefault />
       <axesHelper args={[1500]} />
-      <gridHelper args={[1500, 15]} />
+      {isGrid&&<gridHelper args={[1500, 15]} />}
       <ambientLight intensity={1.5} />
       <directionalLight position={center} intensity={2.5} />
       <group ref={groupRef} position={center}>
