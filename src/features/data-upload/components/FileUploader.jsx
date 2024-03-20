@@ -70,7 +70,7 @@ const FileUploader = () => {
       <div className={styles.upload}>
       <Instructions/>
 
-      <form style={{ marginTop: '20px' }}>
+      <form style={{ marginTop: '20px',marginBottom: '40px' }}>
         <input type={'file'} id={'csvFileInput'} accept={'.csv'} onChange={handleFileUpload} />
           <Checkbox margin='10px' onChange={(e)=>{plotAllHandler(e.target.checked)}}>plot all points</Checkbox>
           <Box

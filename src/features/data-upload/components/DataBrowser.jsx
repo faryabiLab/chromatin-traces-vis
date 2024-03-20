@@ -14,6 +14,9 @@ import {
 
 const DataBrowser = () => {
   const [table, setTable] = useState(null);
+  const [metadata, setMetadata] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [filename, setFilename] = useState('');
   const {readRemoteFile}=usePapaParse();
   const dataCtx = useContext(DataContext);
   const setDataBysHandler = dataCtx.setDataBysHandler;
@@ -31,6 +34,21 @@ const DataBrowser = () => {
     })
   },[]);
 
+  useEffect(() => {
+    if(filename!==''){
+      fetch('https://olive.faryabilab.com/experiment/'+filename)
+      .then((response) => {
+        if(response.status>=400){
+          throw new Error('Bad response from server');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setMetadata(data);
+      })
+    }
+  },[filename]);
+
   const fetchCSV = (id) => {
     readRemoteFile(`https://faryabi-olive.s3.amazonaws.com/${id}.csv`, {
       complete: (results) => {
@@ -38,6 +56,7 @@ const DataBrowser = () => {
         if (array&&array.length > 0) {
           setDataBysHandler(array);
         }
+        setIsLoading(false);
       },
       header: true,
 
@@ -71,7 +90,7 @@ const DataBrowser = () => {
         </Thead>
         <Tbody>
           {content.map((items,idx) => (
-            <Tr key={idx}>
+            <Tr key={idx} _hover={{ bg: 'teal.50' }} onClick={()=>{setFilename(items[0])}}>
             {items.map((item,i) => (
               <Td key={idx+'+'+i}>
                 {item}
@@ -79,14 +98,19 @@ const DataBrowser = () => {
             ))}
             <Td>
               <Button
+                isLoading={isLoading}
                colorScheme='teal'
-                variant='ghost'
+               variant='link'
+  
+               size={'sm'}
                 onClick={() => {
+                  setIsLoading(true);
                   fetchCSV(items[0]);
                 }}
               >
-                Go
+                View
               </Button>
+       
             </Td>
             </Tr>
           ))}
@@ -95,8 +119,40 @@ const DataBrowser = () => {
       </TableContainer>
     );
   }
+
+  const renderMetadata = (data) => {
+    if(!data){
+      return(
+        <p>loading...</p>
+      )
+    }
+
+       return (
+        <TableContainer>
+    <Table>
+      <Thead>
+        <Tr>
+          <Th>Key</Th>
+          <Th>Value</Th>
+        </Tr>
+      </Thead>
+      <Tbody>
+        {Object.entries(data).map(([key, value]) => (
+          <Tr key={key}>
+            <Td>{key}</Td>
+            <Td>{value}</Td>
+          </Tr>
+        ))}
+      </Tbody>
+    </Table>
+    </TableContainer>
+  );
+  }
   return (
-    renderTable(table)
+    <>
+    {renderTable(table)}
+    {renderMetadata(metadata)}
+    </>
   )
 };
 export default DataBrowser;
