@@ -20,6 +20,7 @@ const Dashboard = () => {
   const traceCtx = useContext(TraceContext);
   const data = traceCtx.data;
   const resetHandler = traceCtx.resetHandler;
+  //set the initial fov to be the first existing fov
   const initialFov=Object.keys(dataCtx.keys)[0];
   const [fov, setFov] = useState(initialFov);
   //allele is the index of the allele in the allele list:dataCtx.keys[fov]
