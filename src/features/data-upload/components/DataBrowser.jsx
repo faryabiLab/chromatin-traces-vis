@@ -10,9 +10,14 @@ import {
   Td,
   TableContainer,
   Button,
-  Heading,
+  Popover,
+  PopoverContent,
+  PopoverHeader,
+  PopoverCloseButton,
+  PopoverBody,
   VStack,
   Box,
+  useDisclosure,
 } from '@chakra-ui/react';
 
 const DataBrowser = () => {
@@ -23,6 +28,7 @@ const DataBrowser = () => {
   const { readRemoteFile } = usePapaParse();
   const dataCtx = useContext(DataContext);
   const setDataBysHandler = dataCtx.setDataBysHandler;
+  const {isOpen,onOpen,onClose}=useDisclosure();
   useEffect(() => {
     //fetch metadata table from backend on load
     fetch('https://olive.faryabilab.com' + '/get-table')
@@ -48,7 +54,6 @@ const DataBrowser = () => {
         })
         .then((data) => {
           setMetadata(data);
-          scrollToMetadata();
         });
     }
   }, [filename]);
@@ -66,11 +71,6 @@ const DataBrowser = () => {
     });
   };
 
-  const scrollToMetadata = () => {
-    if (metadata) {
-      document.getElementById('meta_data').scrollIntoView({ behavior: 'smooth' });
-    }
-  };
 
   const renderTable = (data) => {
     if (!data) {
@@ -97,6 +97,7 @@ const DataBrowser = () => {
                     key={idx + '+' + i}
                     onClick={() => {
                       setFilename(items[0]);
+                      onOpen();
                     }}
                     cursor="pointer"
                   >
@@ -127,17 +128,12 @@ const DataBrowser = () => {
 
   const renderMetadata = (data) => {
     if (!data) {
-      return <p></p>;
+      return <p>loading...</p>;
     }
 
     return (
-      <TableContainer id="meta_data">
-        <Table size="lg">
-          <Thead>
-            <Tr>
-              <Th>Metadata</Th>
-            </Tr>
-          </Thead>
+      <TableContainer>
+        <Table>
           <Tbody>
             {Object.entries(data).map(([key, value]) => (
               <Tr key={key}>
@@ -155,7 +151,23 @@ const DataBrowser = () => {
       <Box borderWidth="1px" borderRadius="lg">
         {renderTable(table)}
       </Box>
-      <Box>{renderMetadata(metadata)}</Box>
+      <Box>
+      <Popover
+        returnFocusOnClose={false}
+        isOpen={isOpen}
+        onClose={onClose}
+        placement='right'
+        closeOnBlur={false}
+        >
+        <PopoverContent>
+          <PopoverHeader fontWeight='semibold'>Metadata</PopoverHeader>
+          <PopoverCloseButton />
+          <PopoverBody>
+          {renderMetadata(metadata)}
+          </PopoverBody>
+        </PopoverContent>
+      </Popover>
+      </Box>
     </VStack>
   );
 };
