@@ -19,7 +19,8 @@ import {
   Box,
   useDisclosure,
 } from '@chakra-ui/react';
-
+import { createColumnHelper } from '@tanstack/react-table';
+import DataTable from './DataTable';
 const DataBrowser = () => {
   const [table, setTable] = useState(null);
   const [metadata, setMetadata] = useState(null);
@@ -72,60 +73,6 @@ const DataBrowser = () => {
   };
 
 
-  const renderTable = (data) => {
-    if (!data) {
-      return <p>loading...</p>;
-    }
-    const header = data['header'];
-    const content = data['content'];
-    return (
-      <TableContainer>
-        <Table variant="simple">
-          <Thead>
-            <Tr>
-              {header.map((item) => (
-                <Th>{item}</Th>
-              ))}
-              <Th>Actions</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {content.map((items, idx) => (
-              <Tr key={idx} _hover={{ bg: 'teal.50' }}>
-                {items.map((item, i) => (
-                  <Td
-                    key={idx + '+' + i}
-                    onClick={() => {
-                      setFilename(items[0]);
-                      onOpen();
-                    }}
-                    cursor="pointer"
-                  >
-                    {item}
-                  </Td>
-                ))}
-                <Td>
-                  <Button
-                    isLoading={isLoading}
-                    colorScheme="teal"
-                    variant="link"
-                    size={'sm'}
-                    onClick={() => {
-                      setIsLoading(true);
-                      fetchCSV(items[0]);
-                    }}
-                  >
-                    View
-                  </Button>
-                </Td>
-              </Tr>
-            ))}
-          </Tbody>
-        </Table>
-      </TableContainer>
-    );
-  };
-
   const renderMetadata = (data) => {
     if (!data) {
       return <p>loading...</p>;
@@ -146,10 +93,43 @@ const DataBrowser = () => {
       </TableContainer>
     );
   };
+
+  const columnHelper = createColumnHelper();
+  const columns=[
+    columnHelper.accessor('id', {
+      cell: (info) => info.getValue(),
+      header: 'id',
+    }),
+    columnHelper.accessor('species', {
+      cell: (info) => info.getValue(),
+      header: 'Species',
+    }),
+    columnHelper.accessor('tissue', {
+      cell: (info) => info.getValue(),
+      header: 'Tissue',
+    }),
+    columnHelper.accessor('cell_type', {
+      cell: (info) => info.getValue(),
+      header: 'Cell Type',
+    }),
+    columnHelper.accessor('cell_line', {
+      cell: (info) => info.getValue(),
+      header: 'Cell Line',
+    }),
+    columnHelper.accessor('gene', {
+      cell: (info) => info.getValue(),
+      header: 'Gene',
+    }),
+    columnHelper.accessor('lab', {
+      cell: (info) => info.getValue(),
+      header: 'Lab',
+    }),
+  ]
+
   return (
     <VStack spacing="24px">
       <Box borderWidth="1px" borderRadius="lg">
-        {renderTable(table)}
+        {(!table)? <p>loading...</p>:<DataTable data={table} columns={columns} />}
       </Box>
       <Box>
       <Popover
