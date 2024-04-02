@@ -1,12 +1,34 @@
-import { Table, Thead, Tbody, Tr, Th, Td,Text } from "@chakra-ui/react";
+import { Table, Thead, Tbody, Tr, Th, Td,Text,Input,Select } from "@chakra-ui/react";
 import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
 import {
   useReactTable,
   flexRender,
   getCoreRowModel,
-  getSortedRowModel
+  getSortedRowModel,
+  getFilteredRowModel,
+  getFacetedRowModel,
+  getFacetedUniqueValues,
 } from "@tanstack/react-table";
-import {useState} from "react";
+import {useState,useMemo} from "react";
+
+const Filter = ({ column, table }) => {
+  const columnFilterValue = column.getFilterValue();
+  const sortedUniqueValues = useMemo(
+    () =>Array.from(column.getFacetedUniqueValues().keys()).sort(),
+    [column.getFacetedUniqueValues()]
+  );
+
+  return <>
+    <Select value={columnFilterValue} onChange={(e) => column.setFilterValue(e.target.value)} size='sm'>
+    <option value="">All</option>
+      {sortedUniqueValues.map((value) => (
+        <option value={value} key={value}>
+          {value}
+        </option>
+      ))}
+    </Select>
+  </>;
+};
 
 const DataTable = ({ data,columns }) => {
   const [sorting,setSorting]=useState([]);
@@ -16,17 +38,23 @@ const DataTable = ({ data,columns }) => {
     data,
     columns,
     getCoreRowModel:getCoreRowModel(),
+    getFilteredRowModel:getFilteredRowModel(),
     onSortingChange:setSorting,
     getSortedRowModel:getSortedRowModel(),
     onColumnFiltersChange:setColumnFilters,
     onGlobalFilterChange:setGlobalFilter,
+    getFacetedRowModel:getFacetedRowModel(),
+    getFacetedUniqueValues:getFacetedUniqueValues(),
     state:{
       sorting,
       columnFilters,
       globalFilter,
-    }
+    }, 
+  
   });
   return(
+    <>
+    <Input placeholder='Search...' value={globalFilter ?? ''} onChange={(e)=>setGlobalFilter(String(e.target.value))}/>
     <Table>
       <Thead>
         {table.getHeaderGroups().map((headerGroup) => (
@@ -36,13 +64,15 @@ const DataTable = ({ data,columns }) => {
             return(
               <Th
                 key={header.id}
-                onClick={header.column.getToggleSortingHandler()}
                 isNumeric={meta?.isNumeric}
                 >
+                <div onClick={header.column.getToggleSortingHandler()}>
+                <Text fontSize={'md'}>
               {flexRender(
                 header.column.columnDef.header,
                 header.getContext()
               )}
+              </Text>
               <Text as='span'>
                 {header.column.getIsSorted() ? (
                   header.column.getIsSorted() === "asc" ? (
@@ -52,6 +82,14 @@ const DataTable = ({ data,columns }) => {
                   )
                 ) : null}
               </Text>
+              </div>
+          
+              {header.column.getCanFilter() ? (
+                <div>
+                <Filter column={header.column} table={table} />
+                </div>
+              ):null}
+    
               </Th>
             )
           }
@@ -63,7 +101,7 @@ const DataTable = ({ data,columns }) => {
       </Thead>
       <Tbody>
         {table.getRowModel().rows.map((row) => (
-          <Tr key={row.id}>
+          <Tr key={row.id} _hover={{ bg: "teal.50" }}>
             {row.getVisibleCells().map((cell) => {
               const meta=cell.column.columnDef.meta;
               return(
@@ -76,6 +114,7 @@ const DataTable = ({ data,columns }) => {
         ))}
       </Tbody>
     </Table>
+    </>
   );
 }
 export default DataTable;

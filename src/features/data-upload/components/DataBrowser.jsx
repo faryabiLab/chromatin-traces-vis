@@ -99,6 +99,7 @@ const DataBrowser = () => {
     columnHelper.accessor('id', {
       cell: (info) => info.getValue(),
       header: 'id',
+      enableColumnFilter: false,
     }),
     columnHelper.accessor('species', {
       cell: (info) => info.getValue(),
@@ -123,7 +124,21 @@ const DataBrowser = () => {
     columnHelper.accessor('lab', {
       cell: (info) => info.getValue(),
       header: 'Lab',
+      enableColumnFilter: false,
     }),
+    columnHelper.display({
+      id: 'action',
+      cell: (info) => (
+        <Button colorScheme='teal' variant='ghost'
+          onClick={() => {
+            fetchCSV(info.row.original.id);
+          }}
+        >
+          View
+        </Button>
+      ),
+      header: 'Action',
+    })
   ]
 
   return (
