@@ -98,7 +98,7 @@ const DataBrowser = () => {
   const columns=[
     columnHelper.accessor('id', {
       cell: (info) => info.getValue(),
-      header: 'id',
+      header: 'Filename',
       enableColumnFilter: false,
     }),
     columnHelper.accessor('species', {
@@ -129,8 +129,9 @@ const DataBrowser = () => {
     columnHelper.display({
       id: 'action',
       cell: (info) => (
-        <Button colorScheme='teal' variant='ghost'
+        <Button colorScheme='teal' variant='ghost' isLoading={isLoading}
           onClick={() => {
+            setIsLoading(true);
             fetchCSV(info.row.original.id);
           }}
         >

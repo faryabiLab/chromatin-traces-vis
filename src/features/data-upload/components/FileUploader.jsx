@@ -2,10 +2,12 @@ import { Text, Spinner, Box, Checkbox } from '@chakra-ui/react';
 import { useState, useContext, useEffect } from 'react';
 import { DataContext } from '../../../stores/data-context';
 import { TraceContext } from '../../../stores/trace-context';
+
 import Instructions from './Instructions';
 import styles from '../Uploader.module.css';
 
 import DataBrowser from './DataBrowser';
+import CSVReader from './CSVReader';
 
 const FileUploader = () => {
   const [file, setFile] = useState();
@@ -21,6 +23,7 @@ const FileUploader = () => {
   };
 
   const csvFileToArray = (string) => {
+  
     const csvHeader = string.slice(0, string.indexOf('\n')).split(',');
     const csvRows = string.slice(string.indexOf('\n') + 1).split('\n');
 
@@ -32,6 +35,7 @@ const FileUploader = () => {
       }, {});
       return obj;
     });
+    console.log(array);
     setArray(array);
   };
 
@@ -94,6 +98,7 @@ const FileUploader = () => {
       </form>
       {isProccessing ? <Spinner size="xl" color="red.500" /> : null}
       </div>
+      <CSVReader />
       <DataBrowser />
     </div>
   );

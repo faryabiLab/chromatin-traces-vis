@@ -54,7 +54,7 @@ const DataTable = ({ data,columns }) => {
   });
   return(
     <>
-    <Input placeholder='Search...' value={globalFilter ?? ''} onChange={(e)=>setGlobalFilter(String(e.target.value))}/>
+    <Input placeholder='Search in the table...' value={globalFilter ?? ''} onChange={(e)=>setGlobalFilter(String(e.target.value))}/>
     <Table>
       <Thead>
         {table.getHeaderGroups().map((headerGroup) => (
@@ -73,7 +73,7 @@ const DataTable = ({ data,columns }) => {
                 header.getContext()
               )}
               </Text>
-              <Text as='span'>
+              <span>
                 {header.column.getIsSorted() ? (
                   header.column.getIsSorted() === "asc" ? (
                     <TriangleDownIcon aria-label="sorted ascending" />
@@ -81,7 +81,7 @@ const DataTable = ({ data,columns }) => {
                     <TriangleUpIcon aria-label="sorted descending" />
                   )
                 ) : null}
-              </Text>
+              </span>
               </div>
           
               {header.column.getCanFilter() ? (
