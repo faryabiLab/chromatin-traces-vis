@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-
+import React, { useState,useContext } from 'react';
+import { DataContext } from '../../../stores/data-context';
 import { useCSVReader, lightenDarkenColor, formatFileSize } from 'react-papaparse';
+import { Box,HStack } from '@chakra-ui/react';
+import styles from '../Uploader.module.css';
 
-const GREY = '#CCC';
-const GREY_LIGHT = 'rgba(255, 255, 255, 0.4)';
 const DEFAULT_REMOVE_HOVER_COLOR = '#A01919';
 const REMOVE_HOVER_COLOR_LIGHT = lightenDarkenColor(DEFAULT_REMOVE_HOVER_COLOR, 40);
 
@@ -11,10 +11,14 @@ export default function CSVReader() {
   const { CSVReader } = useCSVReader();
   const [zoneHover, setZoneHover] = useState(false);
   const [removeHoverColor, setRemoveHoverColor] = useState(DEFAULT_REMOVE_HOVER_COLOR);
+  const [array,setArray]=useState([]);
+  const dataCtx = useContext(DataContext);
+  const setDataBysHandler = dataCtx.setDataBysHandler;
   return (
+    <HStack spacing='48px'>
     <CSVReader
       onUploadAccepted={(results) => {
-        console.log('---------------------------');
+ 
         const csvHeader = results.data[0];
         const csvContent=results.data.slice(1);
   
@@ -26,8 +30,9 @@ export default function CSVReader() {
           }, {});
           return obj;
         });
-        console.log(array);
-        console.log('---------------------------');
+
+          setArray(array);
+   
         setZoneHover(false);
       }}
       onDragOver={(event) => {
@@ -41,19 +46,21 @@ export default function CSVReader() {
     >
       {({ getRootProps, acceptedFile, ProgressBar, getRemoveFileProps, Remove }) => (
         <>
-          <div {...getRootProps()}>
+          <div {...getRootProps()}
+          className={`${styles.zone} ${zoneHover && styles.zoneHover}`}>
             {acceptedFile ? (
               <>
-                <div>
-                  <div>
-                    <span>{formatFileSize(acceptedFile.size)}</span>
+                <div className={styles.file}>
+                  <div className={styles.info}>
+                    <span className={styles.size}>{formatFileSize(acceptedFile.size)}</span>
                     <span>{acceptedFile.name}</span>
                   </div>
-                  <div>
+                  <div className={styles.progressBar}>
                     <ProgressBar />
                   </div>
                   <div
                     {...getRemoveFileProps()}
+                    className={styles.remove}
                     onMouseOver={(event) => {
                       event.preventDefault();
                       setRemoveHoverColor(REMOVE_HOVER_COLOR_LIGHT);
@@ -74,5 +81,23 @@ export default function CSVReader() {
         </>
       )}
     </CSVReader>
+    <Box
+            as='button'
+            p={2}
+            color='white'
+            fontWeight='bold'
+            borderRadius='md'
+            bgGradient='linear(to-r, teal.500, green.500)'
+            _hover={{
+              bgGradient: 'linear(to-r, red.500, yellow.500)',
+            }}
+            margin='5px'
+            onClick={(e) => {
+              setDataBysHandler(array);
+            }}
+          >
+            IMPORT CSV
+            </Box>
+    </HStack>
   );
 }
