@@ -1,4 +1,4 @@
-import { Table, Thead, Tbody, Tr, Th, Td,Text,Input,Select,Flex,Button,Box,Spacer,HStack } from "@chakra-ui/react";
+import { Table, Thead, Tbody, Tr, Th, Td,Text,Input,Select,Flex,Button,Box,Spacer,HStack, TableContainer } from "@chakra-ui/react";
 import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
 import {
   useReactTable,
@@ -60,6 +60,7 @@ const DataTable = ({ data,columns }) => {
   return(
     <>
     <Input placeholder='Search in the table...' value={globalFilter ?? ''} onChange={(e)=>setGlobalFilter(String(e.target.value))}/>
+    <TableContainer>
     <Table>
       <Thead>
         {table.getHeaderGroups().map((headerGroup) => (
@@ -119,7 +120,7 @@ const DataTable = ({ data,columns }) => {
         ))}
       </Tbody>
     </Table>
-
+    </TableContainer>
     <Flex>
     <HStack width={'100%'} justifyContent={'center'}>
     <Button variant='ghost' onClick={()=>table.firstPage()} disabled={!table.getCanPreviousPage()}>{'<<'}</Button>
@@ -129,8 +130,8 @@ const DataTable = ({ data,columns }) => {
     <Button variant='ghost' onClick={()=>table.lastPage()} disabled={!table.getCanNextPage()}>{'>>'}</Button>
     </HStack>
     <Spacer />
-    <Box width='8%'>
-    <Select value={table.getState().pagination.pageSize} onChange={(e)=>table.setPageSize(Number(e.target.value))}>
+    <Box width='8%' >
+    <Select variant='flushed' value={table.getState().pagination.pageSize} onChange={(e)=>table.setPageSize(Number(e.target.value))}>
       {[5, 10, 20].map((pageSize) => (
         <option key={pageSize} value={pageSize}>
           Show {pageSize}
