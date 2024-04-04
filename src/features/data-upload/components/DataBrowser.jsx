@@ -29,7 +29,7 @@ const DataBrowser = () => {
   const { readRemoteFile } = usePapaParse();
   const dataCtx = useContext(DataContext);
   const setDataBysHandler = dataCtx.setDataBysHandler;
-  const {isOpen,onOpen,onClose}=useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   useEffect(() => {
     //fetch metadata table from backend on load
     fetch('https://olive.faryabilab.com' + '/get-table')
@@ -72,7 +72,6 @@ const DataBrowser = () => {
     });
   };
 
-
   const renderMetadata = (data) => {
     if (!data) {
       return <p>loading...</p>;
@@ -95,7 +94,7 @@ const DataBrowser = () => {
   };
 
   const columnHelper = createColumnHelper();
-  const columns=[
+  const columns = [
     columnHelper.accessor('id', {
       cell: (info) => info.getValue(),
       header: 'Filename',
@@ -129,7 +128,10 @@ const DataBrowser = () => {
     columnHelper.display({
       id: 'action',
       cell: (info) => (
-        <Button colorScheme='teal' variant='ghost' isLoading={isLoading}
+        <Button
+          colorScheme="teal"
+          variant="ghost"
+          isLoading={isLoading}
           onClick={() => {
             setIsLoading(true);
             fetchCSV(info.row.original.id);
@@ -139,30 +141,28 @@ const DataBrowser = () => {
         </Button>
       ),
       header: 'Action',
-    })
-  ]
+    }),
+  ];
 
   return (
     <VStack spacing="24px">
       <Box borderWidth="1px" borderRadius="lg">
-        {(!table)? <p>loading...</p>:<DataTable data={table} columns={columns} />}
+        {!table ? <p>loading...</p> : <DataTable data={table} columns={columns} />}
       </Box>
       <Box>
-      <Popover
-        returnFocusOnClose={false}
-        isOpen={isOpen}
-        onClose={onClose}
-        placement='right'
-        closeOnBlur={false}
+        <Popover
+          returnFocusOnClose={false}
+          isOpen={isOpen}
+          onClose={onClose}
+          placement="right"
+          closeOnBlur={false}
         >
-        <PopoverContent>
-          <PopoverHeader fontWeight='semibold'>Metadata</PopoverHeader>
-          <PopoverCloseButton />
-          <PopoverBody>
-          {renderMetadata(metadata)}
-          </PopoverBody>
-        </PopoverContent>
-      </Popover>
+          <PopoverContent>
+            <PopoverHeader fontWeight="semibold">Metadata</PopoverHeader>
+            <PopoverCloseButton />
+            <PopoverBody>{renderMetadata(metadata)}</PopoverBody>
+          </PopoverContent>
+        </Popover>
       </Box>
     </VStack>
   );

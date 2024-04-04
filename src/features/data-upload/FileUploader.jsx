@@ -1,5 +1,4 @@
-import { Divider, Text,VStack} from '@chakra-ui/react';
-
+import { Divider, Text, VStack } from '@chakra-ui/react';
 
 import Instructions from './components/Instructions';
 import styles from './Uploader.module.css';
@@ -8,9 +7,8 @@ import DataBrowser from './components/DataBrowser';
 import CSVReader from './components/CSVReader';
 
 const FileUploader = () => {
-
   return (
-    <VStack spacing='48px'>
+    <VStack spacing="48px">
       <Text
         bgGradient="linear(to-l,green.400, blue.300)"
         bgClip="text"
@@ -22,7 +20,7 @@ const FileUploader = () => {
         ORCA Linkage Interactive Viewing Engine(OLIVE)
       </Text>
       <div className={styles.upload}>
-      <Instructions/>
+        <Instructions />
       </div>
       <CSVReader />
       <Divider />
