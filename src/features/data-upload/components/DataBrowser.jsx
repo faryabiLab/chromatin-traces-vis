@@ -11,6 +11,7 @@ import {
   TableContainer,
   Button,
   Popover,
+  PopoverTrigger,
   PopoverContent,
   PopoverHeader,
   PopoverCloseButton,
@@ -19,6 +20,7 @@ import {
   Box,
   useDisclosure,
 } from '@chakra-ui/react';
+import {InfoOutlineIcon} from '@chakra-ui/icons'
 import { createColumnHelper } from '@tanstack/react-table';
 import DataTable from './DataTable';
 const DataBrowser = () => {
@@ -96,6 +98,7 @@ const DataBrowser = () => {
   const columnHelper = createColumnHelper();
   const columns = [
     columnHelper.accessor('id', {
+      id: 'filename',
       cell: (info) => info.getValue(),
       header: 'Filename',
       enableColumnFilter: false,
@@ -128,6 +131,7 @@ const DataBrowser = () => {
     columnHelper.display({
       id: 'action',
       cell: (info) => (
+        <>
         <Button
           colorScheme="teal"
           variant="ghost"
@@ -139,6 +143,17 @@ const DataBrowser = () => {
         >
           View
         </Button>
+        <Button
+          colorScheme="teal"
+          variant="ghost"
+          onClick={() => {
+            setFilename(info.row.original.id);
+            onOpen();
+          }}
+        >
+          <InfoOutlineIcon />
+        </Button>
+        </>
       ),
       header: 'Action',
     }),
@@ -146,9 +161,6 @@ const DataBrowser = () => {
 
   return (
     <VStack spacing="24px">
-      <Box borderWidth="1px" borderRadius="lg">
-        {!table ? <p>loading...</p> : <DataTable data={table} columns={columns} />}
-      </Box>
       <Box>
         <Popover
           returnFocusOnClose={false}
@@ -156,7 +168,13 @@ const DataBrowser = () => {
           onClose={onClose}
           placement="right"
           closeOnBlur={false}
+          gutter={120}
         >
+      <PopoverTrigger>
+      <Box borderWidth="1px" borderRadius="lg">
+        {!table ? <p>loading...</p> : <DataTable data={table} columns={columns} />}
+      </Box>
+        </PopoverTrigger>
           <PopoverContent>
             <PopoverHeader fontWeight="semibold">Metadata</PopoverHeader>
             <PopoverCloseButton />

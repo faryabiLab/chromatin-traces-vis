@@ -57,8 +57,14 @@ const DataTable = ({ data, columns }) => {
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [globalFilter, setGlobalFilter] = useState('');
+  const [columnVisibility, setColumnVisibility] = useState({});
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 5 });
   const table = useReactTable({
+    initialState:{
+      columnVisibility: {
+        filename: false
+      }
+    },
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
