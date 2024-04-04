@@ -1,4 +1,4 @@
-import { Table, Thead, Tbody, Tr, Th, Td,Text,Input,Select } from "@chakra-ui/react";
+import { Table, Thead, Tbody, Tr, Th, Td,Text,Input,Select,Flex,Button,Box,Spacer,HStack } from "@chakra-ui/react";
 import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
 import {
   useReactTable,
@@ -8,6 +8,7 @@ import {
   getFilteredRowModel,
   getFacetedRowModel,
   getFacetedUniqueValues,
+  getPaginationRowModel,
 } from "@tanstack/react-table";
 import {useState,useMemo} from "react";
 
@@ -34,6 +35,7 @@ const DataTable = ({ data,columns }) => {
   const [sorting,setSorting]=useState([]);
   const [columnFilters,setColumnFilters]=useState([]);
   const [globalFilter,setGlobalFilter]=useState("");
+  const [pagination,setPagination]=useState({pageIndex:0,pageSize:5});
   const table=useReactTable({
     data,
     columns,
@@ -45,10 +47,13 @@ const DataTable = ({ data,columns }) => {
     onGlobalFilterChange:setGlobalFilter,
     getFacetedRowModel:getFacetedRowModel(),
     getFacetedUniqueValues:getFacetedUniqueValues(),
+    getPaginationRowModel:getPaginationRowModel(),
+    onPaginationChange:setPagination,
     state:{
       sorting,
       columnFilters,
       globalFilter,
+      pagination,
     }, 
   
   });
@@ -114,6 +119,26 @@ const DataTable = ({ data,columns }) => {
         ))}
       </Tbody>
     </Table>
+
+    <Flex>
+    <HStack width={'100%'} justifyContent={'center'}>
+    <Button variant='ghost' onClick={()=>table.firstPage()} disabled={!table.getCanPreviousPage()}>{'<<'}</Button>
+    <Button variant='ghost' onClick={()=>table.previousPage()} disabled={!table.getCanPreviousPage()}>{'<'}</Button>
+    <Text>Page {table.getState().pagination.pageIndex+1} of {table.getPageCount()}</Text>
+    <Button variant='ghost' onClick={()=>table.nextPage()} disabled={!table.getCanNextPage()}>{'>'}</Button>
+    <Button variant='ghost' onClick={()=>table.lastPage()} disabled={!table.getCanNextPage()}>{'>>'}</Button>
+    </HStack>
+    <Spacer />
+    <Box width='8%'>
+    <Select value={table.getState().pagination.pageSize} onChange={(e)=>table.setPageSize(Number(e.target.value))}>
+      {[5, 10, 20].map((pageSize) => (
+        <option key={pageSize} value={pageSize}>
+          Show {pageSize}
+        </option>
+      ))}
+    </Select>
+    </Box>
+    </Flex>
     </>
   );
 }
