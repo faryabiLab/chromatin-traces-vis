@@ -3,7 +3,7 @@ import {Text, Highlight,VStack} from "@chakra-ui/react";
 const Instructions=()=>{
   const highlightColor='#F6F7C1';
   return (
-    <VStack align="flex-start" marginTop={"30px"}>
+    <VStack align="flex-start" marginTop={"40px"}>
    <Text as="b" fontSize="3xl">
         Welcome, Please upload csv file with the following columns:
       </Text>

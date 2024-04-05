@@ -14,8 +14,11 @@ import {
   Spacer,
   HStack,
   TableContainer,
+  InputGroup,
+  InputLeftElement,
+  VStack,
 } from '@chakra-ui/react';
-import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons';
+import { TriangleDownIcon, TriangleUpIcon,SearchIcon } from '@chakra-ui/icons';
 import {
   useReactTable,
   flexRender,
@@ -85,12 +88,18 @@ const DataTable = ({ data, columns }) => {
     },
   });
   return (
-    <>
+    <VStack spacing={5}>
+    <InputGroup>
+      <InputLeftElement>
+      <SearchIcon />
+      </InputLeftElement>
       <Input
         placeholder="Search in the table..."
         value={globalFilter ?? ''}
         onChange={(e) => setGlobalFilter(String(e.target.value))}
       />
+    </InputGroup>
+    
       <TableContainer>
         <Table>
           <Thead>
@@ -177,7 +186,7 @@ const DataTable = ({ data, columns }) => {
           </Button>
         </HStack>
         <Spacer />
-        <Box width="10%">
+        <Box width="30%">
           <Select
             variant="flushed"
             value={table.getState().pagination.pageSize}
@@ -191,7 +200,7 @@ const DataTable = ({ data, columns }) => {
           </Select>
         </Box>
       </Flex>
-    </>
+    </VStack>
   );
 };
 export default DataTable;

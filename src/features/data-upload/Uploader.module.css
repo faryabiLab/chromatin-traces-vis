@@ -1,6 +1,7 @@
 .zone{
     border: 3px dashed #93B1A6;
     overflow: hidden;
+    cursor: pointer;
 }
 
 .file {

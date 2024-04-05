@@ -171,7 +171,7 @@ const DataBrowser = () => {
           gutter={120}
         >
       <PopoverTrigger>
-      <Box borderWidth="1px" borderRadius="lg">
+      <Box>
         {!table ? <p>loading...</p> : <DataTable data={table} columns={columns} />}
       </Box>
         </PopoverTrigger>

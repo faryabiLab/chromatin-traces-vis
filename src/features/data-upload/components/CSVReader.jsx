@@ -16,7 +16,7 @@ export default function CSVReader() {
   const dataCtx = useContext(DataContext);
   const setDataBysHandler = dataCtx.setDataBysHandler;
   return (
-    <HStack spacing="48px">
+    <HStack align={'center'} justify={'center'} spacing={20}>
       <CSVReader
         onUploadAccepted={(results) => {
           const csvHeader = results.data[0];
@@ -57,7 +57,7 @@ export default function CSVReader() {
                   <div className={styles.file}>
                     <div className={styles.info}>
                       <span className={styles.size}>{formatFileSize(acceptedFile.size)}</span>
-                      <span>{acceptedFile.name}</span>
+                      <span className={styles.name}>{acceptedFile.name}</span>
                     </div>
                     <div className={styles.progressBar}>
                       <ProgressBar />
