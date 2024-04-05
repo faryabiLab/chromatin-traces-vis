@@ -97,7 +97,9 @@ export default function CSVReader() {
         }}
         margin="5px"
         onClick={(e) => {
-          setDataBysHandler(array);
+          if(array.length > 0) {
+            setDataBysHandler(array);
+          }
         }}
       >
         <ArrowForwardIcon w={6} h={6} />

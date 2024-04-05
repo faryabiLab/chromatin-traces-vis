@@ -177,7 +177,7 @@ const DataTable = ({ data, columns }) => {
           </Button>
         </HStack>
         <Spacer />
-        <Box width="8%">
+        <Box width="10%">
           <Select
             variant="flushed"
             value={table.getState().pagination.pageSize}
