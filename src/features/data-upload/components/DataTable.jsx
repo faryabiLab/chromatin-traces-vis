@@ -194,7 +194,7 @@ const DataTable = ({ data, columns }) => {
           >
             {[5, 10, 20].map((pageSize) => (
               <option key={pageSize} value={pageSize}>
-                Show {pageSize}
+                {pageSize} / page
               </option>
             ))}
           </Select>

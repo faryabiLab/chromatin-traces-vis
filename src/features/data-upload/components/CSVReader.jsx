@@ -1,9 +1,23 @@
 import React, { useState, useContext } from 'react';
 import { DataContext } from '../../../stores/data-context';
 import { useCSVReader, lightenDarkenColor, formatFileSize } from 'react-papaparse';
-import { Box, HStack } from '@chakra-ui/react';
-import { ArrowForwardIcon } from '@chakra-ui/icons';
+import { ArrowForwardIcon, HamburgerIcon } from '@chakra-ui/icons';
 import styles from '../Uploader.module.css';
+import {
+  Box,
+  HStack,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverBody,
+  PopoverArrow,
+  PopoverCloseButton,
+  Switch,
+  FormLabel,
+  FormControl,
+  SimpleGrid,
+} from '@chakra-ui/react';
 
 const DEFAULT_REMOVE_HOVER_COLOR = '#A01919';
 const REMOVE_HOVER_COLOR_LIGHT = lightenDarkenColor(DEFAULT_REMOVE_HOVER_COLOR, 40);
@@ -13,6 +27,8 @@ export default function CSVReader() {
   const [zoneHover, setZoneHover] = useState(false);
   const [removeHoverColor, setRemoveHoverColor] = useState(DEFAULT_REMOVE_HOVER_COLOR);
   const [array, setArray] = useState([]);
+  const [plotAll, setPlotAll] = useState(false);
+  const [isFilling, setIsFilling] = useState(true);
   const dataCtx = useContext(DataContext);
   const setDataBysHandler = dataCtx.setDataBysHandler;
   return (
@@ -85,24 +101,54 @@ export default function CSVReader() {
           </>
         )}
       </CSVReader>
-      <Box
-        as="button"
-        p={2}
-        color="white"
-        fontWeight="bold"
-        borderRadius="md"
-        bgGradient="linear(to-r, teal.500, green.500)"
-        _hover={{
-          bgGradient: 'linear(to-r, red.500, yellow.500)',
-        }}
-        margin="5px"
-        onClick={(e) => {
-          if(array.length > 0) {
-            setDataBysHandler(array);
-          }
-        }}
-      >
-        <ArrowForwardIcon w={6} h={6} />
+      <Box>
+        <Popover gutter={15} placement='top-start' arrowSize={15}>
+          <PopoverTrigger>
+            <Box as="button" p={2} color="white" fontWeight="bold" borderRadius="md" bgColor="grey">
+              <HamburgerIcon w={6} h={6} />
+            </Box>
+          </PopoverTrigger>
+          <PopoverContent>
+            <PopoverArrow />
+            <PopoverCloseButton />
+            <PopoverHeader>Configuration</PopoverHeader>
+            <PopoverBody>
+              <FormControl as={SimpleGrid} columns={{ base: 1, md: 2 }}>
+                <FormLabel htmlFor="auto-filling" mb="0">
+                  Auto Linear Filling
+                </FormLabel>
+                <Switch id="auto-filling" defaultChecked={true} onChange={(e)=>{
+                  setIsFilling(e.target.checked)}
+                  }/>
+                <FormLabel htmlFor="plot-all" mb="0">
+                  Plot All Readouts
+                </FormLabel>
+                <Switch id="plot-all" onChange={(e)=>{
+                  setPlotAll(e.target.checked)}
+                  }/>
+              </FormControl>
+            </PopoverBody>
+          </PopoverContent>
+        </Popover>
+        <Box
+          as="button"
+          p={2}
+          color="white"
+          fontWeight="bold"
+          borderRadius="md"
+          bgGradient="linear(to-r, teal.500, green.500)"
+          _hover={{
+            bgGradient: 'linear(to-r, red.500, yellow.500)',
+          }}
+          margin="5px"
+          onClick={(e) => {
+            if (array.length > 0) {
+              setDataBysHandler(array);
+            }
+          }}
+        >
+          <ArrowForwardIcon w={6} h={6} />
+        </Box>
       </Box>
     </HStack>
   );
