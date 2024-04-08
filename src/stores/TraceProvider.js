@@ -3,9 +3,9 @@ import { useReducer,useContext } from 'react';
 import { DataContext } from './data-context';
 import { dataProcess } from '../utils/dataWrangler';
 
-const dataProcessWrapper=(database,fov,s,allPoints)=>{
+const dataProcessWrapper=(database,fov,s,allPoints,isFilling)=>{
   if(!database||!database.get(fov)||!database.get(fov).get(s)) return null;
-  return dataProcess(database.get(fov).get(s),allPoints);
+  return dataProcess(database.get(fov).get(s),allPoints,isFilling);
 }
 
 const defaultTraceState = {
@@ -13,16 +13,14 @@ const defaultTraceState = {
   selected: { fov: null, s: null },
   clicked: { a: -1, b: -1 },
   triplet: { a: -1, b: -1, c: -1 },
-  isPlotAll:false,
 };
 const traceReducer = (state, action) => {
   if (action.type === 'SELECT') {
     return {
-      data:dataProcessWrapper(action.dataBys,action.fov,action.s,state.isPlotAll),
+      data:dataProcessWrapper(action.dataBys,action.fov,action.s,action.isPlotAll,action.isFilling),
       selected: { fov: action.fov, s: action.s },
       clicked: state.clicked,
       triplet: state.triplet,
-      isPlotAll:state.isPlotAll,
     };
   }
   if (action.type === 'CLICK') {
@@ -31,7 +29,6 @@ const traceReducer = (state, action) => {
       selected: state.selected,
       clicked: { a: action.a, b: action.b},
       triplet: state.triplet,
-      isPlotAll:state.isPlotAll,
     };
   }
 
@@ -41,7 +38,6 @@ const traceReducer = (state, action) => {
       selected: state.selected,
       clicked: state.clicked,
       triplet: {a:action.a,b:action.b,c:action.c},
-      isPlotAll:state.isPlotAll,
     }
   }
   if(action.type==='RESET'){
@@ -50,21 +46,8 @@ const traceReducer = (state, action) => {
       selected:state.selected,
       clicked: {a:-1,b:-1},
       triplet:{a:-1,b:-1,c:-1},
-      isPlotAll:state.isPlotAll,
     }
-  }
-
-  if(action.type==='PLOTALL'){
-    return{
-      data:state.data,
-      selected:state.selected,
-      clicked:state.clicked,
-      triplet:state.triplet,
-      isPlotAll:true,
-    }
-  }
-  
-  
+  }  
   return defaultTraceState;
 };
 
@@ -73,16 +56,13 @@ export function TraceProvider({ children }) {
   const [traceState, dispatchTraceAction] = useReducer(traceReducer, defaultTraceState);
 
   const selectTraceHandler = (fov, s) => {
-    dispatchTraceAction({ type: 'SELECT', fov: fov, s: s, dataBys: dataCtx.dataBys });
+    dispatchTraceAction({ type: 'SELECT', fov: fov, s: s, dataBys: dataCtx.dataBys, isPlotAll:dataCtx.isPlotAll,isFilling:dataCtx.isFilling });
   };
   const clickTraceHandler = (a, b) => {
     dispatchTraceAction({ type: 'CLICK', a: a, b: b });
   };
   const resetClickHandler=()=>{
     dispatchTraceAction({type:'RESET'});
-  }
-  const isPlotAllHandler=()=>{
-    dispatchTraceAction({type:'PLOTALL'});
   }
 
   const tripletHandler=(a,b,c)=>{
@@ -94,11 +74,9 @@ export function TraceProvider({ children }) {
     selected: traceState.selected,
     clicked: traceState.clicked,
     triplet:traceState.triplet,
-    isPlotAll:traceState.isPlotAll,
     selectedHandler: selectTraceHandler,
     clickedHandler: clickTraceHandler,
     resetHandler:resetClickHandler,
-    plotAllHandler:isPlotAllHandler,
     tripletHandler:tripletHandler,
   };
 

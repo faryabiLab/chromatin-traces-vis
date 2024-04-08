@@ -31,6 +31,8 @@ export default function CSVReader() {
   const [isFilling, setIsFilling] = useState(true);
   const dataCtx = useContext(DataContext);
   const setDataBysHandler = dataCtx.setDataBysHandler;
+  const setPlotAllReadouts = dataCtx.setPlotAllReadouts;
+  const setFillingReadouts = dataCtx.setFillingReadouts;
   return (
     <HStack align={'center'} justify={'center'} spacing={20}>
       <CSVReader
@@ -143,6 +145,8 @@ export default function CSVReader() {
           margin="5px"
           onClick={(e) => {
             if (array.length > 0) {
+              setPlotAllReadouts(plotAll);
+              setFillingReadouts(isFilling);
               setDataBysHandler(array);
             }
           }}

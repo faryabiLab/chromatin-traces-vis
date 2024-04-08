@@ -7,21 +7,8 @@ import { dataProcess } from '../utils/dataWrangler';
 export function DataProvider({children}){
   const [dataBys,setDataBys] = useState(null);
   const [keys,setKeys] = useState(null);
-  // load sample datasets
-  // useEffect(() => {
-  //   d3.csv(
-  //     process.env.PUBLIC_URL + '/230902_Granta519cl27_24hdTAG_MYC5p_30mHyb_4phBl_30step_allfits.csv'
-  //   ).then((data) => {
-  //     const dataBys = d3.group(
-  //       data,
-  //       (d) => d.fov,
-  //       (d) => d.s
-  //     );
-  //     setDataBys(dataBys);
-  //     setIsDataLoaded(true);
-  //   });
-  // }, []);
-
+  const [isPlotAll,setIsPlotAll] = useState(false);
+  const [isFilling,setIsFilling] = useState(true);
   const extractKeys=(data)=>{
     const result={};
     for(const fovKey of data.keys()){
@@ -46,7 +33,7 @@ export function DataProvider({children}){
     const keysDict=keys;
     const newKeys=[];
     for(const alleleKey of alleles.keys()){
-      const allele=dataProcess(alleles.get(alleleKey));
+      const allele=dataProcess(alleles.get(alleleKey),isPlotAll,isFilling);
       const nodeA=allele[a];
       const nodeB=allele[b];
       
@@ -65,9 +52,13 @@ export function DataProvider({children}){
   const dataContext={
     dataBys:dataBys,
     keys:keys,
+    isPlotAll:isPlotAll,
+    isFilling:isFilling,
     setDataBysHandler:setDataBysHandler,
     filterDataBysHandler:filterHandler,
     resetHandler:resetHandler,
+    setPlotAllReadouts:setIsPlotAll,
+    setFillingReadouts:setIsFilling,
   };
 
   return (

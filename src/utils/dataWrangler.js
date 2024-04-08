@@ -18,7 +18,7 @@ const dataFilling=(prev,cur,step)=>{
     return fillingArray;
 }
 
-export function dataProcess(data,plotAll) {
+export function dataProcess(data,plotAll,isFilling) {
   if(!data){return null}
   let result=[];
   const step=plotAll?1:2;
@@ -32,6 +32,9 @@ export function dataProcess(data,plotAll) {
         pos:{'x':+row.x,'y':+row.y,'z':+row.z},
       })
     }
+  }
+  if(!isFilling){
+    return result;
   }
 
   for(let i=1;i<result.length;i++){
