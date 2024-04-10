@@ -65,7 +65,8 @@ const DataTable = ({ data, columns }) => {
   const table = useReactTable({
     initialState:{
       columnVisibility: {
-        filename: false
+        filename: false,
+        readout_steps: false,
       }
     },
     data,

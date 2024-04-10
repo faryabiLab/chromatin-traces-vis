@@ -31,6 +31,7 @@ const DataBrowser = () => {
   const { readRemoteFile } = usePapaParse();
   const dataCtx = useContext(DataContext);
   const setDataBysHandler = dataCtx.setDataBysHandler;
+  const setPlotAllReadouts = dataCtx.setPlotAllReadouts;
   const { isOpen, onOpen, onClose } = useDisclosure();
   useEffect(() => {
     //fetch metadata table from backend on load
@@ -61,11 +62,12 @@ const DataBrowser = () => {
     }
   }, [filename]);
 
-  const fetchCSV = (id) => {
+  const fetchCSV = (id,readoutSteps) => {
     readRemoteFile(`https://faryabi-olive.s3.amazonaws.com/${id}.csv`, {
       complete: (results) => {
         const array = results.data;
         if (array && array.length > 0) {
+          readoutSteps==='all'?setPlotAllReadouts(true):setPlotAllReadouts(false);
           setDataBysHandler(array);
         }
         setIsLoading(false);
@@ -123,6 +125,12 @@ const DataBrowser = () => {
       cell: (info) => info.getValue(),
       header: 'Gene',
     }),
+    columnHelper.accessor('readout_steps', {
+      id:'readout_steps',
+      cell: (info) => info.getValue(),
+      header: 'Readout Steps',
+      enableColumnFilter: false,
+    }),
     columnHelper.accessor('lab', {
       cell: (info) => info.getValue(),
       header: 'Lab',
@@ -138,7 +146,7 @@ const DataBrowser = () => {
           isLoading={isLoading}
           onClick={() => {
             setIsLoading(true);
-            fetchCSV(info.row.original.id);
+            fetchCSV(info.row.original.id,info.row.original.readout_steps);
           }}
         >
           View
