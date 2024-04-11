@@ -148,6 +148,7 @@ const Heatmap = ({ data, width, height }) => {
             <NumberDecrementStepper />
           </NumberInputStepper>
         </NumberInput>
+        <label>nm</label>
       </HStack>
       <svg width={width} height={height}>
         <g

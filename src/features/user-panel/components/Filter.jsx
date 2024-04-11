@@ -21,6 +21,9 @@ const Filter = ({alleleHandler}) => {
   const selectedHandler = traceCtx.selectedHandler;
   const [distance,setDistance]=useState(10000);
   const toast = useToast();
+  if(clicked.a===-1||clicked.b===-1) return(
+    <p>Select any two points to enable linkage filter</p>
+  )
   return(
     <>
     <HStack>
