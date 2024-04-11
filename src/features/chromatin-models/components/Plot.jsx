@@ -45,6 +45,7 @@ const Plot = () => {
   // }, [selected]);
 
   useEffect(() => {
+    //check if clicked point exist in this allele
     setPointA(clicked.a);
     setPointB(clicked.b);
   }, [clicked]);
@@ -203,7 +204,7 @@ const Plot = () => {
 
   const calculateMidpoint = (pointA, pointB) => {
     if (pointA < 0 || pointB < 0) return null;
-
+    if (pointA===undefined || pointB===undefined) return null;
     return new THREE.Vector3(
       (pointA.x + pointB.x) / 2.0,
       (pointA.y + pointB.y) / 2.0,
@@ -214,6 +215,7 @@ const Plot = () => {
     if (pointA < 0 || pointB < 0) return null;
     const nodeA = points[pointA];
     const nodeB = points[pointB];
+    if (nodeA === undefined || nodeB === undefined) return null;
     return (
       <>
         <Line points={[nodeA, nodeB]} color={color} lineWidth={8} />
@@ -235,6 +237,9 @@ const Plot = () => {
     const nodeX=points[pointX];
     const nodeY=points[pointY];
     const nodeZ=points[pointZ];
+    if(nodeX===undefined||nodeY===undefined||nodeZ===undefined){
+      return null;
+    }
     const perimeter=nodeX.distanceTo(nodeY)+nodeY.distanceTo(nodeZ)+nodeZ.distanceTo(nodeX);
     return (
       <>
