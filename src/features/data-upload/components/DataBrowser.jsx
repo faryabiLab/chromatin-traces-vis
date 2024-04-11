@@ -3,10 +3,8 @@ import { usePapaParse } from 'react-papaparse';
 import { DataContext } from '../../../stores/data-context';
 import {
   Table,
-  Thead,
   Tbody,
   Tr,
-  Th,
   Td,
   TableContainer,
   Button,

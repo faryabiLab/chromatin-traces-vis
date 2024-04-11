@@ -19,7 +19,7 @@ const Dashboard = () => {
   const dataCtx = useContext(DataContext);
   const traceCtx = useContext(TraceContext);
   const data = traceCtx.data;
-  const resetHandler = traceCtx.resetHandler;
+ 
   //set the initial fov to be the first existing fov
   const initialFov=Object.keys(dataCtx.keys)[0];
   const [fov, setFov] = useState(initialFov);
@@ -130,9 +130,6 @@ const Dashboard = () => {
           icon={<ArrowRightIcon />}
           onClick={nextAlleleHandler}
         />
-        <Button colorScheme="teal" variant="outline" onClick={resetHandler}>
-          Reset
-        </Button>
         <Button colorScheme="red" variant="outline" onClick={refreshPage}>
           Exit
         </Button>

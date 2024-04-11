@@ -5,7 +5,7 @@ import { Html, OrbitControls, Line, GizmoHelper, GizmoViewport } from '@react-th
 import styles from '../Plot.module.css';
 import { useThree } from '@react-three/fiber';
 import { jsPDF } from 'jspdf';
-import { useControls } from 'leva';
+import { useControls,button } from 'leva';
 const Plot = () => {
   //index of the points that are clicked
   const traceCtx = useContext(TraceContext);
@@ -34,6 +34,7 @@ const Plot = () => {
     showDistance: {value:true,label:'Show Distance'},
     radius: { value: 200,label:'Radius(nm)' },
     isPerimeter: {value:false,label:'Perimeter Analysis'},
+    reset: button(traceCtx.resetHandler),
   });
 
   const { gl } = useThree();
