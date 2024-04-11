@@ -38,6 +38,17 @@ const Filter = ({alleleHandler}) => {
   <span>nm</span>
   <Button colorScheme='teal' variant='ghost' onClick={()=>{
       toFilter(curFov,clicked.a,clicked.b,distance);
+      if(dataCtx.keys[curFov].length===0){
+        toast({
+          title: 'Filter Failed',
+          description: "No allele found within the given distance",
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+          position:'top-center'
+        })
+        resetClickHandler();
+      }else{
       selectedHandler(curFov.toString(),dataCtx.keys[curFov][0].toString());
       alleleHandler(0);
       toast({
@@ -48,6 +59,7 @@ const Filter = ({alleleHandler}) => {
           isClosable: true,
           position:'top-center'
         })
+      }
       }}>Filter</Button>
     <Button colorScheme='gray' variant='ghost' onClick={()=>{
       resetClickHandler();

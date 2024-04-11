@@ -89,7 +89,7 @@ const Dashboard = () => {
           <Select
             
             value={fov}
-            placeholder="select fov"
+          
             onChange={(e) => {
               setFov(e.target.value);
               setAllele(0);
@@ -103,7 +103,7 @@ const Dashboard = () => {
           <Select
  
             value={allele}
-            placeholder="select allele"
+
             onChange={(e) => {
               setAllele(e.target.value);
             }}
