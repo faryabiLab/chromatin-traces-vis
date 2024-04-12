@@ -5,7 +5,7 @@ import { Html, OrbitControls, Line, GizmoHelper, GizmoViewport } from '@react-th
 import styles from '../Plot.module.css';
 import { useThree } from '@react-three/fiber';
 import { jsPDF } from 'jspdf';
-import { useControls } from 'leva';
+import { useControls,button } from 'leva';
 const Plot = () => {
   //index of the points that are clicked
   const traceCtx = useContext(TraceContext);
@@ -26,13 +26,15 @@ const Plot = () => {
   const triplet = traceCtx.triplet;
   const tripletHandler=traceCtx.tripletHandler;
 
-  const { color, tubeRadius, showDistance,sphereRadius,radius, isPerimeter } = useControls({
+  const { color, isGrid, tubeRadius, showDistance,sphereRadius,radius, isPerimeter } = useControls({
     color: 'red',
-    tubeRadius: { value: 5, min: 0, max: 5, step: 0.5 },
-    sphereRadius: { value: 15, min: 10, max: 25, step: 1 },
-    showDistance: true,
-    radius: { value: 200 },
-    isPerimeter: false,
+    isGrid:{value:true,label:'Show Grid'},
+    tubeRadius: { value: 5, min: 0, max: 5, step: 0.5, label: 'Tube Size' },
+    sphereRadius: { value: 15, min: 10, max: 25, step: 1, label: 'Sphere Size' },
+    showDistance: {value:true,label:'Show Distance'},
+    radius: { value: 200,label:'Radius(nm)' },
+    isPerimeter: {value:false,label:'Perimeter Analysis'},
+    reset: button(traceCtx.resetHandler),
   });
 
   const { gl } = useThree();
@@ -43,6 +45,7 @@ const Plot = () => {
   // }, [selected]);
 
   useEffect(() => {
+    //check if clicked point exist in this allele
     setPointA(clicked.a);
     setPointB(clicked.b);
   }, [clicked]);
@@ -201,7 +204,7 @@ const Plot = () => {
 
   const calculateMidpoint = (pointA, pointB) => {
     if (pointA < 0 || pointB < 0) return null;
-
+    if (pointA===undefined || pointB===undefined) return null;
     return new THREE.Vector3(
       (pointA.x + pointB.x) / 2.0,
       (pointA.y + pointB.y) / 2.0,
@@ -212,6 +215,7 @@ const Plot = () => {
     if (pointA < 0 || pointB < 0) return null;
     const nodeA = points[pointA];
     const nodeB = points[pointB];
+    if (nodeA === undefined || nodeB === undefined) return null;
     return (
       <>
         <Line points={[nodeA, nodeB]} color={color} lineWidth={8} />
@@ -233,6 +237,9 @@ const Plot = () => {
     const nodeX=points[pointX];
     const nodeY=points[pointY];
     const nodeZ=points[pointZ];
+    if(nodeX===undefined||nodeY===undefined||nodeZ===undefined){
+      return null;
+    }
     const perimeter=nodeX.distanceTo(nodeY)+nodeY.distanceTo(nodeZ)+nodeZ.distanceTo(nodeX);
     return (
       <>
@@ -322,7 +329,7 @@ const Plot = () => {
       </Html>
       <OrbitControls makeDefault />
       <axesHelper args={[1500]} />
-      <gridHelper args={[1500, 15]} />
+      {isGrid&&<gridHelper args={[1500, 15]} />}
       <ambientLight intensity={1.5} />
       <directionalLight position={center} intensity={2.5} />
       <group ref={groupRef} position={center}>

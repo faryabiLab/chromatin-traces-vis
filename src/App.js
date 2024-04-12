@@ -11,7 +11,7 @@ function App() {
       <DataProvider>
       <TraceProvider>
         <Panel /> 
-        </TraceProvider>
+      </TraceProvider>
       </DataProvider>
       </ChakraProvider>
        

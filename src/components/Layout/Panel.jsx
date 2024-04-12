@@ -2,7 +2,7 @@ import CanvasWrapper from '../../features/chromatin-models/components/CanvasWrap
 import Plot from '../../features/chromatin-models/components/Plot';
 import Dashboard from '../../features/user-panel/Dashboard';
 import styles from './Panel.module.css';
-import Welcome from '../../features/data-upload/components/FileUploader';
+import Homepage from '../../features/data-upload/FileUploader';
 import { DataContext } from '../../stores/data-context';
 import {useContext} from 'react';
 const Panel = () => {
@@ -21,7 +21,7 @@ const Panel = () => {
       <Dashboard/>
     </div>
       </>
-    :<Welcome/>}
+    :<Homepage/>}
     </div>
   );
 };

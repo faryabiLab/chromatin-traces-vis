@@ -19,9 +19,10 @@ const Dashboard = () => {
   const dataCtx = useContext(DataContext);
   const traceCtx = useContext(TraceContext);
   const data = traceCtx.data;
-  const resetHandler = traceCtx.resetHandler;
-
-  const [fov, setFov] = useState(1);
+ 
+  //set the initial fov to be the first existing fov
+  const initialFov=Object.keys(dataCtx.keys)[0];
+  const [fov, setFov] = useState(initialFov);
   //allele is the index of the allele in the allele list:dataCtx.keys[fov]
   const [allele, setAllele] = useState(0);
   const selectedHandler = traceCtx.selectedHandler;
@@ -88,7 +89,7 @@ const Dashboard = () => {
           <Select
             
             value={fov}
-            placeholder="select fov"
+          
             onChange={(e) => {
               setFov(e.target.value);
               setAllele(0);
@@ -102,7 +103,7 @@ const Dashboard = () => {
           <Select
  
             value={allele}
-            placeholder="select allele"
+
             onChange={(e) => {
               setAllele(e.target.value);
             }}
@@ -129,9 +130,6 @@ const Dashboard = () => {
           icon={<ArrowRightIcon />}
           onClick={nextAlleleHandler}
         />
-        <Button colorScheme="teal" variant="outline" onClick={resetHandler}>
-          Reset
-        </Button>
         <Button colorScheme="red" variant="outline" onClick={refreshPage}>
           Exit
         </Button>

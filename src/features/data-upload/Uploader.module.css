@@ -1,10 +1,61 @@
-.wrapper{
-  display: flex;
-  flex-direction: column;
+.zone{
+    border: 3px dashed #93B1A6;
+    overflow: hidden;
+    cursor: pointer;
 }
 
-.upload{
-  display:block;
-  align-self: center;
-  margin-top: 50px;
+.file {
+  background: linear-gradient(to bottom, #EEE, #DDD);
+  border-radius: 20px;
+  display: flex;
+  height: 120px;
+  width: 120px;
+  position: relative;
+  z-index: 10;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.info {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.size {
+  background-color: 'rgba(255, 255, 255, 0.4)';
+  border-radius: 3px;
+  margin-bottom: 0.5em;
+  justify-content: center;
+  display: flex;
+}
+
+.name {
+  background-color: 'rgba(255, 255, 255, 0.4)';
+  border-radius: 3px;
+  font-size: 10px;
+  margin-bottom: 0.5em;
+}
+
+.progressBar {
+  bottom: 14px;
+  position: absolute;
+  width: 100%;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.zoneHover {
+  border-color: var(--grey-dim);
+}
+
+
+.remove {
+  height: 23px;
+  position: absolute;
+  right: 6px;
+  top: 6px;
+  width: 23px;
 }
