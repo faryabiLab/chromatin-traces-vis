@@ -5,6 +5,7 @@ import {
   IconButton,
   Stack,
   Divider,
+  Tabs, TabList, TabPanels, Tab, TabPanel 
 } from '@chakra-ui/react';
 import { ArrowLeftIcon, ArrowRightIcon } from '@chakra-ui/icons';
 
@@ -15,6 +16,7 @@ import { DataContext } from '../../stores/data-context';
 import { generatePairwiseDistanceMap, refreshPage } from '../../utils/displayUtils';
 import styles from './Dashboard.module.css';
 import Filter from './components/Filter';
+import LinePlot from '../centrality/LinePlot';
 const Dashboard = () => {
   const dataCtx = useContext(DataContext);
   const traceCtx = useContext(TraceContext);
@@ -26,7 +28,8 @@ const Dashboard = () => {
   //allele is the index of the allele in the allele list:dataCtx.keys[fov]
   const [allele, setAllele] = useState(0);
   const selectedHandler = traceCtx.selectedHandler;
-
+  // Example usage:
+ 
 
   useEffect(() => {
     selectedHandler(fov.toString(), dataCtx.keys[fov][allele].toString());
@@ -140,8 +143,21 @@ const Dashboard = () => {
       </div>
      
      <Divider />
+     <Tabs variant='soft-rounded' colorScheme='green'>
+  <TabList>
+    <Tab>Tab 1</Tab>
+    <Tab>Tab 2</Tab>
+  </TabList>
+  <TabPanels>
+    <TabPanel>
+    {distanceMap && <Heatmap data={distanceMap} width={650} height={650} />}
+    </TabPanel>
+    <TabPanel>
+      {data && <LinePlot data={data} />}
+    </TabPanel>
+  </TabPanels>
+</Tabs>
       
-      {distanceMap && <Heatmap data={distanceMap} width={650} height={650} />}
 
     </div>
   );

@@ -72,6 +72,24 @@ const Plot = () => {
       </Html>
     );
 
+    function calculateGeometricCenter(points) {
+      // Create a new Vector3 to store the center
+      const center = new THREE.Vector3();
+      
+      // If no points, return zero vector
+      if (points.length === 0) return center;
+      
+      // Add all points together
+      points.forEach(point => {
+          center.add(point);
+      });
+      
+      // Divide by the number of points
+      center.divideScalar(points.length);
+      
+      return center;
+  }
+
   //convert data to list of THREE.Vector3
   let points = [];
   for (let row of data) {
@@ -84,6 +102,7 @@ const Plot = () => {
   let center = new THREE.Vector3();
   box.getCenter(center);
   center = center.multiplyScalar(-1);
+
 
   //check if pair is valid
   //point is the index of the point in the points array
@@ -280,6 +299,26 @@ const Plot = () => {
     });
   };
 
+  const renderGeometricCenter=(points)=>{
+    return(
+    <mesh
+          key={0}
+          position={calculateGeometricCenter(points)}
+          onClick={(e) => {
+            console.log(calculateGeometricCenter(points));
+          }}
+        >
+          <sphereGeometry args={[sphereRadius*2, 64, 16]} />
+          <meshStandardMaterial color={'orange'} />
+          <Html scaleFactor={10}>
+            <div className={styles.label}>
+              <p>Geometric Center</p>
+            </div>
+          </Html>
+        </mesh>
+    )
+    }
+
   const tubeColor = () => {
     if (pointA === -1 || pointB === -1) {
       return 'gray';
@@ -333,6 +372,7 @@ const Plot = () => {
       <ambientLight intensity={1.5} />
       <directionalLight position={center} intensity={2.5} />
       <group ref={groupRef} position={center}>
+        {renderGeometricCenter(points)}
         {renderPoints(points)}
         {renderTube(points)}
         {isPerimeter?renderPlane():renderLine()}

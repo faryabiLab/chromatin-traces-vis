@@ -24,6 +24,7 @@
     "react-dom": "^18.2.0",
     "react-papaparse": "^4.4.0",
     "react-scripts": "5.0.1",
+    "recharts": "^2.15.1",
     "three": "^0.156.1",
     "web-vitals": "^2.1.4"
   },
