@@ -143,10 +143,10 @@ const Dashboard = () => {
       </div>
      
      <Divider />
-     <Tabs variant='soft-rounded' colorScheme='green'>
+     <Tabs variant='soft-rounded' colorScheme='blue'>
   <TabList>
-    <Tab>Tab 1</Tab>
-    <Tab>Tab 2</Tab>
+    <Tab>Heatmap</Tab>
+    <Tab>Distance to the geometric center</Tab>
   </TabList>
   <TabPanels>
     <TabPanel>

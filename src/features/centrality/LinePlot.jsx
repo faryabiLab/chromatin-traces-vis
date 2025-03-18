@@ -10,9 +10,9 @@ const LinePlot = ({data}) => {
           width={700}
           height={400}
           margin={{
-            top: 20,
+            top: 30,
             right: 30,
-            left: 20,
+            left: 0,
             bottom: 20,
           }}
         >
@@ -20,6 +20,7 @@ const LinePlot = ({data}) => {
             type="monotone"
             dataKey="distance"
             stroke="#8884d8"
+            strokeWidth={2}
             name="Distance to Center"
           />
           <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
