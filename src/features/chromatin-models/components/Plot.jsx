@@ -31,11 +31,11 @@ const Plot = () => {
   const { color, isGrid, tubeRadius, showDistance,sphereRadius,radius, isPerimeter } = useControls({
     color: 'red',
     isGrid:{value:true,label:'Show Grid'},
-    tubeRadius: { value: 5, min: 0, max: 5, step: 0.5, label: 'Tube Size' },
-    sphereRadius: { value: 15, min: 10, max: 25, step: 1, label: 'Sphere Size' },
+    tubeRadius: { value: 5, min: 0, max: 5, step: 0.5, label: 'Line Size' },
+    sphereRadius: { value: 15, min: 10, max: 25, step: 1, label: 'Dot Size' },
     showDistance: {value:true,label:'Show Distance'},
     radius: { value: 200,label:'Radius(nm)' },
-    isPerimeter: {value:false,label:'Perimeter Analysis'},
+    isPerimeter: {value:false,label:'Perimeter'},
     reset: button(traceCtx.resetHandler),
   });
 
@@ -379,7 +379,7 @@ const Plot = () => {
       </Html>
       <OrbitControls makeDefault />
       <axesHelper args={[roundedGridSize]} />
-      {isGrid&&<gridHelper args={[roundedGridSize, roundedGridSize/100]} />}
+      {isGrid&&<gridHelper args={[roundedGridSize, roundedGridSize/100]} rotation={[0, Math.PI / 2, Math.PI / 2]}  />}
       <Html position={[roundedGridSize/2, 0, 0]}>
         <div style={{ color: 'red', fontSize: '16px' }}>+X: {roundedGridSize/2}nm</div>
       </Html>
@@ -387,27 +387,29 @@ const Plot = () => {
         <div style={{ color: 'red', fontSize: '16px' }}>-X</div>
       </Html>
       <Html position={[0, roundedGridSize/2, 0]}>
-        <div style={{ color: 'green', fontSize: '16px' }}>+Y</div>
+        <div style={{ color: 'green', fontSize: '16px' }}>+Y:{roundedGridSize/2}nm</div>
       </Html>
       <Html position={[0, -roundedGridSize/2, 0]}>
         <div style={{ color: 'green', fontSize: '16px' }}>-Y</div>
       </Html>
       <Html position={[0, 0, roundedGridSize/2]}>
-        <div style={{ color: 'blue', fontSize: '16px' }}>+Z:{roundedGridSize/2}nm</div>
+        <div style={{ color: 'blue', fontSize: '16px' }}>+Z</div>
       </Html>
       <Html position={[0, 0, -roundedGridSize/2]}>
         <div style={{ color: 'blue', fontSize: '16px' }}>-Z</div>
       </Html>
       <ambientLight intensity={1.5} />
       <directionalLight position={center} intensity={2.5} />
-      <group ref={groupRef} position={center}>
+      <group ref={groupRef} position={center} >
         {renderGeometricCenter(points)}
         {renderPoints(points)}
         {renderTube(points)}
         {isPerimeter?renderPlane():renderLine()}
       </group>
       <GizmoHelper alignment="bottom-left" margin={[150, 150]}>
+      <group rotation={[-Math.PI / 2, Math.PI, Math.PI / 2]}>
         <GizmoViewport labelColor="black" axisHeadScale={1.5} />
+        </group>
       </GizmoHelper>
     </>
   );

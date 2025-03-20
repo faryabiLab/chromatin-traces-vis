@@ -19,11 +19,14 @@ const CanvasWrapper = (props) => {
           zoom:1.5,
           near: 0.1,
           far: 20000,
-          position: [0,500,1000]
+          position: [0,-500,-2000],
+          up: [0, 0, 1]
       } }
       gl={{preserveDrawingBuffer:true}}>
         <color attach="background" args={['#F6FAFE']} />
+        <group rotation={[-Math.PI / 2, Math.PI, Math.PI / 2]}>
         <Component/>
+        </group>
         </Canvas>}
       </div>
   )
