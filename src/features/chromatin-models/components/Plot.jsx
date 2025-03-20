@@ -381,22 +381,22 @@ const Plot = () => {
       <axesHelper args={[roundedGridSize]} />
       {isGrid&&<gridHelper args={[roundedGridSize, roundedGridSize/100]} />}
       <Html position={[roundedGridSize/2, 0, 0]}>
-        <div style={{ color: 'green', fontSize: '12px' }}>+X: {roundedGridSize/2}nm</div>
+        <div style={{ color: 'red', fontSize: '16px' }}>+X: {roundedGridSize/2}nm</div>
       </Html>
       <Html position={[-roundedGridSize/2, 0, 0]}>
-        <div style={{ color: 'green', fontSize: '12px' }}>-X</div>
+        <div style={{ color: 'red', fontSize: '16px' }}>-X</div>
       </Html>
       <Html position={[0, roundedGridSize/2, 0]}>
-        <div style={{ color: 'green', fontSize: '12px' }}>+Y</div>
+        <div style={{ color: 'green', fontSize: '16px' }}>+Y</div>
       </Html>
       <Html position={[0, -roundedGridSize/2, 0]}>
-        <div style={{ color: 'green', fontSize: '12px' }}>-Y</div>
+        <div style={{ color: 'green', fontSize: '16px' }}>-Y</div>
       </Html>
       <Html position={[0, 0, roundedGridSize/2]}>
-        <div style={{ color: 'green', fontSize: '12px' }}>+Z:{roundedGridSize/2}nm</div>
+        <div style={{ color: 'blue', fontSize: '16px' }}>+Z:{roundedGridSize/2}nm</div>
       </Html>
       <Html position={[0, 0, -roundedGridSize/2]}>
-        <div style={{ color: 'green', fontSize: '12px' }}>-Z</div>
+        <div style={{ color: 'blue', fontSize: '16px' }}>-Z</div>
       </Html>
       <ambientLight intensity={1.5} />
       <directionalLight position={center} intensity={2.5} />
