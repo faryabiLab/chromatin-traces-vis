@@ -1,21 +1,21 @@
 {
   "files": {
     "main.css": "/chromatin-traces-vis/static/css/main.714cfdfc.css",
-    "main.js": "/chromatin-traces-vis/static/js/main.80b037ee.js",
+    "main.js": "/chromatin-traces-vis/static/js/main.c00e81f5.js",
     "static/js/963.05ffa4ad.chunk.js": "/chromatin-traces-vis/static/js/963.05ffa4ad.chunk.js",
     "static/js/413.83fd8f5f.chunk.js": "/chromatin-traces-vis/static/js/413.83fd8f5f.chunk.js",
-    "static/js/52.f58ca587.chunk.js": "/chromatin-traces-vis/static/js/52.f58ca587.chunk.js",
+    "static/js/52.49991949.chunk.js": "/chromatin-traces-vis/static/js/52.49991949.chunk.js",
     "static/js/988.8f527f39.chunk.js": "/chromatin-traces-vis/static/js/988.8f527f39.chunk.js",
     "index.html": "/chromatin-traces-vis/index.html",
     "main.714cfdfc.css.map": "/chromatin-traces-vis/static/css/main.714cfdfc.css.map",
-    "main.80b037ee.js.map": "/chromatin-traces-vis/static/js/main.80b037ee.js.map",
+    "main.c00e81f5.js.map": "/chromatin-traces-vis/static/js/main.c00e81f5.js.map",
     "963.05ffa4ad.chunk.js.map": "/chromatin-traces-vis/static/js/963.05ffa4ad.chunk.js.map",
     "413.83fd8f5f.chunk.js.map": "/chromatin-traces-vis/static/js/413.83fd8f5f.chunk.js.map",
-    "52.f58ca587.chunk.js.map": "/chromatin-traces-vis/static/js/52.f58ca587.chunk.js.map",
+    "52.49991949.chunk.js.map": "/chromatin-traces-vis/static/js/52.49991949.chunk.js.map",
     "988.8f527f39.chunk.js.map": "/chromatin-traces-vis/static/js/988.8f527f39.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.714cfdfc.css",
-    "static/js/main.80b037ee.js"
+    "static/js/main.c00e81f5.js"
   ]
 }
