@@ -26,3 +26,37 @@ export function calculatePairDistance(a, b) {
       Math.pow(a.pos.z - b.pos.z, 2)
   );
 }
+
+export function calculateDistancesToCenter(points) {
+  // Calculate geometric center
+  const center = {
+      x: 0,
+      y: 0,
+      z: 0
+  };
+  
+  points.forEach(point => {
+      center.x += point.pos.x;
+      center.y += point.pos.y;
+      center.z += point.pos.z;
+  });
+  
+  center.x /= points.length;
+  center.y /= points.length;
+  center.z /= points.length;
+  
+  return points.map(point => {
+    const dx = point.pos.x - center.x;
+    const dy = point.pos.y - center.y;
+    const dz = point.pos.z - center.z;
+    const distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
+    
+    return {
+      readout: point.readout,
+      distance: Number(distance.toFixed(2))
+    };
+  });
+ 
+}
+
+

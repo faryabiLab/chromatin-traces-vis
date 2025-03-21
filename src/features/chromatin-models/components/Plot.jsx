@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useContext } from 'react';
+import { useEffect, useRef, useState, useContext,useMemo } from 'react';
 import { TraceContext } from '../../../stores/trace-context';
 import * as THREE from 'three';
 import { Html, OrbitControls, Line, GizmoHelper, GizmoViewport } from '@react-three/drei';
@@ -6,6 +6,7 @@ import styles from '../Plot.module.css';
 import { useThree } from '@react-three/fiber';
 import { jsPDF } from 'jspdf';
 import { useControls,button } from 'leva';
+import { max } from 'd3';
 const Plot = () => {
   //index of the points that are clicked
   const traceCtx = useContext(TraceContext);
@@ -15,6 +16,7 @@ const Plot = () => {
   const [pointX, setPointX] = useState(-1);
   const [pointY, setPointY] = useState(-1);
   const [pointZ, setPointZ] = useState(-1);
+
 
   const groupRef = useRef();
 
@@ -29,11 +31,11 @@ const Plot = () => {
   const { color, isGrid, tubeRadius, showDistance,sphereRadius,radius, isPerimeter } = useControls({
     color: 'red',
     isGrid:{value:true,label:'Show Grid'},
-    tubeRadius: { value: 5, min: 0, max: 5, step: 0.5, label: 'Tube Size' },
-    sphereRadius: { value: 15, min: 10, max: 25, step: 1, label: 'Sphere Size' },
+    tubeRadius: { value: 5, min: 0, max: 5, step: 0.5, label: 'Line Size' },
+    sphereRadius: { value: 15, min: 10, max: 25, step: 1, label: 'Dot Size' },
     showDistance: {value:true,label:'Show Distance'},
     radius: { value: 200,label:'Radius(nm)' },
-    isPerimeter: {value:false,label:'Perimeter Analysis'},
+    isPerimeter: {value:false,label:'Perimeter'},
     reset: button(traceCtx.resetHandler),
   });
 
@@ -55,6 +57,7 @@ const Plot = () => {
     setPointY(triplet.b);
     setPointZ(triplet.c);
   }, [triplet]);
+
   //only plot when there is data and data has at least 2 points
   if (!data || data.length < 3)
     return (
@@ -72,18 +75,45 @@ const Plot = () => {
       </Html>
     );
 
+    function calculateGeometricCenter(points) {
+      // Create a new Vector3 to store the center
+      const center = new THREE.Vector3();
+      
+      // If no points, return zero vector
+      if (points.length === 0) return center;
+      
+      // Add all points together
+      points.forEach(point => {
+          center.add(point);
+      });
+      
+      // Divide by the number of points
+      center.divideScalar(points.length);
+      
+      return center;
+  }
+
   //convert data to list of THREE.Vector3
   let points = [];
   for (let row of data) {
     let point = new THREE.Vector3(row.pos.x, row.pos.y, row.pos.z);
     points.push(point);
   }
-  //calculate bounding box center to put model at origin
-  const box = new THREE.Box3();
-  box.setFromPoints(points);
-  let center = new THREE.Vector3();
-  box.getCenter(center);
-  center = center.multiplyScalar(-1);
+
+  //calculate geometric center and set the model origin
+  let center = calculateGeometricCenter(points);
+  //calculate max distance
+  let maxDistance=0;
+  points.forEach(point => {
+    const distance = point.distanceTo(center);
+    if(distance>maxDistance){
+      maxDistance=distance;
+    }
+  })
+  center=center.multiplyScalar(-1);
+
+  //calculate grid size and round to the next 100
+  const roundedGridSize = Math.ceil(maxDistance*2 / 100) * 100;
 
   //check if pair is valid
   //point is the index of the point in the points array
@@ -280,6 +310,26 @@ const Plot = () => {
     });
   };
 
+  const renderGeometricCenter=(points)=>{
+    return(
+    <mesh
+          key={0}
+          position={calculateGeometricCenter(points)}
+          onClick={(e) => {
+            console.log(calculateGeometricCenter(points));
+          }}
+        >
+          <sphereGeometry args={[sphereRadius*2, 64, 16]} />
+          <meshStandardMaterial color={'orange'} />
+          <Html scaleFactor={10}>
+            <div className={styles.label}>
+              <p>Geometric Center</p>
+            </div>
+          </Html>
+        </mesh>
+    )
+    }
+
   const tubeColor = () => {
     if (pointA === -1 || pointB === -1) {
       return 'gray';
@@ -328,17 +378,38 @@ const Plot = () => {
         </div>
       </Html>
       <OrbitControls makeDefault />
-      <axesHelper args={[1500]} />
-      {isGrid&&<gridHelper args={[1500, 15]} />}
+      <axesHelper args={[roundedGridSize]} />
+      {isGrid&&<gridHelper args={[roundedGridSize, roundedGridSize/100]} rotation={[0, Math.PI / 2, Math.PI / 2]}  />}
+      <Html position={[roundedGridSize/2, 0, 0]}>
+        <div style={{ color: 'red', fontSize: '16px' }}>+X: {roundedGridSize/2}nm</div>
+      </Html>
+      <Html position={[-roundedGridSize/2, 0, 0]}>
+        <div style={{ color: 'red', fontSize: '16px' }}>-X</div>
+      </Html>
+      <Html position={[0, roundedGridSize/2, 0]}>
+        <div style={{ color: 'green', fontSize: '16px' }}>+Y:{roundedGridSize/2}nm</div>
+      </Html>
+      <Html position={[0, -roundedGridSize/2, 0]}>
+        <div style={{ color: 'green', fontSize: '16px' }}>-Y</div>
+      </Html>
+      <Html position={[0, 0, roundedGridSize/2]}>
+        <div style={{ color: 'blue', fontSize: '16px' }}>+Z</div>
+      </Html>
+      <Html position={[0, 0, -roundedGridSize/2]}>
+        <div style={{ color: 'blue', fontSize: '16px' }}>-Z</div>
+      </Html>
       <ambientLight intensity={1.5} />
       <directionalLight position={center} intensity={2.5} />
-      <group ref={groupRef} position={center}>
+      <group ref={groupRef} position={center} >
+        {renderGeometricCenter(points)}
         {renderPoints(points)}
         {renderTube(points)}
         {isPerimeter?renderPlane():renderLine()}
       </group>
       <GizmoHelper alignment="bottom-left" margin={[150, 150]}>
+      <group rotation={[-Math.PI / 2, Math.PI, Math.PI / 2]}>
         <GizmoViewport labelColor="black" axisHeadScale={1.5} />
+        </group>
       </GizmoHelper>
     </>
   );
