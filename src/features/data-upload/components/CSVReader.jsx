@@ -27,7 +27,7 @@ export default function CSVReader() {
   const [zoneHover, setZoneHover] = useState(false);
   const [removeHoverColor, setRemoveHoverColor] = useState(DEFAULT_REMOVE_HOVER_COLOR);
   const [array, setArray] = useState([]);
-  const [plotAll, setPlotAll] = useState(false);
+  const [plotAll, setPlotAll] = useState(true);
   const [isFilling, setIsFilling] = useState(true);
   const dataCtx = useContext(DataContext);
   const setDataBysHandler = dataCtx.setDataBysHandler;
@@ -119,13 +119,13 @@ export default function CSVReader() {
                 <FormLabel htmlFor="auto-filling" mb="0">
                   Auto Linear Filling
                 </FormLabel>
-                <Switch id="auto-filling" defaultChecked={true} onChange={(e)=>{
+                <Switch id="auto-filling" defaultChecked={true} disabled onChange={(e)=>{
                   setIsFilling(e.target.checked)}
                   }/>
-                <FormLabel htmlFor="plot-all" mb="0">
+                <FormLabel htmlFor="plot-all" mb="0" >
                   Plot All Readouts
                 </FormLabel>
-                <Switch id="plot-all" onChange={(e)=>{
+                <Switch id="plot-all" defaultChecked={true} onChange={(e)=>{
                   setPlotAll(e.target.checked)}
                   }/>
               </FormControl>

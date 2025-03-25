@@ -6,6 +6,8 @@ import styles from '../Plot.module.css';
 import { useThree } from '@react-three/fiber';
 import { jsPDF } from 'jspdf';
 import { useControls,button } from 'leva';
+import { SVGRenderer } from 'three/examples/jsm/renderers/SVGRenderer';
+import {svg2pdf} from 'svg2pdf.js';
 import { max } from 'd3';
 const Plot = () => {
   //index of the points that are clicked
@@ -30,7 +32,7 @@ const Plot = () => {
 
   const { color, isGrid, tubeRadius, showDistance,sphereRadius,radius, isPerimeter } = useControls({
     color: 'red',
-    isGrid:{value:true,label:'Show Grid'},
+    isGrid:{value:true,label:'Grid & Axis'},
     tubeRadius: { value: 5, min: 0, max: 5, step: 0.5, label: 'Line Size' },
     sphereRadius: { value: 15, min: 10, max: 25, step: 1, label: 'Dot Size' },
     showDistance: {value:true,label:'Show Distance'},
@@ -40,6 +42,7 @@ const Plot = () => {
   });
 
   const { gl } = useThree();
+  const { scene, camera } = useThree();
   //initialize pointA and pointB to null when selected changes
   // useEffect(() => {
   //   setPointA(-1);
@@ -360,6 +363,40 @@ const Plot = () => {
       return;
     }
   };
+  const saveAsVectorPDF = async () => {
+    try {
+      // Create SVG renderer
+      const svgRenderer = new SVGRenderer();
+      svgRenderer.setSize(window.innerWidth, window.innerHeight);
+      
+      // Render the scene
+      svgRenderer.render(scene, camera);
+      
+      // Get the SVG element
+      const svgElement = svgRenderer.domElement;
+      
+      // Create PDF document
+      const pdf = new jsPDF({
+        orientation: 'landscape',
+        unit: 'pt', // points
+        format: [window.innerWidth, window.innerHeight]
+      });
+  
+      // Convert SVG to PDF while maintaining vector quality
+      await svg2pdf(svgElement, pdf, {
+        xOffset: 0,
+        yOffset: 0,
+        scale: 1
+      });
+  
+      // Save the PDF
+      pdf.save(`fov-${selected.fov}-s-${selected.s}-vector.pdf`);
+      
+    } catch (e) {
+      console.log(e);
+      return;
+    }
+  };
 
   return (
     <>
@@ -372,13 +409,13 @@ const Plot = () => {
             zIndex: 1,
           }}
         >
-          <button onClick={saveAsImage} className={styles.saveBtn}>
+          <button onClick={saveAsVectorPDF} className={styles.saveBtn}>
             Download PDF
           </button>
         </div>
       </Html>
       <OrbitControls makeDefault />
-      <axesHelper args={[roundedGridSize]} />
+      {isGrid&&<axesHelper args={[roundedGridSize]} />}
       {isGrid&&<gridHelper args={[roundedGridSize, roundedGridSize/100]} rotation={[0, Math.PI / 2, Math.PI / 2]}  />}
       <Html position={[roundedGridSize/2, 0, 0]}>
         <div style={{ color: 'red', fontSize: '16px' }}>+X: {roundedGridSize/2}nm</div>
