@@ -379,7 +379,9 @@ const Plot = () => {
       const pdf = new jsPDF({
         orientation: 'landscape',
         unit: 'pt', // points
-        format: [window.innerWidth, window.innerHeight]
+        format: [window.innerWidth, window.innerHeight],
+        compress: true,
+        precision: 4,
       });
   
       // Convert SVG to PDF while maintaining vector quality
