@@ -301,7 +301,7 @@ const Plot = () => {
             }
           }}
         >
-          <sphereGeometry args={[sphereRadius, 64, 16]} />
+          <sphereGeometry args={[sphereRadius, 64, 48]} />
           <meshStandardMaterial color={colorPoint(index)} />
           <Html scaleFactor={10}>
             <div className={styles.label}>
@@ -367,7 +367,7 @@ const Plot = () => {
     try {
       // Create SVG renderer
       const svgRenderer = new SVGRenderer();
-      svgRenderer.setSize(window.innerWidth, window.innerHeight);
+      svgRenderer.setSize(595.28, 841.89);
       
       // Render the scene
       svgRenderer.render(scene, camera);
@@ -377,11 +377,11 @@ const Plot = () => {
       
       // Create PDF document
       const pdf = new jsPDF({
-        orientation: 'landscape',
+        orientation: 'portrait',
         unit: 'pt', // points
-        format: [window.innerWidth, window.innerHeight],
+        format: [595.28, 841.89],
         compress: true,
-        precision: 4,
+        precision: 1,
       });
   
       // Convert SVG to PDF while maintaining vector quality

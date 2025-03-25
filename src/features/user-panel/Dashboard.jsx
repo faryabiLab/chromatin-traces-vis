@@ -150,7 +150,7 @@ const Dashboard = () => {
   </TabList>
   <TabPanels>
     <TabPanel>
-    {distanceMap && <Heatmap data={distanceMap} width={650} height={650} />}
+    {distanceMap && <Heatmap data={distanceMap} width={600} height={550} />}
     </TabPanel>
     <TabPanel>
       {data && <LinePlot data={data} />}
