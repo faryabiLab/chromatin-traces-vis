@@ -84,7 +84,7 @@ const Dashboard = () => {
   return (
     <div className={styles.dashboard}>
       <Heading as="h1" className={styles.header}>
-        ORCA Linkage Interactive Viewing Engine(OLIVE)
+      Optical Looping Interactive Viewing Engine (OLIVE)
       </Heading>
       <Stack direction="row" spacing='30px'> 
         <div className={styles.select}>

@@ -17,7 +17,7 @@ const FileUploader = () => {
         align="center"
         marginTop="40px"
       >
-        ORCA Linkage Interactive Viewing Engine (OLIVE)
+        Optical Looping Interactive Viewing Engine (OLIVE)
       </Text>
       
       <Box display={'flex'} justifyContent={'center'}>
