@@ -33,6 +33,7 @@ export default function CSVReader() {
   const setDataBysHandler = dataCtx.setDataBysHandler;
   const setPlotAllReadouts = dataCtx.setPlotAllReadouts;
   const setFillingReadouts = dataCtx.setFillingReadouts;
+
   return (
     <HStack align={'center'} justify={'center'} spacing={20}>
       <CSVReader
@@ -47,7 +48,7 @@ export default function CSVReader() {
             }, {});
             return obj;
           });
-
+        console.log(array);
           setArray(array);
 
           setZoneHover(false);
@@ -104,7 +105,7 @@ export default function CSVReader() {
         )}
       </CSVReader>
       <Box>
-        <Popover gutter={15} placement='top-start' arrowSize={15}>
+        <Popover gutter={15} placement="top-start" arrowSize={15}>
           <PopoverTrigger>
             <Box as="button" p={2} color="white" fontWeight="bold" borderRadius="md" bgColor="grey">
               <HamburgerIcon w={6} h={6} />
@@ -119,15 +120,24 @@ export default function CSVReader() {
                 <FormLabel htmlFor="auto-filling" mb="0">
                   Auto Linear Filling
                 </FormLabel>
-                <Switch id="auto-filling" defaultChecked={true} disabled onChange={(e)=>{
-                  setIsFilling(e.target.checked)}
-                  }/>
-                <FormLabel htmlFor="plot-all" mb="0" >
+                <Switch
+                  id="auto-filling"
+                  defaultChecked={true}
+                  disabled
+                  onChange={(e) => {
+                    setIsFilling(e.target.checked);
+                  }}
+                />
+                <FormLabel htmlFor="plot-all" mb="0">
                   Plot All Readouts
                 </FormLabel>
-                <Switch id="plot-all" defaultChecked={true} onChange={(e)=>{
-                  setPlotAll(e.target.checked)}
-                  }/>
+                <Switch
+                  id="plot-all"
+                  defaultChecked={true}
+                  onChange={(e) => {
+                    setPlotAll(e.target.checked);
+                  }}
+                />
               </FormControl>
             </PopoverBody>
           </PopoverContent>

@@ -3,7 +3,7 @@ import { useReducer,useContext } from 'react';
 import { DataContext } from './data-context';
 import { dataProcess } from '../utils/dataWrangler';
 
-const dataProcessWrapper=(database,fov,s,allPoints,isFilling)=>{
+const dataProcessWrapper=(database,fov,s,allPoints,isFilling,totalReadouts)=>{
   if(!database||!database.get(fov)||!database.get(fov).get(s)) return null;
   return dataProcess(database.get(fov).get(s),allPoints,isFilling);
 }
@@ -56,7 +56,7 @@ export function TraceProvider({ children }) {
   const [traceState, dispatchTraceAction] = useReducer(traceReducer, defaultTraceState);
 
   const selectTraceHandler = (fov, s) => {
-    dispatchTraceAction({ type: 'SELECT', fov: fov, s: s, dataBys: dataCtx.dataBys, isPlotAll:dataCtx.isPlotAll,isFilling:dataCtx.isFilling });
+    dispatchTraceAction({ type: 'SELECT', fov: fov, s: s, dataBys: dataCtx.dataBys, isPlotAll:dataCtx.isPlotAll,isFilling:dataCtx.isFilling, totalReadouts:dataCtx.totalReadouts });
   };
   const clickTraceHandler = (a, b) => {
     dispatchTraceAction({ type: 'CLICK', a: a, b: b });

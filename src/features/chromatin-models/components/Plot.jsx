@@ -5,7 +5,7 @@ import { Html, OrbitControls, Line, GizmoHelper, GizmoViewport } from '@react-th
 import styles from '../Plot.module.css';
 import { useThree } from '@react-three/fiber';
 import { jsPDF } from 'jspdf';
-import { useControls,button } from 'leva';
+import { useControls,button,levaStore } from 'leva';
 import { SVGRenderer } from 'three/examples/jsm/renderers/SVGRenderer';
 import {svg2pdf} from 'svg2pdf.js';
 import { max } from 'd3';
@@ -352,17 +352,27 @@ const Plot = () => {
 
   const saveAsImage = () => {
     try {
-      const strName = 'image/jpeg';
+      const strName = 'image/png';
       const imgData = gl.domElement.toDataURL(strName);
       const strDownloadName = 'image/octet-stream';
       const pdf = new jsPDF();
-      pdf.addImage(imgData.replace(strName, strDownloadName), 'JPEG', 5, 5, 200, 200);
+      // Get page dimensions
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    
+    const margin = 10; 
+    
+    // Calculate image dimensions maintaining aspect ratio
+    const imageWidth = pageWidth - (margin * 2);
+    const imageHeight = (imageWidth * gl.domElement.height) / gl.domElement.width;
+      pdf.addImage(imgData.replace(strName, strDownloadName), 'PNG', margin, margin, imageWidth, imageHeight);
       pdf.save('fov-' + selected.fov + '-s-' + selected.s + '-' + 'image.pdf');
     } catch (e) {
       console.log(e);
       return;
     }
   };
+
   const saveAsVectorPDF = async () => {
     try {
       // Create SVG renderer

@@ -1,10 +1,27 @@
-import {Text, Highlight,VStack} from "@chakra-ui/react";
+import {
+  Text,
+  Highlight,
+  VStack,
+  FormLabel,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
+} from '@chakra-ui/react';
+import { useContext } from 'react';
+import { DataContext } from '../../../stores/data-context';
 
-const Instructions=()=>{
-  const highlightColor='#F6F7C1';
+const Instructions = () => {
+  const dataCtx=useContext(DataContext);
+  const highlightColor = '#F6F7C1';
+  
+  const handleChange = (readouts) => {
+    dataCtx.setTotalReadouts(readouts);
+  };
   return (
-    <VStack align="flex-start" marginTop={"40px"}>
-   <Text as="b" fontSize="3xl">
+    <VStack align="flex-start" marginTop={'40px'}>
+      <Text as="b" fontSize="3xl">
         Welcome, Please upload csv file with the following columns:
       </Text>
       <Text as="li" fontSize="xl">
@@ -16,21 +33,39 @@ const Instructions=()=>{
         </Highlight>
       </Text>
       <Text as="li" fontSize="xl">
-      <Highlight
+        <Highlight
           query={['fov']}
           styles={{ px: '1', py: '0.8', rounded: 'full', bg: highlightColor }}
-        >fov: field of view</Highlight></Text>
+        >
+          fov: field of view
+        </Highlight>
+      </Text>
       <Text as="li" fontSize="xl">
-      <Highlight
+        <Highlight
           query={['s']}
           styles={{ px: '1', py: '0.8', rounded: 'full', bg: highlightColor }}
-        >s: allele</Highlight></Text>
+        >
+          s: allele
+        </Highlight>
+      </Text>
       <Text as="li" fontSize="xl">
-      <Highlight
+        <Highlight
           query={['readout']}
           styles={{ px: '1', py: '0.8', rounded: 'full', bg: highlightColor }}
-        >readout: step, only odd ones (1,3,5,...) are plotted</Highlight>
+        >
+          readout: step
+        </Highlight>
       </Text>
+      <FormLabel htmlFor="total-readouts" mb="0">
+        Number of Total Readouts
+      </FormLabel>
+      <NumberInput step={5} size="xs" onChange={handleChange}>
+        <NumberInputField />
+        <NumberInputStepper>
+          <NumberIncrementStepper />
+          <NumberDecrementStepper />
+        </NumberInputStepper>
+      </NumberInput>
     </VStack>
   );
 };

@@ -21,7 +21,7 @@ const CustomTooltip = ({ active, payload, label }) => {
 
 const LinePlot = ({data}) => {
   const distances = calculateDistancesToCenter(data);
-  console.log(distances);
+
   return (
     <div>
         <LineChart
