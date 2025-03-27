@@ -48,7 +48,6 @@ export default function CSVReader() {
             }, {});
             return obj;
           });
-        console.log(array);
           setArray(array);
 
           setZoneHover(false);

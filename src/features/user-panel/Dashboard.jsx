@@ -5,7 +5,11 @@ import {
   IconButton,
   Stack,
   Divider,
-  Tabs, TabList, TabPanels, Tab, TabPanel 
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
 } from '@chakra-ui/react';
 import { ArrowLeftIcon, ArrowRightIcon } from '@chakra-ui/icons';
 
@@ -17,24 +21,22 @@ import { generatePairwiseDistanceMap, refreshPage } from '../../utils/displayUti
 import styles from './Dashboard.module.css';
 import Filter from './components/Filter';
 import LinePlot from '../centrality/LinePlot';
+import BoxPlot from '../radiusGyration/BoxPlot';
 const Dashboard = () => {
   const dataCtx = useContext(DataContext);
   const traceCtx = useContext(TraceContext);
   const data = traceCtx.data;
- 
+
   //set the initial fov to be the first existing fov
-  const initialFov=Object.keys(dataCtx.keys)[0];
+  const initialFov = Object.keys(dataCtx.keys)[0];
   const [fov, setFov] = useState(initialFov);
   //allele is the index of the allele in the allele list:dataCtx.keys[fov]
   const [allele, setAllele] = useState(0);
   const selectedHandler = traceCtx.selectedHandler;
 
- 
-
   useEffect(() => {
     selectedHandler(fov.toString(), dataCtx.keys[fov][allele].toString());
   }, [fov, allele]);
-
 
   const renderOptions = () => {
     let options = [];
@@ -84,15 +86,13 @@ const Dashboard = () => {
   return (
     <div className={styles.dashboard}>
       <Heading as="h1" className={styles.header}>
-      Optical Looping Interactive Viewing Engine (OLIVE)
+        Optical Looping Interactive Viewing Engine (OLIVE)
       </Heading>
-      <Stack direction="row" spacing='30px'> 
+      <Stack direction="row" spacing="30px">
         <div className={styles.select}>
           <label>FOV:</label>
           <Select
-            
             value={fov}
-          
             onChange={(e) => {
               setFov(e.target.value);
               setAllele(0);
@@ -104,9 +104,7 @@ const Dashboard = () => {
         <div className={styles.select}>
           <label>Allele:</label>
           <Select
- 
             value={allele}
-
             onChange={(e) => {
               setAllele(e.target.value);
             }}
@@ -114,51 +112,48 @@ const Dashboard = () => {
             {renderAlleleOptions()}
           </Select>
         </div>
-  
-      <div className={styles.buttons}>
-    
-        <IconButton
-          isDisabled={allele === 0 ? true : false}
-          colorScheme="teal"
-          variant="outline"
-          aria-label="ArrowLeftIcon"
-          icon={<ArrowLeftIcon />}
-          onClick={preAlleleHandler}
-        />
-        <IconButton
-          isDisabled={allele === dataCtx.keys[fov].length - 1 ? true : false}
-          colorScheme="teal"
-          variant="outline"
-          aria-label="ArrowRightIcon"
-          icon={<ArrowRightIcon />}
-          onClick={nextAlleleHandler}
-        />
-        <Button colorScheme="red" variant="outline" onClick={refreshPage}>
-          Exit
-        </Button>
-      </div>
+
+        <div className={styles.buttons}>
+          <IconButton
+            isDisabled={allele === 0 ? true : false}
+            colorScheme="teal"
+            variant="outline"
+            aria-label="ArrowLeftIcon"
+            icon={<ArrowLeftIcon />}
+            onClick={preAlleleHandler}
+          />
+          <IconButton
+            isDisabled={allele === dataCtx.keys[fov].length - 1 ? true : false}
+            colorScheme="teal"
+            variant="outline"
+            aria-label="ArrowRightIcon"
+            icon={<ArrowRightIcon />}
+            onClick={nextAlleleHandler}
+          />
+          <Button colorScheme="red" variant="outline" onClick={refreshPage}>
+            Exit
+          </Button>
+        </div>
       </Stack>
       <div className={styles.filter}>
-      <Filter alleleHandler={setAllele}/>
+        <Filter alleleHandler={setAllele} />
       </div>
-     
-     <Divider />
-     <Tabs variant='soft-rounded' colorScheme='blue'>
-  <TabList>
-    <Tab>Heatmap</Tab>
-    <Tab>Distance to the geometric center</Tab>
-  </TabList>
-  <TabPanels>
-    <TabPanel>
-    {distanceMap && <Heatmap data={distanceMap} width={600} height={550} />}
-    </TabPanel>
-    <TabPanel>
-      {data && <LinePlot data={data} />}
-    </TabPanel>
-  </TabPanels>
-</Tabs>
-      
 
+      <Divider />
+      <Tabs variant="soft-rounded" colorScheme="blue">
+        <TabList>
+          <Tab>Heatmap</Tab>
+          <Tab>Distance to the geometric center</Tab>
+          <Tab>Radius of Gyration</Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel>
+            {distanceMap && <Heatmap data={distanceMap} width={600} height={550} />}
+          </TabPanel>
+          <TabPanel>{data && <LinePlot data={data} />}</TabPanel>
+          <TabPanel>{data && <BoxPlot data={data} />}</TabPanel>
+        </TabPanels>
+      </Tabs>
     </div>
   );
 };

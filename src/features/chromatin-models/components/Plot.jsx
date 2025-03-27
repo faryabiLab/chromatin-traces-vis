@@ -442,7 +442,7 @@ const Plot = () => {
         <div style={{ color: 'green', fontSize: '16px' }}>-Y</div>
       </Html>
       <Html position={[0, 0, roundedGridSize/2]}>
-        <div style={{ color: 'blue', fontSize: '16px' }}>+Z</div>
+        <div style={{ color: 'blue', fontSize: '16px' }}>+Z: {roundedGridSize/2}nm</div>
       </Html>
       <Html position={[0, 0, -roundedGridSize/2]}>
         <div style={{ color: 'blue', fontSize: '16px' }}>-Z</div>
