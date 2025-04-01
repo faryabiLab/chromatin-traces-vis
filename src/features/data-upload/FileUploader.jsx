@@ -4,8 +4,9 @@ import Instructions from './components/Instructions';
 
 import DataBrowser from './components/DataBrowser';
 import CSVReader from './components/CSVReader';
-
+import {useState} from 'react';
 const FileUploader = () => {
+  const [maxReadout, setMaxReadout] = useState(0);
   return (
     <VStack spacing="24px" marginBottom={"100px"}>
     <Box bgGradient={'linear( #E2F4C5 0%, yellow.50 30%, white 100%)'} w='100vw' py={10}>
@@ -21,10 +22,10 @@ const FileUploader = () => {
       </Text>
       
       <Box display={'flex'} justifyContent={'center'}>
-        <Instructions />
+        <Instructions setMaxReadout={setMaxReadout}/>
       </Box>
       </Box>
-      <CSVReader />
+      <CSVReader maxReadout={maxReadout}/>
       <Divider />
       <DataBrowser />
     </VStack>

@@ -47,13 +47,15 @@ export function DataProvider({children}){
   }
 
   const radiusOfGyrationHandler=()=>{
+    console.time('functionTimer');
+
     const result={};
     for(const fovKey of dataBys.keys()){
       if(fovKey!==undefined){
         result[fovKey]=Array.from(dataBys.get(fovKey));
       }
     }
-
+    // console.log(result);
     const rgValues = [];
     
     Object.values(result).forEach(fovGroup => {
@@ -62,6 +64,7 @@ export function DataProvider({children}){
         });
     });
 
+    console.timeEnd('functionTimer');
     return rgValues;
 
   }

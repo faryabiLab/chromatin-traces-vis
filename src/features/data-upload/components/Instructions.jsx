@@ -9,15 +9,12 @@ import {
   NumberIncrementStepper,
   NumberDecrementStepper,
 } from '@chakra-ui/react';
-import { useContext } from 'react';
-import { DataContext } from '../../../stores/data-context';
 
-const Instructions = () => {
-  const dataCtx=useContext(DataContext);
+const Instructions = ({setMaxReadout}) => {
   const highlightColor = '#F6F7C1';
   
   const handleChange = (readouts) => {
-    dataCtx.setTotalReadouts(readouts);
+    setMaxReadout(readouts);
   };
   return (
     <VStack align="flex-start" marginTop={'40px'}>

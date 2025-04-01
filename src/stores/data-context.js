@@ -7,4 +7,5 @@ export const DataContext = createContext({
   setDataBysHandler: () => {},
   filterDataBysHandler: () => {},
   setPlotAllReadouts: () => {},
+  setTotalReadouts: () => {},
 });

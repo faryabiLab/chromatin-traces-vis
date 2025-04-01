@@ -5,7 +5,7 @@ import { dataProcess } from '../utils/dataWrangler';
 
 const dataProcessWrapper=(database,fov,s,allPoints,isFilling,totalReadouts)=>{
   if(!database||!database.get(fov)||!database.get(fov).get(s)) return null;
-  return dataProcess(database.get(fov).get(s),allPoints,isFilling);
+  return dataProcess(database.get(fov).get(s),allPoints,isFilling,totalReadouts);
 }
 
 const defaultTraceState = {
@@ -54,7 +54,6 @@ const traceReducer = (state, action) => {
 export function TraceProvider({ children }) {
   const dataCtx=useContext(DataContext);
   const [traceState, dispatchTraceAction] = useReducer(traceReducer, defaultTraceState);
-
   const selectTraceHandler = (fov, s) => {
     dispatchTraceAction({ type: 'SELECT', fov: fov, s: s, dataBys: dataCtx.dataBys, isPlotAll:dataCtx.isPlotAll,isFilling:dataCtx.isFilling, totalReadouts:dataCtx.totalReadouts });
   };

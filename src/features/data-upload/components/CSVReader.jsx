@@ -18,11 +18,12 @@ import {
   FormControl,
   SimpleGrid,
 } from '@chakra-ui/react';
+import { max } from 'd3';
 
 const DEFAULT_REMOVE_HOVER_COLOR = '#A01919';
 const REMOVE_HOVER_COLOR_LIGHT = lightenDarkenColor(DEFAULT_REMOVE_HOVER_COLOR, 40);
 
-export default function CSVReader() {
+export default function CSVReader({ maxReadout }) {
   const { CSVReader } = useCSVReader();
   const [zoneHover, setZoneHover] = useState(false);
   const [removeHoverColor, setRemoveHoverColor] = useState(DEFAULT_REMOVE_HOVER_COLOR);
@@ -33,11 +34,12 @@ export default function CSVReader() {
   const setDataBysHandler = dataCtx.setDataBysHandler;
   const setPlotAllReadouts = dataCtx.setPlotAllReadouts;
   const setFillingReadouts = dataCtx.setFillingReadouts;
-
+  const setTotalReadouts = dataCtx.setTotalReadouts;
   return (
     <HStack align={'center'} justify={'center'} spacing={20}>
       <CSVReader
         onUploadAccepted={(results) => {
+          
           const csvHeader = results.data[0];
           const csvContent = results.data.slice(1);
 
@@ -157,6 +159,7 @@ export default function CSVReader() {
               setPlotAllReadouts(plotAll);
               setFillingReadouts(isFilling);
               setDataBysHandler(array);
+              setTotalReadouts(maxReadout);
             }
           }}
         >
