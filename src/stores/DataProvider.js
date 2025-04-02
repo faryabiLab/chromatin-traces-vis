@@ -3,7 +3,7 @@ import {DataContext} from './data-context';
 import * as d3 from 'd3';
 import { calculatePairDistance } from '../utils/displayUtils';
 import { dataProcess } from '../utils/dataWrangler';
-import { calculateRg } from '../utils/calculationUtils';
+import { calculateTraceRg } from '../utils/calculationUtils';
 export function DataProvider({children}){
   const [dataBys,setDataBys] = useState(null);
   const [keys,setKeys] = useState(null);
@@ -48,19 +48,17 @@ export function DataProvider({children}){
 
   const radiusOfGyrationHandler=()=>{
     console.time('RgCalculateTimer');
-
     const result={};
     for(const fovKey of dataBys.keys()){
       if(fovKey!==undefined){
         result[fovKey]=Array.from(dataBys.get(fovKey));
       }
     }
-    // console.log(result);
     const rgValues = [];
     
     Object.values(result).forEach(fovGroup => {
         fovGroup.forEach(([_, points]) => {
-            rgValues.push(calculateRg(points));
+            rgValues.push(calculateTraceRg(dataProcess(points,totalReadouts)));
         });
     });
 

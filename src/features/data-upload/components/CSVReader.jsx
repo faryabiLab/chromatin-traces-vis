@@ -1,24 +1,13 @@
 import React, { useState, useContext } from 'react';
 import { DataContext } from '../../../stores/data-context';
 import { useCSVReader, lightenDarkenColor, formatFileSize } from 'react-papaparse';
-import { ArrowForwardIcon, HamburgerIcon } from '@chakra-ui/icons';
+import { ArrowForwardIcon } from '@chakra-ui/icons';
 import styles from '../Uploader.module.css';
 import {
   Box,
   HStack,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverHeader,
-  PopoverBody,
-  PopoverArrow,
-  PopoverCloseButton,
-  Switch,
-  FormLabel,
-  FormControl,
-  SimpleGrid,
 } from '@chakra-ui/react';
-import { max } from 'd3';
+
 
 const DEFAULT_REMOVE_HOVER_COLOR = '#A01919';
 const REMOVE_HOVER_COLOR_LIGHT = lightenDarkenColor(DEFAULT_REMOVE_HOVER_COLOR, 40);

@@ -17,7 +17,7 @@ const defaultTraceState = {
 const traceReducer = (state, action) => {
   if (action.type === 'SELECT') {
     return {
-      data:dataProcessWrapper(action.dataBys,action.fov,action.s,action.isPlotAll,action.isFilling),
+      data:dataProcessWrapper(action.dataBys,action.fov,action.s,action.totalReadouts),
       selected: { fov: action.fov, s: action.s },
       clicked: state.clicked,
       triplet: state.triplet,
