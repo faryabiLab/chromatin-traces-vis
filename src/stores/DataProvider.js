@@ -47,7 +47,7 @@ export function DataProvider({children}){
   }
 
   const radiusOfGyrationHandler=()=>{
-    console.time('functionTimer');
+    console.time('RgCalculateTimer');
 
     const result={};
     for(const fovKey of dataBys.keys()){
@@ -64,7 +64,7 @@ export function DataProvider({children}){
         });
     });
 
-    console.timeEnd('functionTimer');
+    console.timeEnd('RgCalculateTimer');
     return rgValues;
 
   }

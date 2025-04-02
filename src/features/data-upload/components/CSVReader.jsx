@@ -28,12 +28,8 @@ export default function CSVReader({ maxReadout }) {
   const [zoneHover, setZoneHover] = useState(false);
   const [removeHoverColor, setRemoveHoverColor] = useState(DEFAULT_REMOVE_HOVER_COLOR);
   const [array, setArray] = useState([]);
-  const [plotAll, setPlotAll] = useState(true);
-  const [isFilling, setIsFilling] = useState(true);
   const dataCtx = useContext(DataContext);
   const setDataBysHandler = dataCtx.setDataBysHandler;
-  const setPlotAllReadouts = dataCtx.setPlotAllReadouts;
-  const setFillingReadouts = dataCtx.setFillingReadouts;
   const setTotalReadouts = dataCtx.setTotalReadouts;
   return (
     <HStack align={'center'} justify={'center'} spacing={20}>
@@ -106,43 +102,6 @@ export default function CSVReader({ maxReadout }) {
         )}
       </CSVReader>
       <Box>
-        <Popover gutter={15} placement="top-start" arrowSize={15}>
-          <PopoverTrigger>
-            <Box as="button" p={2} color="white" fontWeight="bold" borderRadius="md" bgColor="grey">
-              <HamburgerIcon w={6} h={6} />
-            </Box>
-          </PopoverTrigger>
-          <PopoverContent>
-            <PopoverArrow />
-            <PopoverCloseButton />
-            <PopoverHeader>Configuration</PopoverHeader>
-            <PopoverBody>
-              <FormControl as={SimpleGrid} columns={{ base: 1, md: 2 }}>
-                <FormLabel htmlFor="auto-filling" mb="0">
-                  Auto Linear Filling
-                </FormLabel>
-                <Switch
-                  id="auto-filling"
-                  defaultChecked={true}
-                  disabled
-                  onChange={(e) => {
-                    setIsFilling(e.target.checked);
-                  }}
-                />
-                <FormLabel htmlFor="plot-all" mb="0">
-                  Plot All Readouts
-                </FormLabel>
-                <Switch
-                  id="plot-all"
-                  defaultChecked={true}
-                  onChange={(e) => {
-                    setPlotAll(e.target.checked);
-                  }}
-                />
-              </FormControl>
-            </PopoverBody>
-          </PopoverContent>
-        </Popover>
         <Box
           as="button"
           p={2}
@@ -156,8 +115,6 @@ export default function CSVReader({ maxReadout }) {
           margin="5px"
           onClick={(e) => {
             if (array.length > 0) {
-              setPlotAllReadouts(plotAll);
-              setFillingReadouts(isFilling);
               setDataBysHandler(array);
               setTotalReadouts(maxReadout);
             }
