@@ -8,7 +8,7 @@ const BoxPlot=({data})=>{
   const values=useMemo(()=>{
     return dataCtx.radiusOfGyrationHandler();
   },[dataCtx.dataBys]);
-
+  const rgValues=calculateTraceRg(data);
   const plotData = [{
     y: values,
     type: 'box',
@@ -43,7 +43,23 @@ const BoxPlot=({data})=>{
       pad: 4
     },
     width: 600,
-    height: 400
+    height: 400,
+    shapes: [
+      {
+        type: "line",
+        x0: 0, // Start of the line (x-axis)
+        x1: 1, // End of the line (x-axis)
+        y0: rgValues, // Value for the horizontal line (y-axis)
+        y1: rgValues, // Same as y0 to make it horizontal
+        xref: "paper", // Reference to the entire plot width
+        yref: "y", // Reference to the y-axis
+        line: {
+          color: "red",
+          width: 1,
+          dash: "dash", // Can be 'solid', 'dot', 'dash', etc.
+        },
+      },
+    ],
   };
 
   const config = {
