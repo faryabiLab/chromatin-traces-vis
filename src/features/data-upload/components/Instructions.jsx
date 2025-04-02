@@ -1,6 +1,7 @@
 import {
   Text,
   Highlight,
+  HStack,
   VStack,
   FormLabel,
   NumberInput,
@@ -53,8 +54,9 @@ const Instructions = ({setMaxReadout}) => {
           readout: step
         </Highlight>
       </Text>
+      <HStack spacing={4} alignItems="center">
       <FormLabel htmlFor="total-readouts" mb="0">
-        Number of Total Readouts
+        Number of Total Readouts:
       </FormLabel>
       <NumberInput step={5} size="xs" onChange={handleChange}>
         <NumberInputField />
@@ -63,6 +65,7 @@ const Instructions = ({setMaxReadout}) => {
           <NumberDecrementStepper />
         </NumberInputStepper>
       </NumberInput>
+      </HStack>
     </VStack>
   );
 };
