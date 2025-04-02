@@ -47,16 +47,16 @@ const BoxPlot=({data})=>{
     shapes: [
       {
         type: "line",
-        x0: 0, // Start of the line (x-axis)
-        x1: 1, // End of the line (x-axis)
-        y0: rgValues, // Value for the horizontal line (y-axis)
-        y1: rgValues, // Same as y0 to make it horizontal
-        xref: "paper", // Reference to the entire plot width
-        yref: "y", // Reference to the y-axis
+        x0: 0, 
+        x1: 1, 
+        y0: rgValues, 
+        y1: rgValues, 
+        xref: "paper", 
+        yref: "y", 
         line: {
           color: "red",
           width: 1,
-          dash: "solid", // Can be 'solid', 'dot', 'dash', etc.
+          dash: "solid", 
         },
       },
     ],
