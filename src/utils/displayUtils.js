@@ -60,3 +60,8 @@ export function calculateDistancesToCenter(points) {
 }
 
 
+export const getFilledReadouts = (data) => {
+    return data
+        .filter(item => item.filling === true)
+        .map(item => item.readout);
+};
