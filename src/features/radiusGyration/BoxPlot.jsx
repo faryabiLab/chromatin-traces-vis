@@ -56,7 +56,7 @@ const BoxPlot=({data})=>{
         line: {
           color: "red",
           width: 1,
-          dash: "dash", // Can be 'solid', 'dot', 'dash', etc.
+          dash: "solid", // Can be 'solid', 'dot', 'dash', etc.
         },
       },
     ],
