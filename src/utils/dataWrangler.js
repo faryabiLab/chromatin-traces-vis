@@ -16,6 +16,7 @@ const dataFilling=(prev,cur)=>{
 };
 
 const headHandler=(first,second)=>{
+  if(!first||!second){return []}
   let fillingArray = [];
   const n = first.readout - 1; // number of missing points at head
   if (n <= 0) return fillingArray;
@@ -42,6 +43,7 @@ const headHandler=(first,second)=>{
 };
 
 const tailHandler=(last,secondLast,totalReadouts)=>{
+if(!last||!secondLast){return []}
   let fillingArray = [];
   const n = totalReadouts - last.readout; // number of missing points at tail
   if (n <= 0) return fillingArray;
