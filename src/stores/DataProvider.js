@@ -7,8 +7,6 @@ import { calculateTraceRg } from '../utils/calculationUtils';
 export function DataProvider({children}){
   const [dataBys,setDataBys] = useState(null);
   const [keys,setKeys] = useState(null);
-  const [isPlotAll,setIsPlotAll] = useState(false);
-  const [isFilling,setIsFilling] = useState(true);
   const [totalReadouts,setTotalReadouts] = useState(0);
   const extractKeys=(data)=>{
     const result={};
@@ -34,7 +32,7 @@ export function DataProvider({children}){
     const keysDict=keys;
     const newKeys=[];
     for(const alleleKey of alleles.keys()){
-      const allele=dataProcess(alleles.get(alleleKey),isPlotAll,isFilling);
+      const allele=dataProcess(alleles.get(alleleKey),totalReadouts);
       const nodeA=allele[a];
       const nodeB=allele[b];
       
@@ -74,14 +72,10 @@ export function DataProvider({children}){
   const dataContext={
     dataBys:dataBys,
     keys:keys,
-    isPlotAll:isPlotAll,
-    isFilling:isFilling,
     totalReadouts:totalReadouts,
     setDataBysHandler:setDataBysHandler,
     filterDataBysHandler:filterHandler,
     resetHandler:resetHandler,
-    setPlotAllReadouts:setIsPlotAll,
-    setFillingReadouts:setIsFilling,
     setTotalReadouts:setTotalReadouts,
     radiusOfGyrationHandler:radiusOfGyrationHandler,
   };

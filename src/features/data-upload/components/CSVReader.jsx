@@ -24,7 +24,7 @@ export default function CSVReader({ maxReadout }) {
     <HStack align={'center'} justify={'center'} spacing={20}>
       <CSVReader
         onUploadAccepted={(results) => {
-          
+          console.timeEnd('UserDragEnterTimer');
           const csvHeader = results.data[0];
           const csvContent = results.data.slice(1);
 
@@ -38,6 +38,9 @@ export default function CSVReader({ maxReadout }) {
           setArray(array);
 
           setZoneHover(false);
+        }}
+        onDragEnter={(event) => {
+          console.time('UserDragEnterTimer');
         }}
         onDragOver={(event) => {
           event.preventDefault();

@@ -66,7 +66,7 @@ const DataTable = ({ data, columns }) => {
     initialState:{
       columnVisibility: {
         filename: false,
-        readout_steps: false,
+        number_readout: false,
       }
     },
     data,
