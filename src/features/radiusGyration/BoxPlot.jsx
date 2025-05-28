@@ -15,6 +15,7 @@ const BoxPlot=({data})=>{
     name: 'Radius of Gyration',
     boxpoints: 'outliers',
     boxmean: true,
+    hoverinfo:'none',
     marker: {
       color: 'rgb(136, 132, 216)',
       outliercolor: 'rgb(255, 0, 0)',
