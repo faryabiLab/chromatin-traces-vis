@@ -13,12 +13,14 @@ import {
 
 const Instructions = ({setMaxReadout}) => {
   const highlightColor = '#F6F7C1';
+  const warningColor='#e23636';
   
   const handleChange = (readouts) => {
     setMaxReadout(readouts);
   };
   return (
-    <VStack align="flex-start" marginTop={'40px'}>
+    <VStack align="flex-start" marginTop={'40px'} spacing={'30px'}>
+    <div>
       <Text as="b" fontSize="3xl">
         Welcome, Please upload csv file with the following columns:
       </Text>
@@ -54,9 +56,16 @@ const Instructions = ({setMaxReadout}) => {
           readout: step
         </Highlight>
       </Text>
-      <HStack spacing={4} alignItems="center">
+      </div>
+      <HStack spacing={5} alignItems="center">
       <FormLabel htmlFor="total-readouts" mb="0">
-        Number of Total Readouts:
+      <Highlight
+          query={['*']}
+          styles={{ px: '1', py: '0.6', rounded: 'full', bg: warningColor }}
+        >
+          * Number of Total Readouts:
+        </Highlight>
+        
       </FormLabel>
       <NumberInput step={5} size="xs" onChange={handleChange}>
         <NumberInputField />

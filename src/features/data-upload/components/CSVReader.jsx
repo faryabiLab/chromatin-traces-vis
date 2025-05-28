@@ -6,6 +6,7 @@ import styles from '../Uploader.module.css';
 import {
   Box,
   HStack,
+  useToast,
 } from '@chakra-ui/react';
 
 
@@ -20,6 +21,7 @@ export default function CSVReader({ maxReadout }) {
   const dataCtx = useContext(DataContext);
   const setDataBysHandler = dataCtx.setDataBysHandler;
   const setTotalReadouts = dataCtx.setTotalReadouts;
+  const Toast=useToast();
   return (
     <HStack align={'center'} justify={'center'} spacing={20}>
       <CSVReader
@@ -36,7 +38,6 @@ export default function CSVReader({ maxReadout }) {
             return obj;
           });
           setArray(array);
-
           setZoneHover(false);
         }}
         onDragEnter={(event) => {
@@ -106,7 +107,17 @@ export default function CSVReader({ maxReadout }) {
           }}
           margin="5px"
           onClick={(e) => {
-            if (array.length > 0) {
+            if (maxReadout === null||maxReadout=='') {
+              Toast({
+                title: "Error",
+                description: "Please Provide Total Readouts",
+                status: "error",
+                duration: 3000,
+                isClosable: true,
+                position: "top"
+              });
+            }
+            else if (array.length > 0) {
               setDataBysHandler(array);
               setTotalReadouts(maxReadout);
             }
