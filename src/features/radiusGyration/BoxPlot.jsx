@@ -2,6 +2,7 @@ import {useContext,useMemo} from 'react';
 import { DataContext } from "../../stores/data-context";
 import Plot from 'react-plotly.js';
 import { calculateTraceRg } from '../../utils/calculationUtils';
+import styles from './BoxPlot.module.css';
 
 const BoxPlot=({data})=>{
   const dataCtx=useContext(DataContext);
@@ -71,14 +72,16 @@ const BoxPlot=({data})=>{
   };
   
   return (
-    <div className="w-full h-96">
-    <span>Radius of Gyration: {calculateTraceRg(data)}</span>
+    <div className={styles.container}>
+    <span className={styles.label}>Radius of Gyration: {calculateTraceRg(data).toFixed(2)} nm</span>
+      <div className={styles.plotContainer}>
       <Plot
         data={plotData}
         layout={layout}
         config={config}
         className="w-full h-full"
       />
+      </div>
     </div>
   );
 };

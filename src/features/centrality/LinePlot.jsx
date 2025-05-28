@@ -26,8 +26,8 @@ const LinePlot = ({data}) => {
     <div>
         <LineChart
           data={distances}
-          width={700}
-          height={400}
+          width={800}
+          height={450}
           margin={{
             top: 30,
             right: 30,
@@ -50,6 +50,7 @@ const LinePlot = ({data}) => {
               position: 'bottom',
               
             }}
+            interval={2}
           />
           <YAxis 
           label={{ 
