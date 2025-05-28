@@ -5,7 +5,9 @@ import { Html, OrbitControls, Line, GizmoHelper, GizmoViewport } from '@react-th
 import styles from '../Plot.module.css';
 import { useThree } from '@react-three/fiber';
 import { jsPDF } from 'jspdf';
-import { useControls,button } from 'leva';
+import { useControls,button,levaStore } from 'leva';
+import { SVGRenderer } from 'three/examples/jsm/renderers/SVGRenderer';
+import {svg2pdf} from 'svg2pdf.js';
 import { max } from 'd3';
 const Plot = () => {
   //index of the points that are clicked
@@ -30,7 +32,7 @@ const Plot = () => {
 
   const { color, isGrid, tubeRadius, showDistance,sphereRadius,radius, isPerimeter } = useControls({
     color: 'red',
-    isGrid:{value:true,label:'Show Grid'},
+    isGrid:{value:true,label:'Grid & Axis'},
     tubeRadius: { value: 5, min: 0, max: 5, step: 0.5, label: 'Line Size' },
     sphereRadius: { value: 15, min: 10, max: 25, step: 1, label: 'Dot Size' },
     showDistance: {value:true,label:'Show Distance'},
@@ -40,6 +42,7 @@ const Plot = () => {
   });
 
   const { gl } = useThree();
+  const { scene, camera } = useThree();
   //initialize pointA and pointB to null when selected changes
   // useEffect(() => {
   //   setPointA(-1);
@@ -298,7 +301,7 @@ const Plot = () => {
             }
           }}
         >
-          <sphereGeometry args={[sphereRadius, 64, 16]} />
+          <sphereGeometry args={[sphereRadius, 64, 48]} />
           <meshStandardMaterial color={colorPoint(index)} />
           <Html scaleFactor={10}>
             <div className={styles.label}>
@@ -349,12 +352,58 @@ const Plot = () => {
 
   const saveAsImage = () => {
     try {
-      const strName = 'image/jpeg';
+      const strName = 'image/png';
       const imgData = gl.domElement.toDataURL(strName);
       const strDownloadName = 'image/octet-stream';
       const pdf = new jsPDF();
-      pdf.addImage(imgData.replace(strName, strDownloadName), 'JPEG', 5, 5, 200, 200);
+      // Get page dimensions
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    
+    const margin = 10; 
+    
+    // Calculate image dimensions maintaining aspect ratio
+    const imageWidth = pageWidth - (margin * 2);
+    const imageHeight = (imageWidth * gl.domElement.height) / gl.domElement.width;
+      pdf.addImage(imgData.replace(strName, strDownloadName), 'PNG', margin, margin, imageWidth, imageHeight);
       pdf.save('fov-' + selected.fov + '-s-' + selected.s + '-' + 'image.pdf');
+    } catch (e) {
+      console.log(e);
+      return;
+    }
+  };
+
+  const saveAsVectorPDF = async () => {
+    try {
+      // Create SVG renderer
+      const svgRenderer = new SVGRenderer();
+      svgRenderer.setSize(595.28, 841.89);
+      
+      // Render the scene
+      svgRenderer.render(scene, camera);
+      
+      // Get the SVG element
+      const svgElement = svgRenderer.domElement;
+      
+      // Create PDF document
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'pt', // points
+        format: [595.28, 841.89],
+        compress: true,
+        precision: 1,
+      });
+  
+      // Convert SVG to PDF while maintaining vector quality
+      await svg2pdf(svgElement, pdf, {
+        xOffset: 0,
+        yOffset: 0,
+        scale: 1
+      });
+  
+      // Save the PDF
+      pdf.save(`fov-${selected.fov}-s-${selected.s}-vector.pdf`);
+      
     } catch (e) {
       console.log(e);
       return;
@@ -372,13 +421,13 @@ const Plot = () => {
             zIndex: 1,
           }}
         >
-          <button onClick={saveAsImage} className={styles.saveBtn}>
+          <button onClick={saveAsVectorPDF} className={styles.saveBtn}>
             Download PDF
           </button>
         </div>
       </Html>
       <OrbitControls makeDefault />
-      <axesHelper args={[roundedGridSize]} />
+      {isGrid&&<axesHelper args={[roundedGridSize]} />}
       {isGrid&&<gridHelper args={[roundedGridSize, roundedGridSize/100]} rotation={[0, Math.PI / 2, Math.PI / 2]}  />}
       <Html position={[roundedGridSize/2, 0, 0]}>
         <div style={{ color: 'red', fontSize: '16px' }}>+X: {roundedGridSize/2}nm</div>
@@ -393,7 +442,7 @@ const Plot = () => {
         <div style={{ color: 'green', fontSize: '16px' }}>-Y</div>
       </Html>
       <Html position={[0, 0, roundedGridSize/2]}>
-        <div style={{ color: 'blue', fontSize: '16px' }}>+Z</div>
+        <div style={{ color: 'blue', fontSize: '16px' }}>+Z: {roundedGridSize/2}nm</div>
       </Html>
       <Html position={[0, 0, -roundedGridSize/2]}>
         <div style={{ color: 'blue', fontSize: '16px' }}>-Z</div>

@@ -1,42 +1,32 @@
 import React, { useState, useContext } from 'react';
 import { DataContext } from '../../../stores/data-context';
 import { useCSVReader, lightenDarkenColor, formatFileSize } from 'react-papaparse';
-import { ArrowForwardIcon, HamburgerIcon } from '@chakra-ui/icons';
+import { ArrowForwardIcon,QuestionIcon } from '@chakra-ui/icons';
 import styles from '../Uploader.module.css';
 import {
   Box,
   HStack,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverHeader,
-  PopoverBody,
-  PopoverArrow,
-  PopoverCloseButton,
-  Switch,
-  FormLabel,
-  FormControl,
-  SimpleGrid,
+  useToast,
 } from '@chakra-ui/react';
+
 
 const DEFAULT_REMOVE_HOVER_COLOR = '#A01919';
 const REMOVE_HOVER_COLOR_LIGHT = lightenDarkenColor(DEFAULT_REMOVE_HOVER_COLOR, 40);
 
-export default function CSVReader() {
+export default function CSVReader({ maxReadout }) {
   const { CSVReader } = useCSVReader();
   const [zoneHover, setZoneHover] = useState(false);
   const [removeHoverColor, setRemoveHoverColor] = useState(DEFAULT_REMOVE_HOVER_COLOR);
   const [array, setArray] = useState([]);
-  const [plotAll, setPlotAll] = useState(false);
-  const [isFilling, setIsFilling] = useState(true);
   const dataCtx = useContext(DataContext);
   const setDataBysHandler = dataCtx.setDataBysHandler;
-  const setPlotAllReadouts = dataCtx.setPlotAllReadouts;
-  const setFillingReadouts = dataCtx.setFillingReadouts;
+  const setTotalReadouts = dataCtx.setTotalReadouts;
+  const Toast=useToast();
   return (
     <HStack align={'center'} justify={'center'} spacing={20}>
       <CSVReader
         onUploadAccepted={(results) => {
+          console.timeEnd('UserDragEnterTimer');
           const csvHeader = results.data[0];
           const csvContent = results.data.slice(1);
 
@@ -47,10 +37,11 @@ export default function CSVReader() {
             }, {});
             return obj;
           });
-
           setArray(array);
-
           setZoneHover(false);
+        }}
+        onDragEnter={(event) => {
+          console.time('UserDragEnterTimer');
         }}
         onDragOver={(event) => {
           event.preventDefault();
@@ -104,34 +95,23 @@ export default function CSVReader() {
         )}
       </CSVReader>
       <Box>
-        <Popover gutter={15} placement='top-start' arrowSize={15}>
-          <PopoverTrigger>
-            <Box as="button" p={2} color="white" fontWeight="bold" borderRadius="md" bgColor="grey">
-              <HamburgerIcon w={6} h={6} />
-            </Box>
-          </PopoverTrigger>
-          <PopoverContent>
-            <PopoverArrow />
-            <PopoverCloseButton />
-            <PopoverHeader>Configuration</PopoverHeader>
-            <PopoverBody>
-              <FormControl as={SimpleGrid} columns={{ base: 1, md: 2 }}>
-                <FormLabel htmlFor="auto-filling" mb="0">
-                  Auto Linear Filling
-                </FormLabel>
-                <Switch id="auto-filling" defaultChecked={true} onChange={(e)=>{
-                  setIsFilling(e.target.checked)}
-                  }/>
-                <FormLabel htmlFor="plot-all" mb="0">
-                  Plot All Readouts
-                </FormLabel>
-                <Switch id="plot-all" onChange={(e)=>{
-                  setPlotAll(e.target.checked)}
-                  }/>
-              </FormControl>
-            </PopoverBody>
-          </PopoverContent>
-        </Popover>
+      <Box
+        as="button"
+        p={2}
+        color="white"
+        fontWeight="bold"
+        borderRadius="md"
+        bgGradient="linear(to-r, gray.600, gray.800)"
+        _hover={{
+          bgGradient: 'linear(to-r, blue.500, purple.500)',
+        }}
+        margin="5px"
+        onClick={() => {
+          window.open('https://github.com/faryabiLab/chromatin-traces-vis', '_blank');
+        }}
+      >
+        <QuestionIcon w={6} h={6} />
+      </Box>
         <Box
           as="button"
           p={2}
@@ -144,10 +124,19 @@ export default function CSVReader() {
           }}
           margin="5px"
           onClick={(e) => {
-            if (array.length > 0) {
-              setPlotAllReadouts(plotAll);
-              setFillingReadouts(isFilling);
+            if (maxReadout === null||maxReadout=='') {
+              Toast({
+                title: "Error",
+                description: "Please Provide Total Readouts",
+                status: "error",
+                duration: 3000,
+                isClosable: true,
+                position: "top"
+              });
+            }
+            else if (array.length > 0) {
               setDataBysHandler(array);
+              setTotalReadouts(maxReadout);
             }
           }}
         >

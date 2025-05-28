@@ -12,6 +12,8 @@ import {
   useBoolean,
   HStack,
 } from '@chakra-ui/react';
+import { getFilledReadouts } from '../../utils/displayUtils';
+
 const MARGIN = { top: 10, right: 10, bottom: 40, left: 50 };
 const Heatmap = ({ data, width, height }) => {
   const [showColorPicker, setShowColorPicker] = useBoolean(false);
@@ -23,6 +25,7 @@ const Heatmap = ({ data, width, height }) => {
   const selected = traceCtx.selected;
   const hightlightA = clicked.a + 1;
   const hightlightB = clicked.b + 1;
+  const imputed=getFilledReadouts(traceCtx.data);
 
   const handleColorChange = (color) => {
     setColor(color.hex);
@@ -52,6 +55,15 @@ const Heatmap = ({ data, width, height }) => {
   // Color scale
   const colorScale = d3.scaleLinear().domain([min, colorMax]).range([color, 'white']);
 
+  const getTextColor=(name)=>{
+    if(name===hightlightA){
+      return 'red';
+    }
+    if(imputed.includes(name)){
+      return 'grey';
+    }
+    return 'black';
+  }
   // Build the rectangles
   const allRects = data.map((d, i) => {
     const isHightlight =
@@ -109,7 +121,7 @@ const Heatmap = ({ data, width, height }) => {
         fill={name === hightlightB ? 'red' : 'black'}
         fontWeight={name === hightlightB ? 'bold' : 'normal'}
       >
-        {name}
+        {imputed.includes(name) ? '*' : ''}{name}
       </text>
     );
   });

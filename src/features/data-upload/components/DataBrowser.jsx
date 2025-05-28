@@ -29,7 +29,7 @@ const DataBrowser = () => {
   const { readRemoteFile } = usePapaParse();
   const dataCtx = useContext(DataContext);
   const setDataBysHandler = dataCtx.setDataBysHandler;
-  const setPlotAllReadouts = dataCtx.setPlotAllReadouts;
+  const setTotalReadouts=dataCtx.setTotalReadouts;
   const { isOpen, onOpen, onClose } = useDisclosure();
   useEffect(() => {
     //fetch metadata table from backend on load
@@ -65,8 +65,8 @@ const DataBrowser = () => {
       complete: (results) => {
         const array = results.data;
         if (array && array.length > 0) {
-          readoutSteps==='all'?setPlotAllReadouts(true):setPlotAllReadouts(false);
           setDataBysHandler(array);
+          setTotalReadouts(readoutSteps);
         }
         setIsLoading(false);
       },
@@ -123,10 +123,10 @@ const DataBrowser = () => {
       cell: (info) => info.getValue(),
       header: 'Gene',
     }),
-    columnHelper.accessor('readout_steps', {
-      id:'readout_steps',
+    columnHelper.accessor('number_readout', {
+      id:'number_readout',
       cell: (info) => info.getValue(),
-      header: 'Readout Steps',
+      header: 'Total Readout',
       enableColumnFilter: false,
     }),
     columnHelper.accessor('lab', {
@@ -144,7 +144,7 @@ const DataBrowser = () => {
           isLoading={isLoading}
           onClick={() => {
             setIsLoading(true);
-            fetchCSV(info.row.original.id,info.row.original.readout_steps);
+            fetchCSV(info.row.original.id,info.row.original.number_readout);
           }}
         >
           View

@@ -3,9 +3,9 @@ import { useReducer,useContext } from 'react';
 import { DataContext } from './data-context';
 import { dataProcess } from '../utils/dataWrangler';
 
-const dataProcessWrapper=(database,fov,s,allPoints,isFilling)=>{
+const dataProcessWrapper=(database,fov,s,totalReadouts)=>{
   if(!database||!database.get(fov)||!database.get(fov).get(s)) return null;
-  return dataProcess(database.get(fov).get(s),allPoints,isFilling);
+  return dataProcess(database.get(fov).get(s),totalReadouts);
 }
 
 const defaultTraceState = {
@@ -17,7 +17,7 @@ const defaultTraceState = {
 const traceReducer = (state, action) => {
   if (action.type === 'SELECT') {
     return {
-      data:dataProcessWrapper(action.dataBys,action.fov,action.s,action.isPlotAll,action.isFilling),
+      data:dataProcessWrapper(action.dataBys,action.fov,action.s,action.totalReadouts),
       selected: { fov: action.fov, s: action.s },
       clicked: state.clicked,
       triplet: state.triplet,
@@ -54,9 +54,8 @@ const traceReducer = (state, action) => {
 export function TraceProvider({ children }) {
   const dataCtx=useContext(DataContext);
   const [traceState, dispatchTraceAction] = useReducer(traceReducer, defaultTraceState);
-
   const selectTraceHandler = (fov, s) => {
-    dispatchTraceAction({ type: 'SELECT', fov: fov, s: s, dataBys: dataCtx.dataBys, isPlotAll:dataCtx.isPlotAll,isFilling:dataCtx.isFilling });
+    dispatchTraceAction({ type: 'SELECT', fov: fov, s: s, dataBys: dataCtx.dataBys, totalReadouts:dataCtx.totalReadouts });
   };
   const clickTraceHandler = (a, b) => {
     dispatchTraceAction({ type: 'CLICK', a: a, b: b });

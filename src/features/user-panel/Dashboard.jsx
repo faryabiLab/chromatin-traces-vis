@@ -5,9 +5,13 @@ import {
   IconButton,
   Stack,
   Divider,
-  Tabs, TabList, TabPanels, Tab, TabPanel 
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
 } from '@chakra-ui/react';
-import { ArrowLeftIcon, ArrowRightIcon } from '@chakra-ui/icons';
+import { ArrowLeftIcon, ArrowRightIcon,DownloadIcon } from '@chakra-ui/icons';
 
 import { useMemo, useContext, useState, useEffect } from 'react';
 import Heatmap from '../linkage/Heatmap';
@@ -17,24 +21,22 @@ import { generatePairwiseDistanceMap, refreshPage } from '../../utils/displayUti
 import styles from './Dashboard.module.css';
 import Filter from './components/Filter';
 import LinePlot from '../centrality/LinePlot';
+import BoxPlot from '../radiusGyration/BoxPlot';
 const Dashboard = () => {
   const dataCtx = useContext(DataContext);
   const traceCtx = useContext(TraceContext);
   const data = traceCtx.data;
- 
+
   //set the initial fov to be the first existing fov
-  const initialFov=Object.keys(dataCtx.keys)[0];
+  const initialFov = Object.keys(dataCtx.keys)[0];
   const [fov, setFov] = useState(initialFov);
   //allele is the index of the allele in the allele list:dataCtx.keys[fov]
   const [allele, setAllele] = useState(0);
   const selectedHandler = traceCtx.selectedHandler;
-  // Example usage:
- 
 
   useEffect(() => {
     selectedHandler(fov.toString(), dataCtx.keys[fov][allele].toString());
   }, [fov, allele]);
-
 
   const renderOptions = () => {
     let options = [];
@@ -81,18 +83,50 @@ const Dashboard = () => {
 
   const distanceMap = useMemo(() => generatePairwiseDistanceMap(data), [data]);
 
+  const downloadHandler = () => {
+    const headers = ['readout,x,y,z,imputed'];
+    
+    // Convert each object to CSV row
+    const csvRows = data.map(item => {
+        return `${item.readout},${item.pos.x},${item.pos.y},${item.pos.z},${item.filling}`;
+    });
+    
+    // Combine headers and rows
+    const csvContent = [...headers, ...csvRows].join('\n');
+    
+    // Create a Blob with the CSV content
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    
+    // Create a temporary link element
+    const link = document.createElement('a');
+    
+    // Create the download URL
+    const url = window.URL.createObjectURL(blob);
+    
+    // Set link properties
+    link.setAttribute('href', url);
+    link.setAttribute('download', `fov_${fov}_allele_${dataCtx.keys[fov][allele]}_data.csv`);
+    
+    // Append link to body (required for Firefox)
+    document.body.appendChild(link);
+    
+    // Trigger the download
+    link.click();
+    
+    // Clean up
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+  }
   return (
     <div className={styles.dashboard}>
       <Heading as="h1" className={styles.header}>
-        ORCA Linkage Interactive Viewing Engine(OLIVE)
+        Optical Looping Interactive Viewing Engine (OLIVE)
       </Heading>
-      <Stack direction="row" spacing='30px'> 
+      <Stack direction="row" spacing="30px">
         <div className={styles.select}>
           <label>FOV:</label>
           <Select
-            
             value={fov}
-          
             onChange={(e) => {
               setFov(e.target.value);
               setAllele(0);
@@ -104,9 +138,7 @@ const Dashboard = () => {
         <div className={styles.select}>
           <label>Allele:</label>
           <Select
- 
             value={allele}
-
             onChange={(e) => {
               setAllele(e.target.value);
             }}
@@ -114,51 +146,55 @@ const Dashboard = () => {
             {renderAlleleOptions()}
           </Select>
         </div>
-  
-      <div className={styles.buttons}>
-    
+
+        <div className={styles.buttons}>
         <IconButton
-          isDisabled={allele === 0 ? true : false}
-          colorScheme="teal"
-          variant="outline"
-          aria-label="ArrowLeftIcon"
-          icon={<ArrowLeftIcon />}
-          onClick={preAlleleHandler}
-        />
-        <IconButton
-          isDisabled={allele === dataCtx.keys[fov].length - 1 ? true : false}
-          colorScheme="teal"
-          variant="outline"
-          aria-label="ArrowRightIcon"
-          icon={<ArrowRightIcon />}
-          onClick={nextAlleleHandler}
-        />
-        <Button colorScheme="red" variant="outline" onClick={refreshPage}>
-          Exit
-        </Button>
-      </div>
+            colorScheme="black"
+            variant="outline"
+            aria-label="ArrowLeftIcon"
+            icon={<DownloadIcon />}
+            onClick={downloadHandler}
+          />
+          <IconButton
+            isDisabled={allele === 0 ? true : false}
+            colorScheme="teal"
+            variant="outline"
+            aria-label="ArrowLeftIcon"
+            icon={<ArrowLeftIcon />}
+            onClick={preAlleleHandler}
+          />
+          <IconButton
+            isDisabled={allele === dataCtx.keys[fov].length - 1 ? true : false}
+            colorScheme="teal"
+            variant="outline"
+            aria-label="ArrowRightIcon"
+            icon={<ArrowRightIcon />}
+            onClick={nextAlleleHandler}
+          />
+          <Button colorScheme="red" variant="outline" onClick={refreshPage}>
+            Exit
+          </Button>
+        </div>
       </Stack>
       <div className={styles.filter}>
-      <Filter alleleHandler={setAllele}/>
+        <Filter alleleHandler={setAllele} />
       </div>
-     
-     <Divider />
-     <Tabs variant='soft-rounded' colorScheme='blue'>
-  <TabList>
-    <Tab>Heatmap</Tab>
-    <Tab>Distance to the geometric center</Tab>
-  </TabList>
-  <TabPanels>
-    <TabPanel>
-    {distanceMap && <Heatmap data={distanceMap} width={650} height={650} />}
-    </TabPanel>
-    <TabPanel>
-      {data && <LinePlot data={data} />}
-    </TabPanel>
-  </TabPanels>
-</Tabs>
-      
 
+      <Divider />
+      <Tabs variant="soft-rounded" colorScheme="blue">
+        <TabList>
+          <Tab>Heatmap</Tab>
+          <Tab>Distance to the geometric center</Tab>
+          <Tab>Radius of Gyration</Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel>
+            {distanceMap && <Heatmap data={distanceMap} width={600} height={550} />}
+          </TabPanel>
+          <TabPanel>{data && <LinePlot data={data} />}</TabPanel>
+          <TabPanel>{data && <BoxPlot data={data} />}</TabPanel>
+        </TabPanels>
+      </Tabs>
     </div>
   );
 };

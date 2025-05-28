@@ -1,0 +1,14 @@
+.container {
+  width: 100%;
+  height: 24rem; /* equivalent to h-96 */
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  margin-bottom: 0.5rem; /* equivalent to mb-2 */
+}
+
+.plotContainer {
+  flex: 1;
+}
