@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { DataContext } from '../../../stores/data-context';
 import { useCSVReader, lightenDarkenColor, formatFileSize } from 'react-papaparse';
-import { ArrowForwardIcon } from '@chakra-ui/icons';
+import { ArrowForwardIcon,QuestionIcon } from '@chakra-ui/icons';
 import styles from '../Uploader.module.css';
 import {
   Box,
@@ -95,6 +95,23 @@ export default function CSVReader({ maxReadout }) {
         )}
       </CSVReader>
       <Box>
+      <Box
+        as="button"
+        p={2}
+        color="white"
+        fontWeight="bold"
+        borderRadius="md"
+        bgGradient="linear(to-r, gray.600, gray.800)"
+        _hover={{
+          bgGradient: 'linear(to-r, blue.500, purple.500)',
+        }}
+        margin="5px"
+        onClick={() => {
+          window.open('https://github.com/faryabiLab/chromatin-traces-vis', '_blank');
+        }}
+      >
+        <QuestionIcon w={6} h={6} />
+      </Box>
         <Box
           as="button"
           p={2}
