@@ -48,6 +48,9 @@ The sample dataset include three field of views (FOV):
 
 This program is using linear interpolation to impute the missing values.
 
+<img width="1851" alt="image" src="https://github.com/user-attachments/assets/ca4848f7-4f6e-43fd-96e3-3ff820884aec" />
+
+
 ## 📋 How to Use
 
 ### Step 1: Upload Your CSV File
@@ -83,6 +86,10 @@ This program is using linear interpolation to impute the missing values.
      6.   Radius: only dots that are within this distance to the selected dot are colored. <img width="1125" alt="image" src="https://github.com/user-attachments/assets/9ac4da27-fde4-44bc-83e6-bcbca909617a" />
 
 
+     7. Click Reset to clear all the selection of the dots. <img width="987" alt="image" src="https://github.com/user-attachments/assets/c52fa03e-5d2d-4591-b31d-4d60f31458c1" />
+
+
+
 3.   If you select the Perimeter option in the GUI, click any three dots to view the perimeter. Uncheck this box to go back to linkage mode. <img width="1105" alt="image" src="https://github.com/user-attachments/assets/f8e09728-2b69-412b-a44c-216698441ce4" />
 
 
@@ -92,10 +99,18 @@ This program is using linear interpolation to impute the missing values.
 ### Step 3: Panels
 
 1.   Distance Heatmap
-     1.   Click any grid cell to view the linkage in the 3D model
-     2.   Use the filter to filter the linkage whose distance is within the range
-2.   Distance to the geometric center
-3.   Radius of Gyration
+
+     1.   Click any grid cell to view the linkage in the 3D model. <img width="1816" alt="image" src="https://github.com/user-attachments/assets/2000e2e3-32bd-42db-99ca-28886da9f3f9" />
+
+
+     2.   Use the filter to filter the linkage whose distance is within the range. <img width="698" alt="image" src="https://github.com/user-attachments/assets/a7bcb08d-ab24-4a39-b2dc-5db149142a01" />
+
+
+2.   Distance to the geometric center. <img width="1987" alt="image" src="https://github.com/user-attachments/assets/92cb2074-2380-4c98-a21c-77ca6867e227" />
+
+
+3.   Radius of Gyration. <img width="1929" alt="image" src="https://github.com/user-attachments/assets/6f1111a3-3bc9-43ec-bab1-87faf15d4bb8" />
+
 
 
 
