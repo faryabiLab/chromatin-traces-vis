@@ -70,16 +70,24 @@ This program is using linear interpolation to impute the missing values.
 
 ### Step 2: Select FOV and Allele to choose the allele
 
-1.   Click two dots to view the distance. The corresponding grid cell in the distance heatmap will be highlighted.
+
+1.   Click two dots to view the distance.  <img width="991" alt="image" src="https://github.com/user-attachments/assets/6f3ab74a-94af-4d71-854d-e55686fd8d40" />
+
 2.   Use GUI to adjust
      1.   Color
      2.   Toggle Grid and axis
      3.   Line Size
      4.   Dot Size
      5.   Toggle the distance label of a selected linkage
-     6.   Radius: only dots that are within this distance to the selected dot are colored.
-3.   If you select the Perimeter option in the GUI, click any three dots to view the perimeter. Uncheck this box to go back to linkage mode.
-4.    Having clicked two nodes, by typing the threshold you can filter the alleles *within the same fov* that have the distance of this linkage smaller than this threshold
+
+     6.   Radius: only dots that are within this distance to the selected dot are colored. <img width="1125" alt="image" src="https://github.com/user-attachments/assets/9ac4da27-fde4-44bc-83e6-bcbca909617a" />
+
+
+3.   If you select the Perimeter option in the GUI, click any three dots to view the perimeter. Uncheck this box to go back to linkage mode. <img width="1105" alt="image" src="https://github.com/user-attachments/assets/f8e09728-2b69-412b-a44c-216698441ce4" />
+
+
+4.    Having clicked two nodes, by typing the threshold you can filter the alleles *within the same fov* that have the distance of this linkage smaller than this threshold. <img width="1807" alt="image" src="https://github.com/user-attachments/assets/16c01fb2-fec1-4f7d-a7ad-ccca5e133b59" />
+
 
 ### Step 3: Panels
 
