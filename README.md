@@ -2,11 +2,12 @@
 
 ## Project abstract
 
-This is a web application to visualize chromatin traces and provide interactive features which can be accessed at https://faryabilab.github.io/chromatin-traces-vis/
+This is a web application to visualize chromatin traces and provide interactive features which can be accessed at https://faryabilab.github.io/chromatin-traces-vis/ 
 
-<img width="2219" alt="image" src="https://github.com/user-attachments/assets/d0db17c4-658d-4737-a0d3-a07936d847b2" />
+<img width="2157" alt="image" src="https://github.com/user-attachments/assets/a9ed9d39-3961-4429-ad70-64c9c69e6d73" />
 
-<img width="2210" alt="image" src="https://github.com/user-attachments/assets/71763ffa-c57b-493f-80c1-44284b518bdd" />
+<img width="2096" alt="image" src="https://github.com/user-attachments/assets/9018a01a-2734-49bb-81b4-363695c2f194" />
+
 
 
 ## 🚀 Getting Started
@@ -32,7 +33,16 @@ CSV file with the following columns:
 -   x,y,z: coordinates
 -   readout: step
 
+additional columns are ignored
+
+### Sample Data
 Click to download an example CSV file: [sample.csv](https://github.com/user-attachments/files/20494724/sample.csv)
+
+#### Sample data details
+The sample dataset include three field of views (FOV):
+- FOV1: one allele with no missing values
+- FOV2: five alleles with no missing values
+- FOV3: one allele WITH missing values
 
 ### Data pre-process
 
@@ -42,15 +52,21 @@ This program is using linear interpolation to impute the missing values.
 
 ### Step 1: Upload Your CSV File
 
-1.   Enter the number of Total Readouts. **This step is required** in order to fill in all the missing values. All the alleles will have this number of total readouts.
-2.   Drop your CSV file or click to upload. Your file **WILL NOT** be saved to our database.
-3.   Click the button to view your traces
+1.   Enter the number of Total Readouts. **This step is required** in order to fill in all the missing values. All the alleles will have this number of total readouts. <img width="1863" alt="image" src="https://github.com/user-attachments/assets/ffe4f440-8023-497c-9d0e-136e468d35d0" />
+
+2.   Drop your CSV file or click to upload. Your file **WILL NOT** be saved to our database.<img width="878" alt="image" src="https://github.com/user-attachments/assets/4cb185c6-23de-43ae-8be4-820f28897d4a" />
+
+3.   Click the button to view your traces. <img width="720" alt="image" src="https://github.com/user-attachments/assets/18dcabfb-9000-47bd-8382-3ca6cc6fb974" />
+
 
 ### OR: Browse the files stored in our database
 
-1.   Use table filter
-2.   Inspect metadata table
-3.   Click view
+1.   Use table filter. <img width="1550" alt="image" src="https://github.com/user-attachments/assets/5fbb6c7f-9477-4001-a540-af85234307b1" />
+
+2.   Inspect metadata. <img width="2128" alt="image" src="https://github.com/user-attachments/assets/e8535dcb-05ef-4d5b-b8dc-8ef4a271db3d" />
+
+3.   Click view. <img width="1677" alt="Google Chrome 2025-05-29 12 18 03" src="https://github.com/user-attachments/assets/2b8bf651-9d98-434f-b988-a2bc806e24d4" />
+
 
 ### Step 2: Select FOV and Allele to choose the allele
 
