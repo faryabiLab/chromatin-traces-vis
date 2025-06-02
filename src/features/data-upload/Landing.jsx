@@ -98,7 +98,7 @@ const Landing = () => {
             onClick={() => setSelectedSpecies('')}
             ml={8}
           >
-            ← Back to species selection
+            ← Back
           </Button>
           <Divider />
           <DataBrowser species={selectedSpecies}/>

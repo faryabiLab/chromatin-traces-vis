@@ -5,7 +5,7 @@ import { useState } from 'react';
 const FileUploader = () => {
   const [maxReadout, setMaxReadout] = useState(null);
   return (
-    <Box display={'flex'} flexDirection={'column'} alignItems={'center'} gap={12}>
+    <Box display={'flex'} flexDirection={'column'} alignItems={'center'} gap={8}>
       <Instructions setMaxReadout={setMaxReadout} />
       <CSVReader maxReadout={maxReadout} />
     </Box>

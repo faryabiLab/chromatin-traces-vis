@@ -19,7 +19,7 @@ const Instructions = ({setMaxReadout}) => {
     setMaxReadout(readouts);
   };
   return (
-    <VStack align="flex-start"  spacing={'30px'}>
+    <VStack align="flex-start"  spacing={'20px'}>
     <VStack align="flex-start"  spacing={'10px'}>
       <Text as="b" fontSize="3xl">
         Upload your own
@@ -57,7 +57,7 @@ const Instructions = ({setMaxReadout}) => {
         </Highlight>
       </Text>
       </VStack>
-      <HStack spacing={5} alignItems="center">
+      <HStack spacing={2} alignItems="center">
       <FormLabel htmlFor="total-readouts" mb="0">
       <Highlight
           query={['*']}
