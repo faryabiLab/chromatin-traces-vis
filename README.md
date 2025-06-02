@@ -71,12 +71,13 @@ This program is using linear interpolation to impute the missing values.
 3.   Click view. <img width="1677" alt="Google Chrome 2025-05-29 12 18 03" src="https://github.com/user-attachments/assets/2b8bf651-9d98-434f-b988-a2bc806e24d4" />
 
 
-### Step 2: Select FOV and Allele to choose the allele
+### Step 2: Visualization
 
+1.   Select FOV and Allele to view any trace. <img width="775" alt="image" src="https://github.com/user-attachments/assets/aba0e634-d1b2-4a8b-95a8-9e45436619c1" />
 
-1.   Click two dots to view the distance.  <img width="991" alt="image" src="https://github.com/user-attachments/assets/6f3ab74a-94af-4d71-854d-e55686fd8d40" />
+2.   Click any two dots in the model to view the distance.  <img width="991" alt="image" src="https://github.com/user-attachments/assets/6f3ab74a-94af-4d71-854d-e55686fd8d40" />
 
-2.   Use GUI to adjust
+3.   Use GUI to adjust
      1.   Color
      2.   Toggle Grid and axis
      3.   Line Size
@@ -90,10 +91,10 @@ This program is using linear interpolation to impute the missing values.
 
 
 
-3.   If you select the Perimeter option in the GUI, click any three dots to view the perimeter. Uncheck this box to go back to linkage mode. <img width="1105" alt="image" src="https://github.com/user-attachments/assets/f8e09728-2b69-412b-a44c-216698441ce4" />
+4.   If you select the Perimeter option in the GUI, click any three dots to view the perimeter. Uncheck this box to go back to linkage mode. <img width="1105" alt="image" src="https://github.com/user-attachments/assets/f8e09728-2b69-412b-a44c-216698441ce4" />
 
 
-4.    Having clicked two nodes, by typing the threshold you can filter the alleles *within the same fov* that have the distance of this linkage smaller than this threshold. <img width="1807" alt="image" src="https://github.com/user-attachments/assets/16c01fb2-fec1-4f7d-a7ad-ccca5e133b59" />
+5.    Having clicked two nodes, by typing the threshold you can filter the alleles *within the same fov* that have the distance of this linkage smaller than this threshold. <img width="1807" alt="image" src="https://github.com/user-attachments/assets/16c01fb2-fec1-4f7d-a7ad-ccca5e133b59" />
 
 
 ### Step 3: Panels
@@ -103,7 +104,7 @@ This program is using linear interpolation to impute the missing values.
      1.   Click any grid cell to view the linkage in the 3D model. <img width="1816" alt="image" src="https://github.com/user-attachments/assets/2000e2e3-32bd-42db-99ca-28886da9f3f9" />
 
 
-     2.   Use the filter to filter the linkage whose distance is within the range. <img width="698" alt="image" src="https://github.com/user-attachments/assets/a7bcb08d-ab24-4a39-b2dc-5db149142a01" />
+     2.   Use the filter to filter the linkage distances that are within the range. <img width="698" alt="image" src="https://github.com/user-attachments/assets/a7bcb08d-ab24-4a39-b2dc-5db149142a01" />
 
 
 2.   Distance to the geometric center. <img width="1987" alt="image" src="https://github.com/user-attachments/assets/92cb2074-2380-4c98-a21c-77ca6867e227" />
