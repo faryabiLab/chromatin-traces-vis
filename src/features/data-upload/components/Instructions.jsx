@@ -19,10 +19,10 @@ const Instructions = ({setMaxReadout}) => {
     setMaxReadout(readouts);
   };
   return (
-    <VStack align="flex-start" marginTop={'40px'} spacing={'30px'}>
+    <VStack align="flex-start"  spacing={'30px'}>
     <div>
       <Text as="b" fontSize="3xl">
-        Welcome, Please upload csv file with the following columns:
+        Upload your own
       </Text>
       <Text as="li" fontSize="xl">
         <Highlight

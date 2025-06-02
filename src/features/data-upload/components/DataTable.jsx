@@ -29,7 +29,7 @@ import {
   getFacetedUniqueValues,
   getPaginationRowModel,
 } from '@tanstack/react-table';
-import { useState, useMemo } from 'react';
+import { useState, useMemo,useEffect } from 'react';
 
 const Filter = ({ column, table }) => {
   const columnFilterValue = column.getFilterValue();
@@ -56,12 +56,19 @@ const Filter = ({ column, table }) => {
   );
 };
 
-const DataTable = ({ data, columns }) => {
+const DataTable = ({ data, columns,species }) => {
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [globalFilter, setGlobalFilter] = useState('');
   const [columnVisibility, setColumnVisibility] = useState({});
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 5 });
+
+  useEffect(() => {
+    if (species) {
+      setGlobalFilter(species);
+    }
+  }, [species]);
+
   const table = useReactTable({
     initialState:{
       columnVisibility: {

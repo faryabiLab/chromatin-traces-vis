@@ -21,7 +21,7 @@ import {
 import {InfoOutlineIcon} from '@chakra-ui/icons'
 import { createColumnHelper } from '@tanstack/react-table';
 import DataTable from './DataTable';
-const DataBrowser = () => {
+const DataBrowser = ({species}) => {
   const [table, setTable] = useState(null);
   const [metadata, setMetadata] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -178,7 +178,7 @@ const DataBrowser = () => {
         >
       <PopoverTrigger>
       <Box>
-        {!table ? <p>loading...</p> : <DataTable data={table} columns={columns} />}
+        {!table ? <p>loading...</p> : <DataTable data={table} columns={columns} species={species}/>}
       </Box>
         </PopoverTrigger>
           <PopoverContent>

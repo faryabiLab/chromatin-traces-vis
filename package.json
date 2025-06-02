@@ -19,6 +19,7 @@
     "framer-motion": "^10.16.4",
     "jspdf": "^2.5.2",
     "leva": "^0.9.35",
+    "lucide-react": "^0.511.0",
     "plotly.js-cartesian-dist": "^3.0.1",
     "react": "^18.2.0",
     "react-color": "^2.19.3",

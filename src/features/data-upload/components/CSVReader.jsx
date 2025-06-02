@@ -23,7 +23,7 @@ export default function CSVReader({ maxReadout }) {
   const setTotalReadouts = dataCtx.setTotalReadouts;
   const Toast=useToast();
   return (
-    <HStack align={'center'} justify={'center'} spacing={20}>
+    <HStack align={'center'} justify={'center'} spacing={10}>
       <CSVReader
         onUploadAccepted={(results) => {
           console.timeEnd('UserDragEnterTimer');

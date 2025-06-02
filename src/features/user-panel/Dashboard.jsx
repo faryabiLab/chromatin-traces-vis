@@ -172,7 +172,7 @@ const Dashboard = () => {
             onClick={nextAlleleHandler}
           />
           <Button colorScheme="red" variant="outline" onClick={refreshPage}>
-            Exit
+            Return
           </Button>
         </div>
       </Stack>
