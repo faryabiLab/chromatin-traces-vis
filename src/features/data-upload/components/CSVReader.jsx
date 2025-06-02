@@ -55,7 +55,7 @@ export default function CSVReader({ maxReadout }) {
         {({ getRootProps, acceptedFile, ProgressBar, getRemoveFileProps, Remove }) => (
           <>
             <Box
-              px={20}
+              px={15}
               py={15}
               borderRadius="lg"
               className={`${styles.zone} ${zoneHover && styles.zoneHover}`}

@@ -20,7 +20,7 @@ const Instructions = ({setMaxReadout}) => {
   };
   return (
     <VStack align="flex-start"  spacing={'30px'}>
-    <div>
+    <VStack align="flex-start"  spacing={'10px'}>
       <Text as="b" fontSize="3xl">
         Upload your own
       </Text>
@@ -56,7 +56,7 @@ const Instructions = ({setMaxReadout}) => {
           readout: step
         </Highlight>
       </Text>
-      </div>
+      </VStack>
       <HStack spacing={5} alignItems="center">
       <FormLabel htmlFor="total-readouts" mb="0">
       <Highlight
