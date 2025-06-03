@@ -27,7 +27,7 @@ const Uploader = () => {
       <VStack align="center" spacing={5}>
       <VStack align="start" spacing={5}>
         <Text as="b" fontSize="3xl">
-          Upload your own chromatin traces
+          Upload Your Own Chromatin Traces
         </Text>
         <Text as="i" fontSize="xl">
           Required Columns
