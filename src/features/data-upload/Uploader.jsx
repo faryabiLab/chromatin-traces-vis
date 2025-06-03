@@ -24,7 +24,7 @@ const Uploader = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <Box width="100%">
-      <VStack align="center" spacing={5}>
+      <VStack align="end" spacing={5}>
       <VStack align="start" spacing={5}>
         <Text as="b" fontSize="3xl">
           Upload your own chromatin traces

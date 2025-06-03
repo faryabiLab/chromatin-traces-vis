@@ -21,7 +21,7 @@ const Landing = () => {
           Optical Looping Interactive Viewing Engine (OLIVE)
         </Text>
       </Box>
-      <Box width="80%">
+      <Box width="70%">
         <Link
           href="https://github.com/faryabiLab/chromatin-traces-vis" // Replace with your actual GitHub URL
           isExternal // This will open in a new tab
@@ -44,18 +44,18 @@ const Landing = () => {
         </Link>
       </Box>
       {!selectedSpecies && (
-        <Flex gap={4} width="80%" margin="0 auto">
+        <Flex gap={4} width="70%" margin="0 auto">
           <Flex width="100%" justifyContent="center">
             <Box width="100%">
-              <VStack align="center" spacing={4}>
+              <VStack align="start" spacing={4}>
                 <Text as="b" fontSize="3xl">
                   Browse Available Chromatin Traces
                 </Text>
-                <Flex direction="column" gap={4} width="100%" align="center">
+                <Flex direction="column" gap={4} width="100%" align="start">
                   <Button
                     onClick={() => setSelectedSpecies('human')}
                     height="150px"
-                    width="60%"
+                    width="80%"
                     colorScheme="teal"
                     variant={selectedSpecies === 'human' ? 'solid' : 'outline'}
                     display="flex"
@@ -72,7 +72,7 @@ const Landing = () => {
                   <Button
                     onClick={() => setSelectedSpecies('mouse')}
                     height="150px"
-                    width="60%"
+                    width="80%"
                     colorScheme="teal"
                     variant={selectedSpecies === 'mouse' ? 'solid' : 'outline'}
                     display="flex"
@@ -89,7 +89,7 @@ const Landing = () => {
                   <Button
                     onClick={() => setSelectedSpecies('fly')}
                     height="150px"
-                    width="60%"
+                    width="80%"
                     colorScheme="teal"
                     variant={selectedSpecies === 'fly' ? 'solid' : 'outline'}
                     display="flex"
