@@ -19,7 +19,7 @@ import {
 } from '@chakra-ui/react';
 
 const DEFAULT_REMOVE_HOVER_COLOR = '#A01919';
-const warningColor='#e23636';
+const warningColor = '#e23636';
 const REMOVE_HOVER_COLOR_LIGHT = lightenDarkenColor(DEFAULT_REMOVE_HOVER_COLOR, 40);
 
 export default function CSVReader() {
@@ -32,11 +32,24 @@ export default function CSVReader() {
   const setDataBysHandler = dataCtx.setDataBysHandler;
   const setTotalReadouts = dataCtx.setTotalReadouts;
   const Toast = useToast();
+
+  function checkHeaders(dataList) {
+    const requiredHeaders = ['readout', 'x', 'y', 'z', 's', 'fov'];
+    return dataList.every((item) => requiredHeaders.every((header) => header in item));
+  }
+
+  const convertHeaders = (headers) => {
+    return headers.map((header) => {
+      const lowerHeader = header.toLowerCase();
+      return lowerHeader === 'trace' ? 's' : lowerHeader;
+    });
+  };
+
   return (
     <VStack align={'center'} justify={'center'} spacing={5}>
       <HStack spacing={2} alignItems="center">
         <FormLabel htmlFor="total-readouts" mb="0">
-            Number of Total Readouts:
+          Number of Total Readouts:
         </FormLabel>
         <NumberInput step={5} size="xs" onChange={setMaxReadout}>
           <NumberInputField />
@@ -48,8 +61,7 @@ export default function CSVReader() {
       </HStack>
       <CSVReader
         onUploadAccepted={(results) => {
-          console.timeEnd('UserDragEnterTimer');
-          const csvHeader = results.data[0];
+          const csvHeader = convertHeaders(results.data[0]);
           const csvContent = results.data.slice(1);
 
           const array = csvContent.map((values) => {
@@ -61,9 +73,6 @@ export default function CSVReader() {
           });
           setArray(array);
           setZoneHover(false);
-        }}
-        onDragEnter={(event) => {
-          console.time('UserDragEnterTimer');
         }}
         onDragOver={(event) => {
           event.preventDefault();
@@ -116,37 +125,47 @@ export default function CSVReader() {
           </>
         )}
       </CSVReader>
-  
-        <Box
-          as="button"
-          width={'100%'}
-          color="white"
-          fontWeight="bold"
-          borderRadius="md"
-          bgGradient="linear(to-r, teal.500, green.500)"
-          _hover={{
-            bgGradient: 'linear(to-r, red.500, yellow.500)',
-          }}
-          margin="5px"
-          onClick={(e) => {
-            if (maxReadout === null || maxReadout == '') {
+
+      <Box
+        as="button"
+        width={'100%'}
+        color="white"
+        fontWeight="bold"
+        borderRadius="md"
+        bgGradient="linear(to-r, teal.500, green.500)"
+        _hover={{
+          bgGradient: 'linear(to-r, red.500, yellow.500)',
+        }}
+        margin="5px"
+        onClick={(e) => {
+          if (maxReadout === null || maxReadout == '') {
+            Toast({
+              title: 'Error',
+              description: 'Please Provide Total Readouts',
+              status: 'warning',
+              duration: 3000,
+              isClosable: true,
+              position: 'top',
+            });
+          } else if (array.length > 0) {
+            if (!checkHeaders(array)) {
               Toast({
                 title: 'Error',
-                description: 'Please Provide Total Readouts',
+                description: 'Invalid CSV File',
                 status: 'error',
                 duration: 3000,
                 isClosable: true,
                 position: 'top',
               });
-            } else if (array.length > 0) {
+            } else {
               setDataBysHandler(array);
               setTotalReadouts(maxReadout);
             }
-          }}
-        >
-          <ArrowForwardIcon w={6} h={6} />
-        </Box>
- 
+          }
+        }}
+      >
+        <ArrowForwardIcon w={6} h={6} />
+      </Box>
     </VStack>
   );
 }
