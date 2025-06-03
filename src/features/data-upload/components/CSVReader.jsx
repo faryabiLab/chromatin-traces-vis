@@ -5,7 +5,7 @@ import { ArrowForwardIcon,QuestionIcon } from '@chakra-ui/icons';
 import styles from '../Uploader.module.css';
 import {
   Box,
-  HStack,
+  VStack,
   useToast,
 } from '@chakra-ui/react';
 
@@ -23,7 +23,7 @@ export default function CSVReader({ maxReadout }) {
   const setTotalReadouts = dataCtx.setTotalReadouts;
   const Toast=useToast();
   return (
-    <HStack align={'center'} justify={'center'} spacing={10}>
+    <VStack align={'center'} justify={'center'} spacing={5}>
       <CSVReader
         onUploadAccepted={(results) => {
           console.timeEnd('UserDragEnterTimer');
@@ -55,7 +55,7 @@ export default function CSVReader({ maxReadout }) {
         {({ getRootProps, acceptedFile, ProgressBar, getRemoveFileProps, Remove }) => (
           <>
             <Box
-              px={15}
+              px={20}
               py={15}
               borderRadius="lg"
               className={`${styles.zone} ${zoneHover && styles.zoneHover}`}
@@ -95,26 +95,9 @@ export default function CSVReader({ maxReadout }) {
         )}
       </CSVReader>
       <Box>
-      <Box
-        as="button"
-        p={2}
-        color="white"
-        fontWeight="bold"
-        borderRadius="md"
-        bgGradient="linear(to-r, gray.600, gray.800)"
-        _hover={{
-          bgGradient: 'linear(to-r, blue.500, purple.500)',
-        }}
-        margin="5px"
-        onClick={() => {
-          window.open('https://github.com/faryabiLab/chromatin-traces-vis', '_blank');
-        }}
-      >
-        <QuestionIcon w={6} h={6} />
-      </Box>
         <Box
           as="button"
-          p={2}
+          px={20}
           color="white"
           fontWeight="bold"
           borderRadius="md"
@@ -143,6 +126,6 @@ export default function CSVReader({ maxReadout }) {
           <ArrowForwardIcon w={6} h={6} />
         </Box>
       </Box>
-    </HStack>
+    </VStack>
   );
 }

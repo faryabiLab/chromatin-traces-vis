@@ -1,6 +1,6 @@
 import { Divider, Text, VStack, Box, Flex, Button } from '@chakra-ui/react';
 import { useState } from 'react';
-import FileUploader from './FileUploader';
+import Uploader from './Uploader';
 import DataBrowser from './components/DataBrowser';
 import { User, Rat, Bug } from 'lucide-react';
 
@@ -21,17 +21,30 @@ const Landing = () => {
           Optical Looping Interactive Viewing Engine (OLIVE)
         </Text>
       </Box>
+      <Box 
+        bg="teal.50" 
+        p={4} 
+        borderRadius="md" 
+        width="60%" 
+        textAlign="center"
+        border="1px"
+        borderColor="teal.200"
+      >
+        <Text fontSize="lg" color="teal.700">
+          First time to OLIVE? Come visit our github page for more information: 
+        </Text>
+      </Box>
       {!selectedSpecies && (
         <Flex gap={8} width="60%" justifyContent="center">
           <Box width="50%">
             <VStack align="start" spacing={6}>
               <Text as="b" fontSize="3xl">
-                Browse published data
+                Browse Available Chromatin Traces
               </Text>
               <Flex direction="column" gap={4} width="100%">
                 <Button
                   onClick={() => setSelectedSpecies('human')}
-                  height="100px"
+                  height="120px"
                   width="60%"
                   colorScheme="teal"
                   variant={selectedSpecies === 'human' ? 'solid' : 'outline'}
@@ -42,14 +55,14 @@ const Landing = () => {
                 >
                   <User size={32} />
                   <VStack align="start" spacing={0}>
-                    <Text fontSize="xl">Human</Text>
+                    <Text fontSize="2xl">Human</Text>
                     
                   </VStack>
                 </Button>
 
                 <Button
                   onClick={() => setSelectedSpecies('mouse')}
-                  height="100px"
+                  height="120px"
                   width="60%"
                   colorScheme="teal"
                   variant={selectedSpecies === 'mouse' ? 'solid' : 'outline'}
@@ -60,14 +73,14 @@ const Landing = () => {
                 >
                   <Rat size={32} />
                   <VStack align="start" spacing={0}>
-                    <Text fontSize="xl">Mouse</Text>
+                    <Text fontSize="2xl">Mouse</Text>
               
                   </VStack>
                 </Button>
 
                 <Button
                   onClick={() => setSelectedSpecies('fly')}
-                  height="100px"
+                  height="120px"
                   width="60%"
                   colorScheme="teal"
                   variant={selectedSpecies === 'fly' ? 'solid' : 'outline'}
@@ -78,7 +91,7 @@ const Landing = () => {
                 >
                   <Bug size={32} />
                   <VStack align="start" spacing={0}>
-                    <Text fontSize="xl">Fly</Text>
+                    <Text fontSize="2xl">Fly</Text>
                   
                   </VStack>
                 </Button>
@@ -86,7 +99,7 @@ const Landing = () => {
             </VStack>
           </Box>
           <Box width="50%">
-            <FileUploader />
+            <Uploader />
           </Box>
         </Flex>
       )}

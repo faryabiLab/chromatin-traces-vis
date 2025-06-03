@@ -19,44 +19,7 @@ const Instructions = ({setMaxReadout}) => {
     setMaxReadout(readouts);
   };
   return (
-    <VStack align="flex-start"  spacing={'20px'}>
-    <VStack align="flex-start"  spacing={'10px'}>
-      <Text as="b" fontSize="3xl">
-        Upload your own
-      </Text>
-      <Text as="li" fontSize="xl">
-        <Highlight
-          query={['x', 'y', 'z']}
-          styles={{ px: '1', py: '0.8', rounded: 'full', bg: highlightColor }}
-        >
-          x,y,z: coordinates
-        </Highlight>
-      </Text>
-      <Text as="li" fontSize="xl">
-        <Highlight
-          query={['fov']}
-          styles={{ px: '1', py: '0.8', rounded: 'full', bg: highlightColor }}
-        >
-          fov: field of view
-        </Highlight>
-      </Text>
-      <Text as="li" fontSize="xl">
-        <Highlight
-          query={['s']}
-          styles={{ px: '1', py: '0.8', rounded: 'full', bg: highlightColor }}
-        >
-          s: allele
-        </Highlight>
-      </Text>
-      <Text as="li" fontSize="xl">
-        <Highlight
-          query={['readout']}
-          styles={{ px: '1', py: '0.8', rounded: 'full', bg: highlightColor }}
-        >
-          readout: step
-        </Highlight>
-      </Text>
-      </VStack>
+   
       <HStack spacing={2} alignItems="center">
       <FormLabel htmlFor="total-readouts" mb="0">
       <Highlight
@@ -75,7 +38,6 @@ const Instructions = ({setMaxReadout}) => {
         </NumberInputStepper>
       </NumberInput>
       </HStack>
-    </VStack>
   );
 };
 export default Instructions;
