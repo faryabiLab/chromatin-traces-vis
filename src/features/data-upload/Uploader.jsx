@@ -24,7 +24,7 @@ const Uploader = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <Box width="100%">
-      <VStack align="end" spacing={5}>
+      <VStack align="center" spacing={5}>
       <VStack align="start" spacing={5}>
         <Text as="b" fontSize="3xl">
           Upload your own chromatin traces
@@ -47,21 +47,21 @@ const Uploader = () => {
           <TableContainer minWidth="600px" maxWidth="100%">
             <Table
               variant="simple"
-              size={{ base: 'sm', md: 'md', lg: 'lg' }} // Responsive table size
+              size={{ base: 'sm', md: 'md', lg: 'lg' }} 
               sx={{
                 th: {
                   backgroundColor: '#6A9C89',
                   color: 'white',
-                  fontSize: { base: 'md', lg: 'lg' }, // Responsive font size
-                  whiteSpace: 'nowrap', // Prevents text wrapping in headers
-                  px: { base: 2, md: 4 }, // Responsive padding
+                  fontSize: { base: 'md', lg: 'lg' }, 
+                  whiteSpace: 'nowrap', 
+                  px: { base: 2, md: 4 },
                 },
                 'th, td': {
                   borderColor: 'rgba(72, 113, 109, 0.5)',
-                  px: { base: 2, md: 4 }, // Responsive padding
+                  px: { base: 2, md: 4 }, 
                 },
                 td: {
-                  fontSize: { base: 'sm', md: 'md', lg: 'lg' }, // Responsive font size
+                  fontSize: { base: 'sm', md: 'md', lg: 'lg' }, 
                 },
               }}
             >

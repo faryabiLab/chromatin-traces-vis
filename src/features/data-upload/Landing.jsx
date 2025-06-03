@@ -37,7 +37,7 @@ const Landing = () => {
             cursor="pointer"
             _hover={{ bg: '#E7EFC7' }}
           >
-            <Text as="b" fontSize="lg" color="teal.700">
+            <Text as="b" fontSize="2xl" color="teal.700">
               First time to OLIVE? Click here to visit our github page for more information!
             </Text>
           </Box>
@@ -65,7 +65,7 @@ const Landing = () => {
                   >
                     <User size={32} />
                     <VStack align="start" spacing={0}>
-                      <Text fontSize="2xl">Human</Text>
+                      <Text fontSize="3xl">Human</Text>
                     </VStack>
                   </Button>
 
@@ -82,7 +82,7 @@ const Landing = () => {
                   >
                     <Rat size={32} />
                     <VStack align="start" spacing={0}>
-                      <Text fontSize="2xl">Mouse</Text>
+                      <Text fontSize="3xl">Mouse</Text>
                     </VStack>
                   </Button>
 
@@ -99,7 +99,7 @@ const Landing = () => {
                   >
                     <Bug size={32} />
                     <VStack align="start" spacing={0}>
-                      <Text fontSize="2xl">Fly</Text>
+                      <Text fontSize="3xl">Fly</Text>
                     </VStack>
                   </Button>
                 </Flex>
