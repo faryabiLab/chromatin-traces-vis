@@ -19,12 +19,9 @@ import {
   ModalCloseButton,
   useDisclosure,
 } from '@chakra-ui/react';
-import { useState } from 'react';
-import Instructions from './components/Instructions';
 import CSVReader from './components/CSVReader';
 const Uploader = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [maxReadout, setMaxReadout] = useState(null);
   return (
     <Box width="100%">
       <VStack align="start" spacing={5}>
@@ -40,8 +37,7 @@ const Uploader = () => {
             <ModalHeader>Upload Files</ModalHeader>
             <ModalCloseButton />
             <ModalBody pb={6}>
-              <Instructions setMaxReadout={setMaxReadout} />
-              <CSVReader maxReadout={maxReadout} />
+              <CSVReader/>
             </ModalBody>
           </ModalContent>
         </Modal>

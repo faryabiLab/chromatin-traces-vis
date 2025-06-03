@@ -1,29 +1,51 @@
 import React, { useState, useContext } from 'react';
 import { DataContext } from '../../../stores/data-context';
 import { useCSVReader, lightenDarkenColor, formatFileSize } from 'react-papaparse';
-import { ArrowForwardIcon,QuestionIcon } from '@chakra-ui/icons';
+import { ArrowForwardIcon, QuestionIcon } from '@chakra-ui/icons';
 import styles from '../Uploader.module.css';
 import {
   Box,
+  Text,
   VStack,
   useToast,
+  Highlight,
+  HStack,
+  FormLabel,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
 } from '@chakra-ui/react';
 
-
 const DEFAULT_REMOVE_HOVER_COLOR = '#A01919';
+const warningColor='#e23636';
 const REMOVE_HOVER_COLOR_LIGHT = lightenDarkenColor(DEFAULT_REMOVE_HOVER_COLOR, 40);
 
-export default function CSVReader({ maxReadout }) {
+export default function CSVReader() {
   const { CSVReader } = useCSVReader();
   const [zoneHover, setZoneHover] = useState(false);
+  const [maxReadout, setMaxReadout] = useState(null);
   const [removeHoverColor, setRemoveHoverColor] = useState(DEFAULT_REMOVE_HOVER_COLOR);
   const [array, setArray] = useState([]);
   const dataCtx = useContext(DataContext);
   const setDataBysHandler = dataCtx.setDataBysHandler;
   const setTotalReadouts = dataCtx.setTotalReadouts;
-  const Toast=useToast();
+  const Toast = useToast();
   return (
     <VStack align={'center'} justify={'center'} spacing={5}>
+      <HStack spacing={2} alignItems="center">
+        <FormLabel htmlFor="total-readouts" mb="0">
+            Number of Total Readouts:
+        </FormLabel>
+        <NumberInput step={5} size="xs" onChange={setMaxReadout}>
+          <NumberInputField />
+          <NumberInputStepper>
+            <NumberIncrementStepper />
+            <NumberDecrementStepper />
+          </NumberInputStepper>
+        </NumberInput>
+      </HStack>
       <CSVReader
         onUploadAccepted={(results) => {
           console.timeEnd('UserDragEnterTimer');
@@ -88,16 +110,16 @@ export default function CSVReader({ maxReadout }) {
                   </div>
                 </>
               ) : (
-                'Drop CSV file here or click to upload'
+                <Text fontSize="xl">Drop CSV file here or click to upload</Text>
               )}
             </Box>
           </>
         )}
       </CSVReader>
-      <Box>
+  
         <Box
           as="button"
-          px={20}
+          width={'100%'}
           color="white"
           fontWeight="bold"
           borderRadius="md"
@@ -107,17 +129,16 @@ export default function CSVReader({ maxReadout }) {
           }}
           margin="5px"
           onClick={(e) => {
-            if (maxReadout === null||maxReadout=='') {
+            if (maxReadout === null || maxReadout == '') {
               Toast({
-                title: "Error",
-                description: "Please Provide Total Readouts",
-                status: "error",
+                title: 'Error',
+                description: 'Please Provide Total Readouts',
+                status: 'error',
                 duration: 3000,
                 isClosable: true,
-                position: "top"
+                position: 'top',
               });
-            }
-            else if (array.length > 0) {
+            } else if (array.length > 0) {
               setDataBysHandler(array);
               setTotalReadouts(maxReadout);
             }
@@ -125,7 +146,7 @@ export default function CSVReader({ maxReadout }) {
         >
           <ArrowForwardIcon w={6} h={6} />
         </Box>
-      </Box>
+ 
     </VStack>
   );
 }
