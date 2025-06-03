@@ -26,14 +26,12 @@ This is a web application to visualize chromatin traces and provide interactive 
 
 ### Input Formats
 
-CSV file with the following columns:
+Please ensure your CSV file contains the following required columns (case-insensitive):
 
--   fov: field of view
--   s: allele
--   x,y,z: coordinates
--   readout: step
+- Either **fov, s, readout, x, y, z**
+- Or **fov, trace, readout, x, y, z**
 
-additional columns are ignored
+extra columns are ignored
 
 ### Sample Data
 Click to download an example CSV file: [sample.csv](https://github.com/user-attachments/files/20494724/sample.csv)
