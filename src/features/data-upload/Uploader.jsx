@@ -50,7 +50,7 @@ const Uploader = () => {
             variant="simple"
             sx={{
               th: {
-                backgroundColor: 'rgba(72, 113, 109, 0.9)',
+                backgroundColor: '#6A9C89',
                 color: 'white',
                 fontSize: 'lg',
               },

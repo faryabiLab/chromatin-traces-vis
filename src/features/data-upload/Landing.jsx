@@ -1,4 +1,4 @@
-import { Divider, Text, VStack, Box, Flex, Button } from '@chakra-ui/react';
+import { Divider, Text, VStack, Box, Flex, Button, Link } from '@chakra-ui/react';
 import { useState } from 'react';
 import Uploader from './Uploader';
 import DataBrowser from './components/DataBrowser';
@@ -21,19 +21,28 @@ const Landing = () => {
           Optical Looping Interactive Viewing Engine (OLIVE)
         </Text>
       </Box>
+      <Box width="60%">
+      <Link
+      href="https://github.com/faryabiLab/chromatin-traces-vis" // Replace with your actual GitHub URL
+      isExternal // This will open in a new tab
+      _hover={{ textDecoration: 'none' }} // Removes default link underline
+    >
       <Box 
-        bg="teal.50" 
         p={4} 
         borderRadius="md" 
-        width="60%" 
+        width="100%" 
         textAlign="center"
-        border="1px"
-        borderColor="teal.200"
+        border="4px"
+        borderColor="#E7EFC7"
+        cursor="pointer"
+        _hover={{ bg: '#E7EFC7' }}
       >
         <Text fontSize="lg" color="teal.700">
-          First time to OLIVE? Come visit our github page for more information: 
+          First time to OLIVE? Click here to visit our github page for more information!
         </Text>
       </Box>
+    </Link>
+    </Box>
       {!selectedSpecies && (
         <Flex gap={8} width="60%" justifyContent="center">
           <Box width="50%">
