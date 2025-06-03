@@ -37,7 +37,7 @@ const Landing = () => {
         cursor="pointer"
         _hover={{ bg: '#E7EFC7' }}
       >
-        <Text fontSize="lg" color="teal.700">
+        <Text as="b" fontSize="lg" color="teal.700">
           First time to OLIVE? Click here to visit our github page for more information!
         </Text>
       </Box>

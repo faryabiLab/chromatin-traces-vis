@@ -12,14 +12,12 @@ import {
 } from '@chakra-ui/react';
 
 const Instructions = ({setMaxReadout}) => {
-  const highlightColor = '#F6F7C1';
   const warningColor='#e23636';
   
   const handleChange = (readouts) => {
     setMaxReadout(readouts);
   };
   return (
-   
       <HStack spacing={2} alignItems="center">
       <FormLabel htmlFor="total-readouts" mb="0">
       <Highlight

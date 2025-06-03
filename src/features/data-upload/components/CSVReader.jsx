@@ -56,7 +56,7 @@ export default function CSVReader({ maxReadout }) {
           <>
             <Box
               px={20}
-              py={15}
+              py={20}
               borderRadius="lg"
               className={`${styles.zone} ${zoneHover && styles.zoneHover}`}
               {...getRootProps()}
