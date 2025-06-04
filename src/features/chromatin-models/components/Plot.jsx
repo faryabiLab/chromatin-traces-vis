@@ -19,6 +19,7 @@ const Plot = () => {
   const [pointY, setPointY] = useState(-1);
   const [pointZ, setPointZ] = useState(-1);
 
+  const [pointCurrent, setPointCurrent] = useState(-1);
 
   const groupRef = useRef();
 
@@ -26,6 +27,9 @@ const Plot = () => {
   const selected = traceCtx.selected;
   const clickedHandler = traceCtx.clickedHandler;
   const clicked = traceCtx.clicked;
+
+  const current=traceCtx.current;
+  const currentHandler=traceCtx.currentHandler;
 
   const radius=traceCtx.radius;
 
@@ -124,8 +128,10 @@ const Plot = () => {
   const generatePairs = (point) => {
     let a = -1,
       b = -1;
+
     if (pointA < 0 && pointB < 0) {
       a = point;
+      currentHandler(point);
     } else if (pointA < 0 || pointB < 0) {
       if (pointA < 0) {
         a = point;
@@ -139,12 +145,15 @@ const Plot = () => {
       if (pointA === point) {
         a = -1;
         b = pointB;
+        currentHandler(pointB);
       } else if (pointB === point) {
         //click on pointB
         a = pointA;
         b = -1;
+        currentHandler(pointA);
       } else {
         a = point;
+        currentHandler(point);
       }
     }
     setPointA(a);

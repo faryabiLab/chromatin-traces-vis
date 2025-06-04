@@ -10,6 +10,8 @@ import {
   Button,
   HStack,
   useToast,
+  Box,
+  Text,
 } from '@chakra-ui/react';
 const LinkageFilter = ({ alleleHandler }) => {
   const traceCtx = useContext(TraceContext);
@@ -22,15 +24,19 @@ const LinkageFilter = ({ alleleHandler }) => {
   const [distance, setDistance] = useState(10000);
   const toast = useToast();
   if (clicked.a === -1 || clicked.b === -1)
-    return <p>Select any two points to enable linkage filter</p>;
+    return (
+      <Box p={4} width="700px">
+        <Text fontWeight="medium" width="600px">Select any two points to enable linkage filter</Text>
+      </Box>
+    );
   return (
-    <>
-      <HStack>
-        <span>
+    <Box p={4} width="700px">
+      <HStack spacing={4}>
+        <Text fontWeight="medium" width="600px">
           Distance between {clicked.a + 1} and {clicked.b + 1} within:{' '}
-        </span>
+        </Text>
         <NumberInput
-          size="sm"
+          size="xs"
           step={5}
           maxW={20}
           min={0}
@@ -44,7 +50,7 @@ const LinkageFilter = ({ alleleHandler }) => {
             <NumberDecrementStepper />
           </NumberInputStepper>
         </NumberInput>
-        <span>nm</span>
+        <Text>nm</Text>
         <Button
           colorScheme="teal"
           variant="ghost"
@@ -96,7 +102,7 @@ const LinkageFilter = ({ alleleHandler }) => {
           Cancel
         </Button>
       </HStack>
-    </>
+    </Box>
   );
 };
 export default LinkageFilter;

@@ -14,6 +14,7 @@ const defaultTraceState = {
   clicked: { a: -1, b: -1 },
   triplet: { a: -1, b: -1, c: -1 },
   radius:200,
+  current:-1,
 };
 const traceReducer = (state, action) => {
   if (action.type === 'SELECT') {
@@ -23,6 +24,7 @@ const traceReducer = (state, action) => {
       clicked: state.clicked,
       triplet: state.triplet,
       radius:state.radius,
+      current:state.current,
     };
   }
   if (action.type === 'CLICK') {
@@ -32,6 +34,7 @@ const traceReducer = (state, action) => {
       clicked: { a: action.a, b: action.b},
       triplet: state.triplet,
       radius:state.radius,
+      current:-1,
     };
   }
 
@@ -42,6 +45,18 @@ const traceReducer = (state, action) => {
       clicked: state.clicked,
       triplet: {a:action.a,b:action.b,c:action.c},
       radius:state.radius,
+      current:-1,
+    }
+  }
+
+  if(action.type==='CURRENT'){
+    return{
+      data:state.data,
+      selected:state.selected,
+      clicked:state.clicked,
+      triplet:state.triplet,
+      radius:state.radius,
+      current:action.current,
     }
   }
 
@@ -52,6 +67,7 @@ const traceReducer = (state, action) => {
       clicked:state.clicked,
       triplet:state.triplet,
       radius:action.radius,
+      current:state.current,
     }
   }
 
@@ -62,6 +78,7 @@ const traceReducer = (state, action) => {
       clicked: {a:-1,b:-1},
       triplet:{a:-1,b:-1,c:-1},
       radius:state.radius,
+      current:-1,
     }
   }  
   return defaultTraceState;
@@ -88,11 +105,17 @@ export function TraceProvider({ children }) {
     dispatchTraceAction({type:'TRIPLET',a:a,b:b,c:c});
   }
 
+  const currentHandler=(current)=>{
+    dispatchTraceAction({type:'CURRENT',current:current});
+  }
+
   const traceContext = {
     data:traceState.data,
     selected: traceState.selected,
     clicked: traceState.clicked,
     triplet:traceState.triplet,
+    current:traceState.current,
+    currentHandler:currentHandler,
     selectedHandler: selectTraceHandler,
     clickedHandler: clickTraceHandler,
     resetHandler:resetClickHandler,

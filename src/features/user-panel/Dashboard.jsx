@@ -12,7 +12,7 @@ import {
   TabPanel,
   VStack,
 } from '@chakra-ui/react';
-import { ArrowLeftIcon, ArrowRightIcon,DownloadIcon } from '@chakra-ui/icons';
+import { ArrowLeftIcon, ArrowRightIcon, DownloadIcon } from '@chakra-ui/icons';
 
 import { useMemo, useContext, useState, useEffect } from 'react';
 import Heatmap from '../linkage/Heatmap';
@@ -87,38 +87,38 @@ const Dashboard = () => {
 
   const downloadHandler = () => {
     const headers = ['readout,x,y,z,imputed'];
-    
+
     // Convert each object to CSV row
-    const csvRows = data.map(item => {
-        return `${item.readout},${item.pos.x},${item.pos.y},${item.pos.z},${item.filling}`;
+    const csvRows = data.map((item) => {
+      return `${item.readout},${item.pos.x},${item.pos.y},${item.pos.z},${item.filling}`;
     });
-    
+
     // Combine headers and rows
     const csvContent = [...headers, ...csvRows].join('\n');
-    
+
     // Create a Blob with the CSV content
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    
+
     // Create a temporary link element
     const link = document.createElement('a');
-    
+
     // Create the download URL
     const url = window.URL.createObjectURL(blob);
-    
+
     // Set link properties
     link.setAttribute('href', url);
     link.setAttribute('download', `fov_${fov}_allele_${dataCtx.keys[fov][allele]}_data.csv`);
-    
+
     // Append link to body (required for Firefox)
     document.body.appendChild(link);
-    
+
     // Trigger the download
     link.click();
-    
+
     // Clean up
     document.body.removeChild(link);
     window.URL.revokeObjectURL(url);
-  }
+  };
   return (
     <div className={styles.dashboard}>
       <Heading as="h1" className={styles.header}>
@@ -150,7 +150,7 @@ const Dashboard = () => {
         </div>
 
         <div className={styles.buttons}>
-        <IconButton
+          <IconButton
             colorScheme="black"
             variant="outline"
             aria-label="ArrowLeftIcon"
@@ -179,12 +179,12 @@ const Dashboard = () => {
         </div>
       </Stack>
       <VStack align={'flex-start'}>
-      <div className={styles.filter}>
-        <LinkageFilter alleleHandler={setAllele} />
-      </div>
-      <div className={styles.filter}>
-      <RadiusFilter />
-      </div>
+        <div className={styles.filter}>
+          <LinkageFilter alleleHandler={setAllele} />
+        </div>
+        <div className={styles.filter}>
+          <RadiusFilter />
+        </div>
       </VStack>
 
       <Divider />
