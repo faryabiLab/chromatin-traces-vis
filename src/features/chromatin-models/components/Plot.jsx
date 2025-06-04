@@ -467,6 +467,7 @@ const Plot = () => {
         <GizmoViewport labelColor="black" axisHeadScale={1.5} />
         </group>
       </GizmoHelper>
+      
     </>
   );
 };

@@ -30,8 +30,9 @@ import { use } from 'react';
 const Dashboard = () => {
   const dataCtx = useContext(DataContext);
   const traceCtx = useContext(TraceContext);
+  const resetTraceHandler = traceCtx.resetHandler;
+  const resetFilterHandler=dataCtx.resetHandler;
   const data = traceCtx.data;
-  const currentSelectedRadius = traceCtx.current;
   //set the initial fov to be the first existing fov
   const initialFov = Object.keys(dataCtx.keys)[0];
   const [fov, setFov] = useState(initialFov);
@@ -42,6 +43,10 @@ const Dashboard = () => {
   useEffect(() => {
     selectedHandler(fov.toString(), dataCtx.keys[fov][allele].toString());
   }, [fov, allele]);
+  const shiftPanelHandler = () => {
+    resetTraceHandler();
+    resetFilterHandler();
+  }
 
   const renderOptions = () => {
     let options = [];
@@ -186,9 +191,9 @@ const Dashboard = () => {
       <Tabs variant="soft-rounded" colorScheme="blue">
         <TabList>
           <Tab>Distance Analysis</Tab>
-          <Tab>Distance Map</Tab>
-          <Tab>Centrality Profile</Tab>
-          <Tab>Radius of Gyration</Tab>
+          <Tab onClick={() => shiftPanelHandler()}>Distance Map</Tab>
+          <Tab onClick={() => shiftPanelHandler()}>Centrality Profile</Tab>
+          <Tab onClick={() => shiftPanelHandler()}>Radius of Gyration</Tab>
         </TabList>
         <TabPanels>
           <TabPanel>
