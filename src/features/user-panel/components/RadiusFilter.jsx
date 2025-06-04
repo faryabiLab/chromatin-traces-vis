@@ -1,5 +1,5 @@
-import { useContext,useState } from "react";
-import { TraceContext } from "../../../stores/trace-context";
+import { useContext, useState } from 'react';
+import { TraceContext } from '../../../stores/trace-context';
 import {
   Box,
   NumberInput,
@@ -8,44 +8,58 @@ import {
   NumberIncrementStepper,
   NumberDecrementStepper,
   Text,
-  HStack
+  HStack,
+  Tooltip,
 } from '@chakra-ui/react';
-const RadiusFilter=({mode})=>{
-  const traceCtx=useContext(TraceContext);
-  const radiusHandler=traceCtx.radiusHandler;
-  const current=traceCtx.current;
+import { CircleHelp } from 'lucide-react';
+const RadiusFilter = ({ mode }) => {
+  const traceCtx = useContext(TraceContext);
+  const radiusHandler = traceCtx.radiusHandler;
+  const current = traceCtx.current;
   const [value, setValue] = useState(200);
 
   const handleChange = (newValue) => {
     setValue(newValue);
     radiusHandler(newValue);
   };
-  if(mode!=='1')
+
+  const generateDefault = () => {
+    return (
+      <HStack spacing={2}>
+        <Text fontWeight="bold">Filter segments within a radius</Text>
+        <Tooltip label="If you select a segment, you can identify segments within a given distance to that selected segment">
+          <span>
+            <CircleHelp boxSize={4} />
+          </span>
+        </Tooltip>
+      </HStack>
+    );
+  };
+  if (mode !== '1')
     return (
       <Box p={4} width="700px">
-      <Text fontWeight="medium" width="600px">Filter segments within a radius</Text>
-    </Box>
-  );
-
-  if(current===-1)
-    return(
-      <Box p={4} width="700px">
-        <Text fontWeight="medium" width="600px">Filter segments within a radius: Select a segment of interest</Text>
+        {generateDefault()}
       </Box>
     );
 
-  return(
+  if (current === -1)
+    return (
+      <Box p={4} width="700px">
+        {generateDefault()}
+        <Text color="gray.500" fontSize="sm">
+          Please select a segment of interest
+        </Text>
+      </Box>
+    );
+
+  return (
     <Box p={4} width="700px">
+     {generateDefault()}
       <HStack spacing={4}>
-        <Text fontWeight="medium" width="600px">Filter segments with distance to {current+1} within </Text>
-        <NumberInput 
-          value={value}
-          min={0}
-          max={1000}
-          step={10}
-          onChange={handleChange}
-          size="xs"
-        >
+        <Text fontWeight="light" width="600px">
+          Filter segments with distance to {current + 1} within{' '}
+        </Text>
+        <NumberInput value={value} min={0} max={1000} step={10} onChange={handleChange} size="xs">
           <NumberInputField />
           <NumberInputStepper>
             <NumberIncrementStepper />
@@ -55,6 +69,6 @@ const RadiusFilter=({mode})=>{
         <Text>nm</Text>
       </HStack>
     </Box>
-  )
-}
+  );
+};
 export default RadiusFilter;

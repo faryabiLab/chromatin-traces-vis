@@ -12,8 +12,10 @@ import {
   useToast,
   Box,
   Text,
+  Tooltip,
 } from '@chakra-ui/react';
-const LinkageFilter = ({ alleleHandler,mode }) => {
+import { CircleHelp } from 'lucide-react';
+const LinkageFilter = ({ alleleHandler, mode }) => {
   const traceCtx = useContext(TraceContext);
   const dataCtx = useContext(DataContext);
   const curFov = traceCtx.selected.fov;
@@ -24,23 +26,39 @@ const LinkageFilter = ({ alleleHandler,mode }) => {
   const [distance, setDistance] = useState(10000);
   const toast = useToast();
 
-  if(mode!=='2')
+  const generateDefault = () => {
+    return (
+      <HStack spacing={2}>
+        <Text fontWeight="bold">Pairwise distance filter</Text>
+        <Tooltip label="Filter alleles within the current fov with a maximum distance between two selected segments">
+          <span>
+            <CircleHelp boxSize={4} />
+          </span>
+        </Tooltip>
+      </HStack>
+    );
+  };
+  if (mode !== '2')
     return (
       <Box p={4} width="700px">
-        <Text fontWeight="medium" width="600px">Pairwise distance filter</Text>
+        {generateDefault()}
       </Box>
     );
 
   if (clicked.a === -1 || clicked.b === -1)
     return (
       <Box p={4} width="700px">
-        <Text fontWeight="medium" width="600px">Pairwise distance filter: Select two segments</Text>
+        {generateDefault()}
+        <Text color="gray.500" fontSize="sm">
+          Please select any two segments
+        </Text>
       </Box>
     );
   return (
     <Box p={4} width="700px">
+     {generateDefault()}
       <HStack spacing={4}>
-        <Text fontWeight="medium" width="600px">
+        <Text fontWeight="light" width="600px">
           Distance between {clicked.a + 1} and {clicked.b + 1} within:{' '}
         </Text>
         <NumberInput

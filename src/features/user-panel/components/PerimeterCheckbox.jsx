@@ -1,7 +1,7 @@
-import { Box, Text } from '@chakra-ui/react';
+import { Box, Text, HStack,Tooltip } from '@chakra-ui/react';
 import { TraceContext } from '../../../stores/trace-context';
 import {useContext,useEffect} from 'react';
-import { use } from 'react';
+import { CircleHelp } from 'lucide-react';  
 const PerimeterCheckbox = ({mode}) => {
   const traceCtx=useContext(TraceContext);
   const perimeterHandler=traceCtx.perimeterHandler;
@@ -12,18 +12,33 @@ const PerimeterCheckbox = ({mode}) => {
       perimeterHandler(false);
     }
   },[mode]);
-  
+  const generateDefault = () => {
+    return (
+      <HStack spacing={2}>
+        <Text fontWeight="bold">Calculate multi-segment perimeter</Text>
+        <Tooltip label="Calculate perimeter of selected segments">
+          <span>
+            <CircleHelp boxSize={4} />
+          </span>
+        </Tooltip>
+      </HStack>
+    );
+  };
   if(mode!=='3'){
     return (
       <Box p={4} width="700px">
-        <Text fontWeight="medium" width="600px">Calculate multi-segment perimeter</Text>
+        {generateDefault()}
       </Box>
     );
   }
 
   return (
     <Box p={4} width="700px">
-        <Text fontWeight="medium" width="600px">Calculate multi-segment perimeter: Select multiple segments</Text>
+      {generateDefault()}
+    <Text color="gray.500" fontSize="sm">
+          Please select multiple segments
+        </Text>
+    
       </Box>
   );
 };
