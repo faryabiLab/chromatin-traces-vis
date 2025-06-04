@@ -1,17 +1,17 @@
-import { Box, Text, HStack,Tooltip } from '@chakra-ui/react';
+import { Box, Text, HStack, Tooltip } from '@chakra-ui/react';
 import { TraceContext } from '../../../stores/trace-context';
-import {useContext,useEffect} from 'react';
-import { CircleHelp } from 'lucide-react';  
-const PerimeterCheckbox = ({mode}) => {
-  const traceCtx=useContext(TraceContext);
-  const perimeterHandler=traceCtx.perimeterHandler;
-  useEffect(()=>{
-    if(mode==='3'){
+import { useContext, useEffect } from 'react';
+import { CircleHelp } from 'lucide-react';
+const PerimeterCheckbox = ({ mode }) => {
+  const traceCtx = useContext(TraceContext);
+  const perimeterHandler = traceCtx.perimeterHandler;
+  useEffect(() => {
+    if (mode === '3') {
       perimeterHandler(true);
-    }else{
+    } else {
       perimeterHandler(false);
     }
-  },[mode]);
+  }, [mode]);
   const generateDefault = () => {
     return (
       <HStack spacing={2}>
@@ -24,7 +24,7 @@ const PerimeterCheckbox = ({mode}) => {
       </HStack>
     );
   };
-  if(mode!=='3'){
+  if (mode !== '3') {
     return (
       <Box p={4} width="700px">
         {generateDefault()}
@@ -35,11 +35,10 @@ const PerimeterCheckbox = ({mode}) => {
   return (
     <Box p={4} width="700px">
       {generateDefault()}
-    <Text color="gray.500" fontSize="sm">
-          Please select multiple segments
-        </Text>
-    
-      </Box>
+      <Text color="gray.500" fontSize="sm">
+        Please select multiple segments
+      </Text>
+    </Box>
   );
 };
 export default PerimeterCheckbox;
