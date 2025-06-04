@@ -26,11 +26,12 @@ import RadiusFilter from './components/RadiusFilter';
 import PerimeterCheckbox from './components/PerimeterCheckbox';
 import LinePlot from '../centrality/LinePlot';
 import BoxPlot from '../radiusGyration/BoxPlot';
+import { use } from 'react';
 const Dashboard = () => {
   const dataCtx = useContext(DataContext);
   const traceCtx = useContext(TraceContext);
   const data = traceCtx.data;
-  
+  const currentSelectedRadius = traceCtx.current;
   //set the initial fov to be the first existing fov
   const initialFov = Object.keys(dataCtx.keys)[0];
   const [fov, setFov] = useState(initialFov);
@@ -200,7 +201,7 @@ const Dashboard = () => {
             </RadioGroup>
           </TabPanel>
           <TabPanel>
-            {distanceMap && <Heatmap data={distanceMap} width={550} height={500} />}
+            {distanceMap && <Heatmap data={distanceMap} width={650} height={600} />}
           </TabPanel>
           <TabPanel>{data && <LinePlot data={data} />}</TabPanel>
           <TabPanel>{data && <BoxPlot data={data} />}</TabPanel>

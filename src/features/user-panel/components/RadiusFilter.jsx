@@ -14,7 +14,7 @@ const RadiusFilter=({mode})=>{
   const traceCtx=useContext(TraceContext);
   const radiusHandler=traceCtx.radiusHandler;
   const current=traceCtx.current;
-  const [value, setValue] = useState(1);
+  const [value, setValue] = useState(200);
 
   const handleChange = (newValue) => {
     setValue(newValue);
