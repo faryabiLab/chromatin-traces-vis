@@ -29,7 +29,7 @@ const LinkageFilter = ({ alleleHandler, mode }) => {
   const generateDefault = () => {
     return (
       <HStack spacing={2}>
-        <Text fontWeight="bold">Pairwise distance</Text>
+        <Text fontWeight="bold">Calculate pairwise distance</Text>
         <Tooltip label="Filter alleles within the current fov with a maximum distance between two selected readouts">
           <span>
             <CircleHelp boxSize={4} />
