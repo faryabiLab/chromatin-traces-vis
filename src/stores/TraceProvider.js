@@ -15,6 +15,7 @@ const defaultTraceState = {
   triplet: { a: -1, b: -1, c: -1 },
   radius:200,
   current:-1,
+  isPerimeter:false,
 };
 const traceReducer = (state, action) => {
   if (action.type === 'SELECT') {
@@ -25,6 +26,7 @@ const traceReducer = (state, action) => {
       triplet: state.triplet,
       radius:state.radius,
       current:state.current,
+      isPerimeter:state.isPerimeter,
     };
   }
   if (action.type === 'CLICK') {
@@ -35,6 +37,7 @@ const traceReducer = (state, action) => {
       triplet: state.triplet,
       radius:state.radius,
       current:-1,
+      isPerimeter:state.isPerimeter,
     };
   }
 
@@ -46,6 +49,7 @@ const traceReducer = (state, action) => {
       triplet: {a:action.a,b:action.b,c:action.c},
       radius:state.radius,
       current:-1,
+      isPerimeter:state.isPerimeter,
     }
   }
 
@@ -57,6 +61,7 @@ const traceReducer = (state, action) => {
       triplet:state.triplet,
       radius:state.radius,
       current:action.current,
+      isPerimeter:state.isPerimeter,
     }
   }
 
@@ -68,6 +73,19 @@ const traceReducer = (state, action) => {
       triplet:state.triplet,
       radius:action.radius,
       current:state.current,
+      isPerimeter:state.isPerimeter,
+    }
+  }
+
+  if(action.type==='PERIMETER'){
+    return{
+      data:state.data,
+      selected:state.selected,
+      clicked:state.clicked,
+      triplet:state.triplet,
+      radius:state.radius,
+      current:state.current,
+      isPerimeter:action.isPerimeter,
     }
   }
 
@@ -79,6 +97,7 @@ const traceReducer = (state, action) => {
       triplet:{a:-1,b:-1,c:-1},
       radius:state.radius,
       current:-1,
+      isPerimeter:state.isPerimeter,
     }
   }  
   return defaultTraceState;
@@ -109,12 +128,17 @@ export function TraceProvider({ children }) {
     dispatchTraceAction({type:'CURRENT',current:current});
   }
 
+  const perimeterHandler=(isPerimeter)=>{
+    dispatchTraceAction({type:'PERIMETER',isPerimeter:isPerimeter});
+  }
+
   const traceContext = {
     data:traceState.data,
     selected: traceState.selected,
     clicked: traceState.clicked,
     triplet:traceState.triplet,
     current:traceState.current,
+    isPerimeter:traceState.isPerimeter,
     currentHandler:currentHandler,
     selectedHandler: selectTraceHandler,
     clickedHandler: clickTraceHandler,
@@ -122,6 +146,7 @@ export function TraceProvider({ children }) {
     tripletHandler:tripletHandler,
     radius:traceState.radius,
     radiusHandler:radiusHandler,
+    perimeterHandler:perimeterHandler,
   };
 
   return <TraceContext.Provider value={traceContext}>{children}</TraceContext.Provider>;

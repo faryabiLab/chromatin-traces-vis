@@ -10,7 +10,7 @@ import {
   Text,
   HStack
 } from '@chakra-ui/react';
-const RadiusFilter=()=>{
+const RadiusFilter=({mode})=>{
   const traceCtx=useContext(TraceContext);
   const radiusHandler=traceCtx.radiusHandler;
   const current=traceCtx.current;
@@ -20,11 +20,24 @@ const RadiusFilter=()=>{
     setValue(newValue);
     radiusHandler(newValue);
   };
+  if(mode!=='1')
+    return (
+      <Box p={4} width="700px">
+      <Text fontWeight="medium" width="600px">Filter segments within a radius</Text>
+    </Box>
+  );
+
+  if(current===-1)
+    return(
+      <Box p={4} width="700px">
+        <Text fontWeight="medium" width="600px">Filter segments within a radius: Select a segment of interest</Text>
+      </Box>
+    );
 
   return(
-    <Box p={4} width="600px">
+    <Box p={4} width="700px">
       <HStack spacing={4}>
-        <Text fontWeight="medium" width="600px">Segments with Distance to {current+1} within </Text>
+        <Text fontWeight="medium" width="600px">Filter segments with distance to {current+1} within </Text>
         <NumberInput 
           value={value}
           min={0}

@@ -13,7 +13,7 @@ import {
   Box,
   Text,
 } from '@chakra-ui/react';
-const LinkageFilter = ({ alleleHandler }) => {
+const LinkageFilter = ({ alleleHandler,mode }) => {
   const traceCtx = useContext(TraceContext);
   const dataCtx = useContext(DataContext);
   const curFov = traceCtx.selected.fov;
@@ -23,10 +23,18 @@ const LinkageFilter = ({ alleleHandler }) => {
   const selectedHandler = traceCtx.selectedHandler;
   const [distance, setDistance] = useState(10000);
   const toast = useToast();
+
+  if(mode!=='2')
+    return (
+      <Box p={4} width="700px">
+        <Text fontWeight="medium" width="600px">Pairwise distance filter</Text>
+      </Box>
+    );
+
   if (clicked.a === -1 || clicked.b === -1)
     return (
       <Box p={4} width="700px">
-        <Text fontWeight="medium" width="600px">Select any two points to enable linkage filter</Text>
+        <Text fontWeight="medium" width="600px">Pairwise distance filter: Select two segments</Text>
       </Box>
     );
   return (

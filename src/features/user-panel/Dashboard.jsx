@@ -11,6 +11,7 @@ import {
   Tab,
   TabPanel,
   VStack,
+  Radio, RadioGroup,
 } from '@chakra-ui/react';
 import { ArrowLeftIcon, ArrowRightIcon, DownloadIcon } from '@chakra-ui/icons';
 
@@ -22,20 +23,21 @@ import { generatePairwiseDistanceMap, refreshPage } from '../../utils/displayUti
 import styles from './Dashboard.module.css';
 import LinkageFilter from './components/LinkageFilter';
 import RadiusFilter from './components/RadiusFilter';
+import PerimeterCheckbox from './components/PerimeterCheckbox';
 import LinePlot from '../centrality/LinePlot';
 import BoxPlot from '../radiusGyration/BoxPlot';
 const Dashboard = () => {
   const dataCtx = useContext(DataContext);
   const traceCtx = useContext(TraceContext);
   const data = traceCtx.data;
-
+  
   //set the initial fov to be the first existing fov
   const initialFov = Object.keys(dataCtx.keys)[0];
   const [fov, setFov] = useState(initialFov);
   //allele is the index of the allele in the allele list:dataCtx.keys[fov]
   const [allele, setAllele] = useState(0);
   const selectedHandler = traceCtx.selectedHandler;
-
+  const [mode, setMode] = useState('1');
   useEffect(() => {
     selectedHandler(fov.toString(), dataCtx.keys[fov][allele].toString());
   }, [fov, allele]);
@@ -178,23 +180,25 @@ const Dashboard = () => {
           </Button>
         </div>
       </Stack>
-      <VStack align={'flex-start'}>
-        <div className={styles.filter}>
-          <LinkageFilter alleleHandler={setAllele} />
-        </div>
-        <div className={styles.filter}>
-          <RadiusFilter />
-        </div>
-      </VStack>
 
       <Divider />
       <Tabs variant="soft-rounded" colorScheme="blue">
         <TabList>
-          <Tab>Heatmap</Tab>
-          <Tab>Distance to the geometric center</Tab>
+          <Tab>Distance Analysis</Tab>
+          <Tab>Distance Map</Tab>
+          <Tab>Centrality Profile</Tab>
           <Tab>Radius of Gyration</Tab>
         </TabList>
         <TabPanels>
+          <TabPanel>
+            <RadioGroup onChange={setMode} value={mode}>
+              <VStack>
+                <Radio value='1'><RadiusFilter mode={mode} /></Radio>
+                <Radio value='2'><LinkageFilter alleleHandler={setAllele} mode={mode} /></Radio>
+                <Radio value='3'><PerimeterCheckbox mode={mode} /></Radio>
+              </VStack>
+            </RadioGroup>
+          </TabPanel>
           <TabPanel>
             {distanceMap && <Heatmap data={distanceMap} width={550} height={500} />}
           </TabPanel>
