@@ -26,8 +26,8 @@ const RadiusFilter = ({ mode }) => {
   const generateDefault = () => {
     return (
       <HStack spacing={2}>
-        <Text fontWeight="bold">Filter segments within a radius</Text>
-        <Tooltip label="If you select a segment, you can identify segments within a given distance to that selected segment">
+        <Text fontWeight="bold">Filter readouts within a radius</Text>
+        <Tooltip label="If you select a readout, you can identify readouts within a given distance to that selected readout.">
           <span>
             <CircleHelp boxSize={4} />
           </span>
@@ -47,17 +47,17 @@ const RadiusFilter = ({ mode }) => {
       <Box p={4} width="700px">
         {generateDefault()}
         <Text color="gray.500" fontSize="sm">
-          Please select one segment of interest
+          Please select one readout of interest
         </Text>
       </Box>
     );
 
   return (
     <Box p={4} width="700px">
-     {generateDefault()}
+      {generateDefault()}
       <HStack spacing={4}>
         <Text fontWeight="light" width="600px">
-          Filter segments with distance to {current + 1} within{' '}
+          Filter readouts with distance to {current + 1} within{' '}
         </Text>
         <NumberInput value={value} min={0} max={1000} step={10} onChange={handleChange} size="xs">
           <NumberInputField />

@@ -15,8 +15,8 @@ const PerimeterCheckbox = ({ mode }) => {
   const generateDefault = () => {
     return (
       <HStack spacing={2}>
-        <Text fontWeight="bold">Calculate multi-segment perimeter</Text>
-        <Tooltip label="Calculate perimeter of selected segments">
+        <Text fontWeight="bold">Calculate 3-way perimeter</Text>
+        <Tooltip label="Calculate perimeter of 3 selected readouts">
           <span>
             <CircleHelp boxSize={4} />
           </span>
@@ -36,7 +36,7 @@ const PerimeterCheckbox = ({ mode }) => {
     <Box p={4} width="700px">
       {generateDefault()}
       <Text color="gray.500" fontSize="sm">
-        Please select multiple segments
+        Please select any three readouts
       </Text>
     </Box>
   );

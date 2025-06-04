@@ -29,8 +29,8 @@ const LinkageFilter = ({ alleleHandler, mode }) => {
   const generateDefault = () => {
     return (
       <HStack spacing={2}>
-        <Text fontWeight="bold">Pairwise distance filter</Text>
-        <Tooltip label="Filter alleles within the current fov with a maximum distance between two selected segments">
+        <Text fontWeight="bold">Pairwise distance</Text>
+        <Tooltip label="Filter alleles within the current fov with a maximum distance between two selected readouts">
           <span>
             <CircleHelp boxSize={4} />
           </span>
@@ -50,7 +50,7 @@ const LinkageFilter = ({ alleleHandler, mode }) => {
       <Box p={4} width="700px">
         {generateDefault()}
         <Text color="gray.500" fontSize="sm">
-          Please select any two segments
+          Please select any two readouts
         </Text>
       </Box>
     );
@@ -59,7 +59,7 @@ const LinkageFilter = ({ alleleHandler, mode }) => {
      {generateDefault()}
       <HStack spacing={4}>
         <Text fontWeight="light" width="600px">
-          Distance between {clicked.a + 1} and {clicked.b + 1} within:{' '}
+          Filter alleles with distance between {clicked.a + 1} and {clicked.b + 1} within:{' '}
         </Text>
         <NumberInput
           size="xs"
