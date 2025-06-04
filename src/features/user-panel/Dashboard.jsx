@@ -11,7 +11,7 @@ import {
   Tab,
   TabPanel,
   VStack,
-  Radio, RadioGroup,
+  Radio, RadioGroup,HStack,
 } from '@chakra-ui/react';
 import { ArrowLeftIcon, ArrowRightIcon, DownloadIcon } from '@chakra-ui/icons';
 
@@ -199,9 +199,9 @@ const Dashboard = () => {
           <TabPanel>
             <RadioGroup onChange={setMode} value={mode}>
               <VStack>
-                <Radio value='1'><RadiusFilter mode={mode} /></Radio>
-                <Radio value='2'><LinkageFilter alleleHandler={setAllele} mode={mode} /></Radio>
-                <Radio value='3'><PerimeterCheckbox mode={mode} /></Radio>
+              <HStack><Radio value='1'/><RadiusFilter mode={mode} /></HStack>
+                <HStack><Radio value='2'/><LinkageFilter alleleHandler={setAllele} mode={mode} /></HStack>
+                <HStack><Radio value='3'/><PerimeterCheckbox mode={mode} /></HStack>
               </VStack>
             </RadioGroup>
           </TabPanel>
