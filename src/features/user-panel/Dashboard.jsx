@@ -190,7 +190,7 @@ const Dashboard = () => {
       <Divider />
       <Tabs variant="soft-rounded" colorScheme="blue">
         <TabList>
-          <Tab>Distance Analysis</Tab>
+          <Tab onClick={() => shiftPanelHandler()}>Distance Analysis</Tab>
           <Tab onClick={() => shiftPanelHandler()}>Distance Map</Tab>
           <Tab onClick={() => shiftPanelHandler()}>Centrality Profile</Tab>
           <Tab onClick={() => shiftPanelHandler()}>Radius of Gyration</Tab>
