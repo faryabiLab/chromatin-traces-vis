@@ -10,6 +10,7 @@ import {
   TabPanels,
   Tab,
   TabPanel,
+  VStack,
 } from '@chakra-ui/react';
 import { ArrowLeftIcon, ArrowRightIcon,DownloadIcon } from '@chakra-ui/icons';
 
@@ -19,7 +20,8 @@ import { TraceContext } from '../../stores/trace-context';
 import { DataContext } from '../../stores/data-context';
 import { generatePairwiseDistanceMap, refreshPage } from '../../utils/displayUtils';
 import styles from './Dashboard.module.css';
-import Filter from './components/Filter';
+import LinkageFilter from './components/LinkageFilter';
+import RadiusFilter from './components/RadiusFilter';
 import LinePlot from '../centrality/LinePlot';
 import BoxPlot from '../radiusGyration/BoxPlot';
 const Dashboard = () => {
@@ -176,9 +178,14 @@ const Dashboard = () => {
           </Button>
         </div>
       </Stack>
+      <VStack align={'flex-start'}>
       <div className={styles.filter}>
-        <Filter alleleHandler={setAllele} />
+        <LinkageFilter alleleHandler={setAllele} />
       </div>
+      <div className={styles.filter}>
+      <RadiusFilter />
+      </div>
+      </VStack>
 
       <Divider />
       <Tabs variant="soft-rounded" colorScheme="blue">
@@ -189,7 +196,7 @@ const Dashboard = () => {
         </TabList>
         <TabPanels>
           <TabPanel>
-            {distanceMap && <Heatmap data={distanceMap} width={600} height={550} />}
+            {distanceMap && <Heatmap data={distanceMap} width={550} height={500} />}
           </TabPanel>
           <TabPanel>{data && <LinePlot data={data} />}</TabPanel>
           <TabPanel>{data && <BoxPlot data={data} />}</TabPanel>

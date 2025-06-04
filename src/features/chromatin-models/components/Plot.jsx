@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useContext,useMemo } from 'react';
+import { useEffect, useRef, useState, useContext } from 'react';
 import { TraceContext } from '../../../stores/trace-context';
 import * as THREE from 'three';
 import { Html, OrbitControls, Line, GizmoHelper, GizmoViewport } from '@react-three/drei';
@@ -27,16 +27,17 @@ const Plot = () => {
   const clickedHandler = traceCtx.clickedHandler;
   const clicked = traceCtx.clicked;
 
+  const radius=traceCtx.radius;
+
   const triplet = traceCtx.triplet;
   const tripletHandler=traceCtx.tripletHandler;
 
-  const { color, isGrid, tubeRadius, showDistance,sphereRadius,radius, isPerimeter } = useControls({
+  const { color, isGrid, tubeRadius, showDistance,sphereRadius, isPerimeter } = useControls({
     color: 'red',
     isGrid:{value:true,label:'Grid & Axis'},
     tubeRadius: { value: 5, min: 0, max: 5, step: 0.5, label: 'Line Size' },
     sphereRadius: { value: 15, min: 10, max: 25, step: 1, label: 'Dot Size' },
     showDistance: {value:true,label:'Show Distance'},
-    radius: { value: 200,label:'Radius(nm)' },
     isPerimeter: {value:false,label:'Perimeter'},
     reset: button(traceCtx.resetHandler),
   });

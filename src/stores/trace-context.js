@@ -4,7 +4,11 @@ export const TraceContext = React.createContext({
   selected: { fov: null, s: null },
   clicked: { a: null, b: null },
   triplets: {a: null, b: null, c: null},
+  radius:200,
   selectedHandler: () => {},
   clickedHandler: () => {},
+  resetHandler:()=>{},
+  tripletHandler:()=>{},
+  radiusHandler:()=>{},
 });
 
