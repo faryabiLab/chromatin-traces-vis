@@ -13,7 +13,7 @@ const BoxPlot=({data})=>{
   const plotData = [{
     y: values,
     type: 'box',
-    name: 'Radius of Gyration',
+    name: '',
     boxpoints: 'outliers',
     boxmean: true,
     hoverinfo:'none',

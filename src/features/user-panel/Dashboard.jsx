@@ -10,8 +10,10 @@ import {
   TabPanels,
   Tab,
   TabPanel,
+  VStack,
+  Radio, RadioGroup,
 } from '@chakra-ui/react';
-import { ArrowLeftIcon, ArrowRightIcon,DownloadIcon } from '@chakra-ui/icons';
+import { ArrowLeftIcon, ArrowRightIcon, DownloadIcon } from '@chakra-ui/icons';
 
 import { useMemo, useContext, useState, useEffect } from 'react';
 import Heatmap from '../linkage/Heatmap';
@@ -19,24 +21,32 @@ import { TraceContext } from '../../stores/trace-context';
 import { DataContext } from '../../stores/data-context';
 import { generatePairwiseDistanceMap, refreshPage } from '../../utils/displayUtils';
 import styles from './Dashboard.module.css';
-import Filter from './components/Filter';
+import LinkageFilter from './components/LinkageFilter';
+import RadiusFilter from './components/RadiusFilter';
+import PerimeterCheckbox from './components/PerimeterCheckbox';
 import LinePlot from '../centrality/LinePlot';
 import BoxPlot from '../radiusGyration/BoxPlot';
+import { use } from 'react';
 const Dashboard = () => {
   const dataCtx = useContext(DataContext);
   const traceCtx = useContext(TraceContext);
+  const resetTraceHandler = traceCtx.resetHandler;
+  const resetFilterHandler=dataCtx.resetHandler;
   const data = traceCtx.data;
-
   //set the initial fov to be the first existing fov
   const initialFov = Object.keys(dataCtx.keys)[0];
   const [fov, setFov] = useState(initialFov);
   //allele is the index of the allele in the allele list:dataCtx.keys[fov]
   const [allele, setAllele] = useState(0);
   const selectedHandler = traceCtx.selectedHandler;
-
+  const [mode, setMode] = useState('1');
   useEffect(() => {
     selectedHandler(fov.toString(), dataCtx.keys[fov][allele].toString());
   }, [fov, allele]);
+  const shiftPanelHandler = () => {
+    resetTraceHandler();
+    resetFilterHandler();
+  }
 
   const renderOptions = () => {
     let options = [];
@@ -85,38 +95,38 @@ const Dashboard = () => {
 
   const downloadHandler = () => {
     const headers = ['readout,x,y,z,imputed'];
-    
+
     // Convert each object to CSV row
-    const csvRows = data.map(item => {
-        return `${item.readout},${item.pos.x},${item.pos.y},${item.pos.z},${item.filling}`;
+    const csvRows = data.map((item) => {
+      return `${item.readout},${item.pos.x},${item.pos.y},${item.pos.z},${item.filling}`;
     });
-    
+
     // Combine headers and rows
     const csvContent = [...headers, ...csvRows].join('\n');
-    
+
     // Create a Blob with the CSV content
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    
+
     // Create a temporary link element
     const link = document.createElement('a');
-    
+
     // Create the download URL
     const url = window.URL.createObjectURL(blob);
-    
+
     // Set link properties
     link.setAttribute('href', url);
     link.setAttribute('download', `fov_${fov}_allele_${dataCtx.keys[fov][allele]}_data.csv`);
-    
+
     // Append link to body (required for Firefox)
     document.body.appendChild(link);
-    
+
     // Trigger the download
     link.click();
-    
+
     // Clean up
     document.body.removeChild(link);
     window.URL.revokeObjectURL(url);
-  }
+  };
   return (
     <div className={styles.dashboard}>
       <Heading as="h1" className={styles.header}>
@@ -148,7 +158,7 @@ const Dashboard = () => {
         </div>
 
         <div className={styles.buttons}>
-        <IconButton
+          <IconButton
             colorScheme="black"
             variant="outline"
             aria-label="ArrowLeftIcon"
@@ -176,20 +186,27 @@ const Dashboard = () => {
           </Button>
         </div>
       </Stack>
-      <div className={styles.filter}>
-        <Filter alleleHandler={setAllele} />
-      </div>
 
       <Divider />
       <Tabs variant="soft-rounded" colorScheme="blue">
         <TabList>
-          <Tab>Heatmap</Tab>
-          <Tab>Distance to the geometric center</Tab>
-          <Tab>Radius of Gyration</Tab>
+          <Tab onClick={() => shiftPanelHandler()}>Distance Analysis</Tab>
+          <Tab onClick={() => shiftPanelHandler()}>Distance Map</Tab>
+          <Tab onClick={() => shiftPanelHandler()}>Centrality Profile</Tab>
+          <Tab onClick={() => shiftPanelHandler()}>Radius of Gyration</Tab>
         </TabList>
         <TabPanels>
           <TabPanel>
-            {distanceMap && <Heatmap data={distanceMap} width={600} height={550} />}
+            <RadioGroup onChange={setMode} value={mode}>
+              <VStack>
+                <Radio value='1'><RadiusFilter mode={mode} /></Radio>
+                <Radio value='2'><LinkageFilter alleleHandler={setAllele} mode={mode} /></Radio>
+                <Radio value='3'><PerimeterCheckbox mode={mode} /></Radio>
+              </VStack>
+            </RadioGroup>
+          </TabPanel>
+          <TabPanel>
+            {distanceMap && <Heatmap data={distanceMap} width={650} height={600} />}
           </TabPanel>
           <TabPanel>{data && <LinePlot data={data} />}</TabPanel>
           <TabPanel>{data && <BoxPlot data={data} />}</TabPanel>

@@ -1,5 +1,5 @@
 import { TraceContext } from './trace-context';
-import { useReducer,useContext } from 'react';
+import { useReducer,useContext, useState } from 'react';
 import { DataContext } from './data-context';
 import { dataProcess } from '../utils/dataWrangler';
 
@@ -13,6 +13,9 @@ const defaultTraceState = {
   selected: { fov: null, s: null },
   clicked: { a: -1, b: -1 },
   triplet: { a: -1, b: -1, c: -1 },
+  radius:200,
+  current:-1,
+  isPerimeter:false,
 };
 const traceReducer = (state, action) => {
   if (action.type === 'SELECT') {
@@ -21,6 +24,9 @@ const traceReducer = (state, action) => {
       selected: { fov: action.fov, s: action.s },
       clicked: state.clicked,
       triplet: state.triplet,
+      radius:state.radius,
+      current:state.current,
+      isPerimeter:state.isPerimeter,
     };
   }
   if (action.type === 'CLICK') {
@@ -29,6 +35,9 @@ const traceReducer = (state, action) => {
       selected: state.selected,
       clicked: { a: action.a, b: action.b},
       triplet: state.triplet,
+      radius:state.radius,
+      current:-1,
+      isPerimeter:state.isPerimeter,
     };
   }
 
@@ -38,14 +47,57 @@ const traceReducer = (state, action) => {
       selected: state.selected,
       clicked: state.clicked,
       triplet: {a:action.a,b:action.b,c:action.c},
+      radius:state.radius,
+      current:-1,
+      isPerimeter:state.isPerimeter,
     }
   }
+
+  if(action.type==='CURRENT'){
+    return{
+      data:state.data,
+      selected:state.selected,
+      clicked:state.clicked,
+      triplet:state.triplet,
+      radius:state.radius,
+      current:action.current,
+      isPerimeter:state.isPerimeter,
+    }
+  }
+
+  if(action.type==='RADIUS'){
+    return{
+      data:state.data,
+      selected:state.selected,
+      clicked:state.clicked,
+      triplet:state.triplet,
+      radius:action.radius,
+      current:state.current,
+      isPerimeter:state.isPerimeter,
+    }
+  }
+
+  if(action.type==='PERIMETER'){
+    return{
+      data:state.data,
+      selected:state.selected,
+      clicked:state.clicked,
+      triplet:state.triplet,
+      radius:state.radius,
+      current:state.current,
+      isPerimeter:action.isPerimeter,
+    }
+  }
+
   if(action.type==='RESET'){
     return {
       data:state.data,
       selected:state.selected,
       clicked: {a:-1,b:-1},
       triplet:{a:-1,b:-1,c:-1},
+      radius:state.radius,
+      current:-1,
+      isPerimeter:state.isPerimeter,
     }
   }  
   return defaultTraceState;
@@ -64,8 +116,20 @@ export function TraceProvider({ children }) {
     dispatchTraceAction({type:'RESET'});
   }
 
+  const radiusHandler=(radius)=>{
+    dispatchTraceAction({type:'RADIUS',radius:radius});
+  }
+
   const tripletHandler=(a,b,c)=>{
     dispatchTraceAction({type:'TRIPLET',a:a,b:b,c:c});
+  }
+
+  const currentHandler=(current)=>{
+    dispatchTraceAction({type:'CURRENT',current:current});
+  }
+
+  const perimeterHandler=(isPerimeter)=>{
+    dispatchTraceAction({type:'PERIMETER',isPerimeter:isPerimeter});
   }
 
   const traceContext = {
@@ -73,10 +137,16 @@ export function TraceProvider({ children }) {
     selected: traceState.selected,
     clicked: traceState.clicked,
     triplet:traceState.triplet,
+    current:traceState.current,
+    isPerimeter:traceState.isPerimeter,
+    currentHandler:currentHandler,
     selectedHandler: selectTraceHandler,
     clickedHandler: clickTraceHandler,
     resetHandler:resetClickHandler,
     tripletHandler:tripletHandler,
+    radius:traceState.radius,
+    radiusHandler:radiusHandler,
+    perimeterHandler:perimeterHandler,
   };
 
   return <TraceContext.Provider value={traceContext}>{children}</TraceContext.Provider>;

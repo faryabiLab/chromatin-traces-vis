@@ -23,16 +23,14 @@
 }
 
 .filter{
-  margin: 20px 0px;
-  gap:18px;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
 }
 
-.filter span{
-  font-size: 1.1rem;
-}
+/* .filter span{
+  font-size: 1.0rem;
+} */
 
 .dashboard{
   display: flex;
