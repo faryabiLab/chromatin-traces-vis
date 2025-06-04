@@ -47,7 +47,7 @@ const RadiusFilter = ({ mode }) => {
       <Box p={4} width="700px">
         {generateDefault()}
         <Text color="gray.500" fontSize="sm">
-          Please select a segment of interest
+          Please select one segment of interest
         </Text>
       </Box>
     );
