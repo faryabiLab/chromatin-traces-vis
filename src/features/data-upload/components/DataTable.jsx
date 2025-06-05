@@ -109,7 +109,7 @@ const DataTable = ({ data, columns,species }) => {
     </InputGroup>
     
       <TableContainer>
-        <Table>
+        <Table size="sm">
           <Thead>
             {table.getHeaderGroups().map((headerGroup) => (
               <Tr key={headerGroup.id}>
