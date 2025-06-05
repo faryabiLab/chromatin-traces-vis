@@ -26,12 +26,17 @@ const LinkageFilter = ({ alleleHandler }) => {
   const selectedHandler = traceCtx.selectedHandler;
   const [distance, setDistance] = useState(10000);
   const toast = useToast();
+  const [isApplied, setIsApplied] = useState(false);
 
   useEffect(() => {
-    resetClickHandler();
-    if(!dataCtx.keys[curFov]) return;
-    selectedHandler(curFov.toString(), dataCtx.keys[curFov][0].toString());
-    alleleHandler(0);
+    if(isApplied){
+      setIsApplied(false);
+      resetClickHandler();
+      if(!dataCtx.keys[curFov]) return;
+      selectedHandler(curFov.toString(), dataCtx.keys[curFov][0].toString());
+      alleleHandler(0);
+    }
+   
   }, [mode]);
 
   const generateDefault = () => {
@@ -101,6 +106,7 @@ const LinkageFilter = ({ alleleHandler }) => {
               });
               resetClickHandler();
             } else {
+              setIsApplied(true);
               selectedHandler(curFov.toString(), dataCtx.keys[curFov][0].toString());
               alleleHandler(0);
               toast({
@@ -120,6 +126,7 @@ const LinkageFilter = ({ alleleHandler }) => {
           colorScheme="gray"
           variant="ghost"
           onClick={() => {
+            setIsApplied(false);
             resetClickHandler();
             selectedHandler(curFov.toString(), dataCtx.keys[curFov][0].toString());
             alleleHandler(0);
