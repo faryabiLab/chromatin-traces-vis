@@ -15,7 +15,7 @@ const defaultTraceState = {
   triplet: { a: -1, b: -1, c: -1 },
   radius:200,
   current:-1,
-  isPerimeter:false,
+  mode: '2',
 };
 const traceReducer = (state, action) => {
   if (action.type === 'SELECT') {
@@ -26,7 +26,7 @@ const traceReducer = (state, action) => {
       triplet: state.triplet,
       radius:state.radius,
       current:state.current,
-      isPerimeter:state.isPerimeter,
+      mode:state.mode,
     };
   }
   if (action.type === 'CLICK') {
@@ -34,10 +34,10 @@ const traceReducer = (state, action) => {
       data:state.data,
       selected: state.selected,
       clicked: { a: action.a, b: action.b},
-      triplet: state.triplet,
+      triplet: {a:-1,b:-1,c:-1},
       radius:state.radius,
       current:-1,
-      isPerimeter:state.isPerimeter,
+      mode:state.mode,
     };
   }
 
@@ -45,11 +45,11 @@ const traceReducer = (state, action) => {
     return{
       data:state.data,
       selected: state.selected,
-      clicked: state.clicked,
+      clicked: { a: -1, b: -1 },
       triplet: {a:action.a,b:action.b,c:action.c},
       radius:state.radius,
       current:-1,
-      isPerimeter:state.isPerimeter,
+      mode:state.mode,
     }
   }
 
@@ -57,11 +57,11 @@ const traceReducer = (state, action) => {
     return{
       data:state.data,
       selected:state.selected,
-      clicked:state.clicked,
-      triplet:state.triplet,
+      clicked:{ a: -1, b: -1 },
+      triplet:{a:-1,b:-1,c:-1},
       radius:state.radius,
       current:action.current,
-      isPerimeter:state.isPerimeter,
+      mode:state.mode,
     }
   }
 
@@ -69,23 +69,24 @@ const traceReducer = (state, action) => {
     return{
       data:state.data,
       selected:state.selected,
-      clicked:state.clicked,
-      triplet:state.triplet,
+      clicked:{ a: -1, b: -1 },
+      triplet:{a:-1,b:-1,c:-1},
       radius:action.radius,
       current:state.current,
-      isPerimeter:state.isPerimeter,
+      mode:state.mode,
     }
   }
 
-  if(action.type==='PERIMETER'){
+
+  if(action.type==='MODE'){
     return{
       data:state.data,
       selected:state.selected,
-      clicked:state.clicked,
-      triplet:state.triplet,
-      radius:state.radius,
-      current:state.current,
-      isPerimeter:action.isPerimeter,
+      clicked:{a:-1,b:-1},
+      triplet:{a:-1,b:-1,c:-1},
+      radius:200,
+      current:-1,
+      mode:action.mode,
     }
   }
 
@@ -95,9 +96,9 @@ const traceReducer = (state, action) => {
       selected:state.selected,
       clicked: {a:-1,b:-1},
       triplet:{a:-1,b:-1,c:-1},
-      radius:state.radius,
+      radius:200,
       current:-1,
-      isPerimeter:state.isPerimeter,
+      mode:'2',
     }
   }  
   return defaultTraceState;
@@ -128,8 +129,8 @@ export function TraceProvider({ children }) {
     dispatchTraceAction({type:'CURRENT',current:current});
   }
 
-  const perimeterHandler=(isPerimeter)=>{
-    dispatchTraceAction({type:'PERIMETER',isPerimeter:isPerimeter});
+  const modeHandler=(mode)=>{
+    dispatchTraceAction({type:'MODE',mode:mode});
   }
 
   const traceContext = {
@@ -138,7 +139,7 @@ export function TraceProvider({ children }) {
     clicked: traceState.clicked,
     triplet:traceState.triplet,
     current:traceState.current,
-    isPerimeter:traceState.isPerimeter,
+    mode:traceState.mode,
     currentHandler:currentHandler,
     selectedHandler: selectTraceHandler,
     clickedHandler: clickTraceHandler,
@@ -146,7 +147,7 @@ export function TraceProvider({ children }) {
     tripletHandler:tripletHandler,
     radius:traceState.radius,
     radiusHandler:radiusHandler,
-    perimeterHandler:perimeterHandler,
+    modeHandler:modeHandler,
   };
 
   return <TraceContext.Provider value={traceContext}>{children}</TraceContext.Provider>;

@@ -26,7 +26,7 @@ const Plot = () => {
   const clickedHandler = traceCtx.clickedHandler;
   const clicked = traceCtx.clicked;
 
-  const isPerimeter=traceCtx.isPerimeter;
+  const isPerimeter=traceCtx.mode==='3'?true:false;
   const currentHandler=traceCtx.currentHandler;
 
   const radius=traceCtx.radius;

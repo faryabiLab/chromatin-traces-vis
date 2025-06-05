@@ -2,16 +2,9 @@ import { Box, Text, HStack, Tooltip } from '@chakra-ui/react';
 import { TraceContext } from '../../../stores/trace-context';
 import { useContext, useEffect } from 'react';
 import { CircleHelp } from 'lucide-react';
-const PerimeterCheckbox = ({ mode }) => {
+const PerimeterCheckbox = () => {
   const traceCtx = useContext(TraceContext);
-  const perimeterHandler = traceCtx.perimeterHandler;
-  useEffect(() => {
-    if (mode === '3') {
-      perimeterHandler(true);
-    } else {
-      perimeterHandler(false);
-    }
-  }, [mode]);
+  const mode = traceCtx.mode;
   const generateDefault = () => {
     return (
       <HStack spacing={2}>

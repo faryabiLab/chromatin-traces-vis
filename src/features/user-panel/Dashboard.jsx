@@ -39,7 +39,9 @@ const Dashboard = () => {
   //allele is the index of the allele in the allele list:dataCtx.keys[fov]
   const [allele, setAllele] = useState(0);
   const selectedHandler = traceCtx.selectedHandler;
-  const [mode, setMode] = useState('1');
+  const mode = traceCtx.mode;
+  const setMode = traceCtx.modeHandler;
+  console.log(mode);
   useEffect(() => {
     selectedHandler(fov.toString(), dataCtx.keys[fov][allele].toString());
   }, [fov, allele]);
