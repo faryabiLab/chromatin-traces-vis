@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { TraceContext } from '../../../stores/trace-context';
 import {
   Box,
@@ -12,12 +12,15 @@ import {
   Tooltip,
 } from '@chakra-ui/react';
 import { CircleHelp } from 'lucide-react';
-const RadiusFilter = ({ mode }) => {
+const RadiusFilter = () => {
   const traceCtx = useContext(TraceContext);
   const radiusHandler = traceCtx.radiusHandler;
   const current = traceCtx.current;
   const [value, setValue] = useState(200);
-
+  const mode = traceCtx.mode;
+  useEffect(() => {
+    setValue(200);
+  },[mode]);
   const handleChange = (newValue) => {
     setValue(newValue);
     radiusHandler(newValue);

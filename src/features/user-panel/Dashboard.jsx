@@ -11,7 +11,7 @@ import {
   Tab,
   TabPanel,
   VStack,
-  Radio, RadioGroup,
+  Radio, RadioGroup,HStack,
 } from '@chakra-ui/react';
 import { ArrowLeftIcon, ArrowRightIcon, DownloadIcon } from '@chakra-ui/icons';
 
@@ -39,13 +39,28 @@ const Dashboard = () => {
   //allele is the index of the allele in the allele list:dataCtx.keys[fov]
   const [allele, setAllele] = useState(0);
   const selectedHandler = traceCtx.selectedHandler;
-  const [mode, setMode] = useState('1');
+  const mode = traceCtx.mode;
+  const setMode = traceCtx.modeHandler;
+  const curFov = traceCtx.selected.fov;
+
+  const [isApplied, setIsApplied] = useState(false);
+
   useEffect(() => {
     selectedHandler(fov.toString(), dataCtx.keys[fov][allele].toString());
   }, [fov, allele]);
+
   const shiftPanelHandler = () => {
+    if(isApplied){
+      setIsApplied(false);
+      resetFilterHandler();
+      if(!dataCtx.keys[curFov]) return;
+      selectedHandler(curFov.toString(), dataCtx.keys[curFov][0].toString());
+      setAllele(0);
+    }
+
     resetTraceHandler();
-    resetFilterHandler();
+    setMode('2');
+
   }
 
   const renderOptions = () => {
@@ -199,9 +214,9 @@ const Dashboard = () => {
           <TabPanel>
             <RadioGroup onChange={setMode} value={mode}>
               <VStack>
-                <Radio value='1'><RadiusFilter mode={mode} /></Radio>
-                <Radio value='2'><LinkageFilter alleleHandler={setAllele} mode={mode} /></Radio>
-                <Radio value='3'><PerimeterCheckbox mode={mode} /></Radio>
+              <HStack><Radio value='1'/><RadiusFilter/></HStack>
+                <HStack><Radio value='2'/><LinkageFilter alleleHandler={setAllele} isApplied={isApplied} setIsApplied={setIsApplied}/></HStack>
+                <HStack><Radio value='3'/><PerimeterCheckbox/></HStack>
               </VStack>
             </RadioGroup>
           </TabPanel>
