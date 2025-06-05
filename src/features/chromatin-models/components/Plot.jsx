@@ -218,7 +218,7 @@ const Plot = () => {
       }
       //color when point is clicked
       if (pointX === point || pointY === point || pointZ === point) {
-        return 'green';
+        return color;
       }
 
       return 'white';
@@ -287,7 +287,7 @@ const Plot = () => {
     const perimeter = nodeX.distanceTo(nodeY) + nodeY.distanceTo(nodeZ) + nodeZ.distanceTo(nodeX);
     return (
       <>
-        <Line points={[nodeX, nodeY, nodeZ, nodeX]} color="green" lineWidth={8} />
+        <Line points={[nodeX, nodeY, nodeZ, nodeX]} color={color} lineWidth={8} />
         <Html scaleFactor={10} position={calculateMidpoint(nodeX, nodeY)}>
           {showDistance && (
             <div className={styles.distancePanel}>

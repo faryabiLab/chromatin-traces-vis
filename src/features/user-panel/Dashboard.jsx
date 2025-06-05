@@ -48,6 +48,7 @@ const Dashboard = () => {
   const shiftPanelHandler = () => {
     resetTraceHandler();
     resetFilterHandler();
+    setMode('2');
   }
 
   const renderOptions = () => {
