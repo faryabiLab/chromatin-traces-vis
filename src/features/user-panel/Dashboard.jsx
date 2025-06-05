@@ -43,17 +43,24 @@ const Dashboard = () => {
   const setMode = traceCtx.modeHandler;
   const curFov = traceCtx.selected.fov;
 
+  const [isApplied, setIsApplied] = useState(false);
+
   useEffect(() => {
     selectedHandler(fov.toString(), dataCtx.keys[fov][allele].toString());
   }, [fov, allele]);
 
   const shiftPanelHandler = () => {
+    if(isApplied){
+      setIsApplied(false);
+      resetFilterHandler();
+      if(!dataCtx.keys[curFov]) return;
+      selectedHandler(curFov.toString(), dataCtx.keys[curFov][0].toString());
+      setAllele(0);
+    }
+
     resetTraceHandler();
-    if(!dataCtx.keys[curFov]) return;
-    selectedHandler(curFov.toString(), dataCtx.keys[curFov][0].toString());
-    setAllele(0);
-    resetFilterHandler();
     setMode('2');
+
   }
 
   const renderOptions = () => {
@@ -208,7 +215,7 @@ const Dashboard = () => {
             <RadioGroup onChange={setMode} value={mode}>
               <VStack>
               <HStack><Radio value='1'/><RadiusFilter/></HStack>
-                <HStack><Radio value='2'/><LinkageFilter alleleHandler={setAllele}/></HStack>
+                <HStack><Radio value='2'/><LinkageFilter alleleHandler={setAllele} isApplied={isApplied} setIsApplied={setIsApplied}/></HStack>
                 <HStack><Radio value='3'/><PerimeterCheckbox/></HStack>
               </VStack>
             </RadioGroup>

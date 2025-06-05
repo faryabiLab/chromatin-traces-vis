@@ -15,7 +15,7 @@ import {
   Tooltip,
 } from '@chakra-ui/react';
 import { CircleHelp } from 'lucide-react';
-const LinkageFilter = ({ alleleHandler }) => {
+const LinkageFilter = ({ alleleHandler, isApplied, setIsApplied }) => {
   const traceCtx = useContext(TraceContext);
   const dataCtx = useContext(DataContext);
   const curFov = traceCtx.selected.fov;
@@ -26,7 +26,7 @@ const LinkageFilter = ({ alleleHandler }) => {
   const selectedHandler = traceCtx.selectedHandler;
   const [distance, setDistance] = useState(10000);
   const toast = useToast();
-  const [isApplied, setIsApplied] = useState(false);
+  
 
   useEffect(() => {
     if(isApplied){
