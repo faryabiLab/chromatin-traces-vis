@@ -224,6 +224,8 @@ const Plot = () => {
       return 'white';
     }else if(isRadius){  
       //check if the point is within the radius
+      if(current === -1) return 'black';
+      if(point === current) return color;
       if (points[current].distanceTo(points[point]) < radius) {
         return 'black';
       } else {
@@ -329,9 +331,6 @@ const Plot = () => {
       <mesh
         key={0}
         position={calculateGeometricCenter(points)}
-        onClick={(e) => {
-          console.log(calculateGeometricCenter(points));
-        }}
       >
         <sphereGeometry args={[sphereRadius * 2, 64, 16]} />
         <meshStandardMaterial color={'orange'} />
