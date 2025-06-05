@@ -1,6 +1,6 @@
 import { TraceContext } from '../../../stores/trace-context';
 import { DataContext } from '../../../stores/data-context';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import {
   NumberInput,
   NumberInputField,
@@ -26,6 +26,13 @@ const LinkageFilter = ({ alleleHandler }) => {
   const selectedHandler = traceCtx.selectedHandler;
   const [distance, setDistance] = useState(10000);
   const toast = useToast();
+
+  useEffect(() => {
+    resetClickHandler();
+    if(!dataCtx.keys[curFov]) return;
+    selectedHandler(curFov.toString(), dataCtx.keys[curFov][0].toString());
+    alleleHandler(0);
+  }, [mode]);
 
   const generateDefault = () => {
     return (
@@ -116,6 +123,7 @@ const LinkageFilter = ({ alleleHandler }) => {
             resetClickHandler();
             selectedHandler(curFov.toString(), dataCtx.keys[curFov][0].toString());
             alleleHandler(0);
+            
             toast({
               title: 'Filter Restored',
               description: 'Reset to default',

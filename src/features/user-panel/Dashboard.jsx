@@ -41,12 +41,17 @@ const Dashboard = () => {
   const selectedHandler = traceCtx.selectedHandler;
   const mode = traceCtx.mode;
   const setMode = traceCtx.modeHandler;
+  const curFov = traceCtx.selected.fov;
 
   useEffect(() => {
     selectedHandler(fov.toString(), dataCtx.keys[fov][allele].toString());
   }, [fov, allele]);
+
   const shiftPanelHandler = () => {
     resetTraceHandler();
+    if(!dataCtx.keys[curFov]) return;
+    selectedHandler(curFov.toString(), dataCtx.keys[curFov][0].toString());
+    setAllele(0);
     resetFilterHandler();
     setMode('2');
   }
