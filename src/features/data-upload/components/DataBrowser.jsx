@@ -123,6 +123,14 @@ const DataBrowser = ({species}) => {
       cell: (info) => info.getValue(),
       header: 'Locus',
     }),
+    columnHelper.accessor('genotype', {
+      cell: (info) => info.getValue(),
+      header: 'Genotype',
+    }),
+    columnHelper.accessor('treatment', {
+      cell: (info) => info.getValue(),
+      header: 'Treatment',
+    }),
     columnHelper.accessor('number_readout', {
       id:'number_readout',
       cell: (info) => info.getValue(),
