@@ -15,11 +15,12 @@ import {
   Tooltip,
 } from '@chakra-ui/react';
 import { CircleHelp } from 'lucide-react';
-const LinkageFilter = ({ alleleHandler, mode }) => {
+const LinkageFilter = ({ alleleHandler }) => {
   const traceCtx = useContext(TraceContext);
   const dataCtx = useContext(DataContext);
   const curFov = traceCtx.selected.fov;
   const clicked = traceCtx.clicked;
+  const mode = traceCtx.mode;
   const toFilter = dataCtx.filterDataBysHandler;
   const resetClickHandler = dataCtx.resetHandler;
   const selectedHandler = traceCtx.selectedHandler;

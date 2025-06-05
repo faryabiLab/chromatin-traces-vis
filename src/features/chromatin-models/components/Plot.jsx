@@ -5,9 +5,9 @@ import { Html, OrbitControls, Line, GizmoHelper, GizmoViewport } from '@react-th
 import styles from '../Plot.module.css';
 import { useThree } from '@react-three/fiber';
 import { jsPDF } from 'jspdf';
-import { useControls,button,levaStore } from 'leva';
+import { useControls, button, levaStore } from 'leva';
 import { SVGRenderer } from 'three/examples/jsm/renderers/SVGRenderer';
-import {svg2pdf} from 'svg2pdf.js';
+import { svg2pdf } from 'svg2pdf.js';
 import { max } from 'd3';
 const Plot = () => {
   //index of the points that are clicked
@@ -23,23 +23,31 @@ const Plot = () => {
 
   const data = traceCtx.data;
   const selected = traceCtx.selected;
+
+  // mode = 1 for radius, 2 for linkage, 3 for perimeter
+  const isPerimeter = traceCtx.mode === '3' ? true : false;
+  const isRadius = traceCtx.mode === '1' ? true : false;
+  const isLinkage = traceCtx.mode === '2' ? true : false;
+
+  //linkage
   const clickedHandler = traceCtx.clickedHandler;
   const clicked = traceCtx.clicked;
 
-  const isPerimeter=traceCtx.mode==='3'?true:false;
-  const currentHandler=traceCtx.currentHandler;
+  //radius
+  const currentHandler = traceCtx.currentHandler;
+  const radius = traceCtx.radius;
+  const current = traceCtx.current;
 
-  const radius=traceCtx.radius;
-
+  //perimeter
   const triplet = traceCtx.triplet;
-  const tripletHandler=traceCtx.tripletHandler;
+  const tripletHandler = traceCtx.tripletHandler;
 
-  const { color, isGrid, tubeRadius, showDistance,sphereRadius } = useControls({
+  const { color, isGrid, tubeRadius, showDistance, sphereRadius } = useControls({
     color: 'red',
-    isGrid:{value:true,label:'Grid & Axis'},
+    isGrid: { value: true, label: 'Grid & Axis' },
     tubeRadius: { value: 5, min: 0, max: 5, step: 0.5, label: 'Line Size' },
     sphereRadius: { value: 15, min: 10, max: 25, step: 1, label: 'Dot Size' },
-    showDistance: {value:true,label:'Show Distance'},
+    showDistance: { value: true, label: 'Show Distance' },
     reset: button(traceCtx.resetHandler),
   });
 
@@ -80,22 +88,22 @@ const Plot = () => {
       </Html>
     );
 
-    function calculateGeometricCenter(points) {
-      // Create a new Vector3 to store the center
-      const center = new THREE.Vector3();
-      
-      // If no points, return zero vector
-      if (points.length === 0) return center;
-      
-      // Add all points together
-      points.forEach(point => {
-          center.add(point);
-      });
-      
-      // Divide by the number of points
-      center.divideScalar(points.length);
-      
-      return center;
+  function calculateGeometricCenter(points) {
+    // Create a new Vector3 to store the center
+    const center = new THREE.Vector3();
+
+    // If no points, return zero vector
+    if (points.length === 0) return center;
+
+    // Add all points together
+    points.forEach((point) => {
+      center.add(point);
+    });
+
+    // Divide by the number of points
+    center.divideScalar(points.length);
+
+    return center;
   }
 
   //convert data to list of THREE.Vector3
@@ -108,17 +116,17 @@ const Plot = () => {
   //calculate geometric center and set the model origin
   let center = calculateGeometricCenter(points);
   //calculate max distance
-  let maxDistance=0;
-  points.forEach(point => {
+  let maxDistance = 0;
+  points.forEach((point) => {
     const distance = point.distanceTo(center);
-    if(distance>maxDistance){
-      maxDistance=distance;
+    if (distance > maxDistance) {
+      maxDistance = distance;
     }
-  })
-  center=center.multiplyScalar(-1);
+  });
+  center = center.multiplyScalar(-1);
 
   //calculate grid size and round to the next 100
-  const roundedGridSize = Math.ceil(maxDistance*2 / 100) * 100;
+  const roundedGridSize = Math.ceil((maxDistance * 2) / 100) * 100;
 
   //check if pair is valid
   //point is the index of the point in the points array
@@ -128,7 +136,6 @@ const Plot = () => {
 
     if (pointA < 0 && pointB < 0) {
       a = point;
-      currentHandler(point);
     } else if (pointA < 0 || pointB < 0) {
       if (pointA < 0) {
         a = point;
@@ -142,113 +149,108 @@ const Plot = () => {
       if (pointA === point) {
         a = -1;
         b = pointB;
-        currentHandler(pointB);
       } else if (pointB === point) {
         //click on pointB
         a = pointA;
         b = -1;
-        currentHandler(pointA);
       } else {
         a = point;
-        currentHandler(point);
       }
     }
     setPointA(a);
     setPointB(b);
 
-    if (a>-1 && b>-1) {
+    if (a > -1 && b > -1) {
       clickedHandler(a, b);
     }
   };
 
   const generateTriplet = (point) => {
-    let x=-1,y=-1,z=-1;
+    let x = -1,
+      y = -1,
+      z = -1;
     if (pointX < 0 && pointY < 0 && pointZ < 0) {
-      x=point;
+      x = point;
     } else if (pointX < 0 || pointY < 0 || pointZ < 0) {
       if (pointX < 0) {
-        x=point;
-        y=pointY;
-        z=pointZ;
-       
+        x = point;
+        y = pointY;
+        z = pointZ;
       } else if (pointY < 0) {
-        y=point;
-        x=pointX;
-        z=pointZ;
-
+        y = point;
+        x = pointX;
+        z = pointZ;
       } else {
-        z=point;
-        x=pointX;
-        y=pointY;
+        z = point;
+        x = pointX;
+        y = pointY;
       }
-    } else{
-      if(point===pointX){
-        x=-1;
-        y=pointY;
-        z=pointZ;
-      }else if(point===pointY){
-        y=-1;
-        x=pointX;
-        z=pointZ;
-      }else if(point===pointZ){
-        z=-1;
-        x=pointX;
-        y=pointY;
-      }else{
-        x=point;
+    } else {
+      if (point === pointX) {
+        x = -1;
+        y = pointY;
+        z = pointZ;
+      } else if (point === pointY) {
+        y = -1;
+        x = pointX;
+        z = pointZ;
+      } else if (point === pointZ) {
+        z = -1;
+        x = pointX;
+        y = pointY;
+      } else {
+        x = point;
       }
     }
     setPointX(x);
     setPointY(y);
     setPointZ(z);
 
-    if(x>-1 && y>-1 && z>-1){
-      tripletHandler(x,y,z);
+    if (x > -1 && y > -1 && z > -1) {
+      tripletHandler(x, y, z);
     }
   };
 
-
   const colorPoint = (point) => {
-    if(isPerimeter){
-      if(pointX===-1 && pointY===-1 && pointZ===-1){
+    if (isPerimeter) {
+      if (pointX === -1 && pointY === -1 && pointZ === -1) {
         return 'black';
       }
       //color when point is clicked
-      if(pointX === point || pointY === point || pointZ === point){
+      if (pointX === point || pointY === point || pointZ === point) {
         return 'green';
       }
 
       return 'white';
-    }else{
+    }else if(isRadius){  
+      //check if the point is within the radius
+      if (points[current].distanceTo(points[point]) < radius) {
+        return 'black';
+      } else {
+        return 'white';
+      }
+      
+    } else {
       //default color
-      if(pointA===-1 && pointB===-1){
+      if (pointA === -1 && pointB === -1) {
         return 'black';
       }
       //color when point is clicked
       if (pointA === point || pointB === point) {
         return color;
-      }else if (pointA === -1 || pointB === -1) {
-        //if one of the points is clicked
-        const existingPoint=pointA===-1?pointB:pointA;
-        //check if the point is within the radius
-        if(points[existingPoint].distanceTo(points[point])<radius){
-          return 'black';
-        }else{
-        return 'white';
-        }
-      } else {
+      }  else {
         return 'white';
       }
-  }
+    }
   };
 
   const calculateMidpoint = (pointA, pointB) => {
     if (pointA < 0 || pointB < 0) return null;
-    if (pointA===undefined || pointB===undefined) return null;
+    if (pointA === undefined || pointB === undefined) return null;
     return new THREE.Vector3(
       (pointA.x + pointB.x) / 2.0,
       (pointA.y + pointB.y) / 2.0,
-      (pointA.z + pointB.z) / 2.0,
+      (pointA.z + pointB.z) / 2.0
     );
   };
   const renderLine = () => {
@@ -270,20 +272,20 @@ const Plot = () => {
     );
   };
 
-  const renderPlane=()=>{
-    if(pointX<0||pointY<0||pointZ<0){
+  const renderPlane = () => {
+    if (pointX < 0 || pointY < 0 || pointZ < 0) {
       return null;
     }
-    const nodeX=points[pointX];
-    const nodeY=points[pointY];
-    const nodeZ=points[pointZ];
-    if(nodeX===undefined||nodeY===undefined||nodeZ===undefined){
+    const nodeX = points[pointX];
+    const nodeY = points[pointY];
+    const nodeZ = points[pointZ];
+    if (nodeX === undefined || nodeY === undefined || nodeZ === undefined) {
       return null;
     }
-    const perimeter=nodeX.distanceTo(nodeY)+nodeY.distanceTo(nodeZ)+nodeZ.distanceTo(nodeX);
+    const perimeter = nodeX.distanceTo(nodeY) + nodeY.distanceTo(nodeZ) + nodeZ.distanceTo(nodeX);
     return (
       <>
-        <Line points={[nodeX, nodeY,nodeZ,nodeX]} color='green' lineWidth={8} />
+        <Line points={[nodeX, nodeY, nodeZ, nodeX]} color="green" lineWidth={8} />
         <Html scaleFactor={10} position={calculateMidpoint(nodeX, nodeY)}>
           {showDistance && (
             <div className={styles.distancePanel}>
@@ -292,8 +294,8 @@ const Plot = () => {
           )}
         </Html>
       </>
-    )
-  }
+    );
+  };
   const renderPoints = (points) => {
     return points.map((point, index) => {
       return (
@@ -301,10 +303,12 @@ const Plot = () => {
           key={index}
           position={point}
           onClick={(e) => {
-            if(isPerimeter){
+            if (isPerimeter) {
               generateTriplet(index);
-            }else{
-            generatePairs(index);
+            } else if (isRadius) {
+              currentHandler(index);
+            } else {
+              generatePairs(index);
             }
           }}
         >
@@ -320,25 +324,25 @@ const Plot = () => {
     });
   };
 
-  const renderGeometricCenter=(points)=>{
-    return(
-    <mesh
-          key={0}
-          position={calculateGeometricCenter(points)}
-          onClick={(e) => {
-            console.log(calculateGeometricCenter(points));
-          }}
-        >
-          <sphereGeometry args={[sphereRadius*2, 64, 16]} />
-          <meshStandardMaterial color={'orange'} />
-          <Html scaleFactor={10}>
-            <div className={styles.label}>
-              <p>Geometric Center</p>
-            </div>
-          </Html>
-        </mesh>
-    )
-    }
+  const renderGeometricCenter = (points) => {
+    return (
+      <mesh
+        key={0}
+        position={calculateGeometricCenter(points)}
+        onClick={(e) => {
+          console.log(calculateGeometricCenter(points));
+        }}
+      >
+        <sphereGeometry args={[sphereRadius * 2, 64, 16]} />
+        <meshStandardMaterial color={'orange'} />
+        <Html scaleFactor={10}>
+          <div className={styles.label}>
+            <p>Geometric Center</p>
+          </div>
+        </Html>
+      </mesh>
+    );
+  };
 
   const tubeColor = () => {
     if (pointA === -1 || pointB === -1) {
@@ -364,15 +368,22 @@ const Plot = () => {
       const strDownloadName = 'image/octet-stream';
       const pdf = new jsPDF();
       // Get page dimensions
-    const pageWidth = pdf.internal.pageSize.getWidth();
-    const pageHeight = pdf.internal.pageSize.getHeight();
-    
-    const margin = 10; 
-    
-    // Calculate image dimensions maintaining aspect ratio
-    const imageWidth = pageWidth - (margin * 2);
-    const imageHeight = (imageWidth * gl.domElement.height) / gl.domElement.width;
-      pdf.addImage(imgData.replace(strName, strDownloadName), 'PNG', margin, margin, imageWidth, imageHeight);
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+
+      const margin = 10;
+
+      // Calculate image dimensions maintaining aspect ratio
+      const imageWidth = pageWidth - margin * 2;
+      const imageHeight = (imageWidth * gl.domElement.height) / gl.domElement.width;
+      pdf.addImage(
+        imgData.replace(strName, strDownloadName),
+        'PNG',
+        margin,
+        margin,
+        imageWidth,
+        imageHeight
+      );
       pdf.save('fov-' + selected.fov + '-s-' + selected.s + '-' + 'image.pdf');
     } catch (e) {
       console.log(e);
@@ -385,13 +396,13 @@ const Plot = () => {
       // Create SVG renderer
       const svgRenderer = new SVGRenderer();
       svgRenderer.setSize(595.28, 841.89);
-      
+
       // Render the scene
       svgRenderer.render(scene, camera);
-      
+
       // Get the SVG element
       const svgElement = svgRenderer.domElement;
-      
+
       // Create PDF document
       const pdf = new jsPDF({
         orientation: 'portrait',
@@ -400,17 +411,16 @@ const Plot = () => {
         compress: true,
         precision: 1,
       });
-  
+
       // Convert SVG to PDF while maintaining vector quality
       await svg2pdf(svgElement, pdf, {
         xOffset: 0,
         yOffset: 0,
-        scale: 1
+        scale: 1,
       });
-  
+
       // Save the PDF
       pdf.save(`fov-${selected.fov}-s-${selected.s}-vector.pdf`);
-      
     } catch (e) {
       console.log(e);
       return;
@@ -434,40 +444,44 @@ const Plot = () => {
         </div>
       </Html>
       <OrbitControls makeDefault />
-      {isGrid&&<axesHelper args={[roundedGridSize]} />}
-      {isGrid&&<gridHelper args={[roundedGridSize, roundedGridSize/100]} rotation={[0, Math.PI / 2, Math.PI / 2]}  />}
-      <Html position={[roundedGridSize/2, 0, 0]}>
-        <div style={{ color: 'red', fontSize: '16px' }}>+X: {roundedGridSize/2}nm</div>
+      {isGrid && <axesHelper args={[roundedGridSize]} />}
+      {isGrid && (
+        <gridHelper
+          args={[roundedGridSize, roundedGridSize / 100]}
+          rotation={[0, Math.PI / 2, Math.PI / 2]}
+        />
+      )}
+      <Html position={[roundedGridSize / 2, 0, 0]}>
+        <div style={{ color: 'red', fontSize: '16px' }}>+X: {roundedGridSize / 2}nm</div>
       </Html>
-      <Html position={[-roundedGridSize/2, 0, 0]}>
+      <Html position={[-roundedGridSize / 2, 0, 0]}>
         <div style={{ color: 'red', fontSize: '16px' }}>-X</div>
       </Html>
-      <Html position={[0, roundedGridSize/2, 0]}>
-        <div style={{ color: 'green', fontSize: '16px' }}>+Y:{roundedGridSize/2}nm</div>
+      <Html position={[0, roundedGridSize / 2, 0]}>
+        <div style={{ color: 'green', fontSize: '16px' }}>+Y:{roundedGridSize / 2}nm</div>
       </Html>
-      <Html position={[0, -roundedGridSize/2, 0]}>
+      <Html position={[0, -roundedGridSize / 2, 0]}>
         <div style={{ color: 'green', fontSize: '16px' }}>-Y</div>
       </Html>
-      <Html position={[0, 0, roundedGridSize/2]}>
-        <div style={{ color: 'blue', fontSize: '16px' }}>+Z: {roundedGridSize/2}nm</div>
+      <Html position={[0, 0, roundedGridSize / 2]}>
+        <div style={{ color: 'blue', fontSize: '16px' }}>+Z: {roundedGridSize / 2}nm</div>
       </Html>
-      <Html position={[0, 0, -roundedGridSize/2]}>
+      <Html position={[0, 0, -roundedGridSize / 2]}>
         <div style={{ color: 'blue', fontSize: '16px' }}>-Z</div>
       </Html>
       <ambientLight intensity={1.5} />
       <directionalLight position={center} intensity={2.5} />
-      <group ref={groupRef} position={center} >
+      <group ref={groupRef} position={center}>
         {renderGeometricCenter(points)}
         {renderPoints(points)}
         {renderTube(points)}
-        {isPerimeter?renderPlane():renderLine()}
+        {isPerimeter ? renderPlane() : renderLine()}
       </group>
       <GizmoHelper alignment="bottom-left" margin={[150, 150]}>
-      <group rotation={[-Math.PI / 2, Math.PI, Math.PI / 2]}>
-        <GizmoViewport labelColor="black" axisHeadScale={1.5} />
+        <group rotation={[-Math.PI / 2, Math.PI, Math.PI / 2]}>
+          <GizmoViewport labelColor="black" axisHeadScale={1.5} />
         </group>
       </GizmoHelper>
-      
     </>
   );
 };

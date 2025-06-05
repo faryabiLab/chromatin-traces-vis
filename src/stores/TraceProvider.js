@@ -35,7 +35,7 @@ const traceReducer = (state, action) => {
       selected: state.selected,
       clicked: { a: action.a, b: action.b},
       triplet: {a:-1,b:-1,c:-1},
-      radius:state.radius,
+      radius:200,
       current:-1,
       mode:state.mode,
     };
@@ -47,7 +47,7 @@ const traceReducer = (state, action) => {
       selected: state.selected,
       clicked: { a: -1, b: -1 },
       triplet: {a:action.a,b:action.b,c:action.c},
-      radius:state.radius,
+      radius:200,
       current:-1,
       mode:state.mode,
     }
@@ -98,7 +98,7 @@ const traceReducer = (state, action) => {
       triplet:{a:-1,b:-1,c:-1},
       radius:200,
       current:-1,
-      mode:'2',
+      mode:state.mode,
     }
   }  
   return defaultTraceState;

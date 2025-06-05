@@ -41,7 +41,7 @@ const Dashboard = () => {
   const selectedHandler = traceCtx.selectedHandler;
   const mode = traceCtx.mode;
   const setMode = traceCtx.modeHandler;
-  console.log(mode);
+
   useEffect(() => {
     selectedHandler(fov.toString(), dataCtx.keys[fov][allele].toString());
   }, [fov, allele]);
@@ -201,9 +201,9 @@ const Dashboard = () => {
           <TabPanel>
             <RadioGroup onChange={setMode} value={mode}>
               <VStack>
-              <HStack><Radio value='1'/><RadiusFilter mode={mode} /></HStack>
-                <HStack><Radio value='2'/><LinkageFilter alleleHandler={setAllele} mode={mode} /></HStack>
-                <HStack><Radio value='3'/><PerimeterCheckbox mode={mode} /></HStack>
+              <HStack><Radio value='1'/><RadiusFilter/></HStack>
+                <HStack><Radio value='2'/><LinkageFilter alleleHandler={setAllele}/></HStack>
+                <HStack><Radio value='3'/><PerimeterCheckbox/></HStack>
               </VStack>
             </RadioGroup>
           </TabPanel>
