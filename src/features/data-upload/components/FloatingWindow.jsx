@@ -3,7 +3,7 @@ import { Box, Table,  Tbody, Tr, Th, Td, IconButton, Flex } from '@chakra-ui/rea
 import { CloseIcon, DragHandleIcon } from '@chakra-ui/icons';
 
 const FloatingTable = ({ file, isOpen, onClose  }) => {
-  const [position, setPosition] = useState({ x: 10, y: 10 });
+  const [position, setPosition] = useState({ x: 100, y: 100 });
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const [table, setTable] = useState([]);
@@ -73,7 +73,20 @@ const FloatingTable = ({ file, isOpen, onClose  }) => {
   const handleMouseUp = () => {
     setIsDragging(false);
   };
+  // Add and remove global event listeners
+  useEffect(() => {
+    if (isDragging) {
+      // Add global event listeners when dragging starts
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+    }
 
+    // Cleanup function to remove event listeners
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [isDragging]); // Only re-run effect when isDragging changes
 
   if (!isOpen) return null;
 
