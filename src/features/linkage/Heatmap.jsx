@@ -147,9 +147,9 @@ const Heatmap = ({ data, width, height }) => {
           maxW={125}
           step={50}
           defaultValue={colorMax}
-          value={parseFloat(colorMax).toFixed(2)}
+          value={Math.ceil(parseFloat(colorMax))}
           min={min}
-          max={parseFloat(max).toFixed(2)}
+          max={Math.ceil(max)}
           onChange={(e) => {
             setColorMax(e);
           }}
