@@ -30,7 +30,7 @@ const RadiusFilter = () => {
     return (
       <HStack spacing={2}>
         <Text fontWeight="bold">Filter readouts within a radius</Text>
-        <Tooltip label="If you select a readout, you can identify readouts within a given distance to that selected readout.">
+        <Tooltip label="If you select a readout, you can identify readouts within a given radius to the selected readout.">
           <span>
             <CircleHelp boxSize={4} />
           </span>
