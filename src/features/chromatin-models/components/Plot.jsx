@@ -45,8 +45,8 @@ const Plot = () => {
   const { color, isGrid, tubeRadius, showDistance, sphereRadius } = useControls({
     color: 'red',
     isGrid: { value: true, label: 'Grid & Axis' },
-    tubeRadius: { value: 5, min: 0, max: 5, step: 0.01, label: 'Line Size' },
-    sphereRadius: { value: 15, min: 0.01, max: 25, step: 0.01, label: 'Dot Size' },
+    tubeRadius: { value: 5, min: 0, max: 5, step: 0.5, label: 'Line Size' },
+    sphereRadius: { value: 15, min: 5, max: 25, step: 1, label: 'Dot Size' },
     showDistance: { value: true, label: 'Show Distance' },
     reset: button(traceCtx.resetHandler),
   });
