@@ -26,7 +26,7 @@ const FloatingTable = ({ file, isOpen, onClose  }) => {
 
     return processed;
 }
-
+console.log(file);
   useEffect(() => {
     if (file !== '') {
       fetch('https://olive.faryabilab.com/experiment/' + file)
