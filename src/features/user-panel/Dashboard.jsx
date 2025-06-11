@@ -227,7 +227,7 @@ const Dashboard = () => {
           </Button>
         </div>
       </Stack>
-      {metadata && <Box p={4}>
+      {metadata && <Box p={0}>
       <TableContainer>
         <Table variant="simple" size="sm">
           <Thead>
@@ -284,7 +284,7 @@ const Dashboard = () => {
             </RadioGroup>
           </TabPanel>
           <TabPanel>
-            {distanceMap && <Heatmap data={distanceMap} width={650} height={600} />}
+            {distanceMap && <Heatmap data={distanceMap} width={600} height={550} />}
           </TabPanel>
           <TabPanel>{data && <LinePlot data={data} />}</TabPanel>
           <TabPanel>{data && <BoxPlot data={data} />}</TabPanel>
