@@ -1,11 +1,13 @@
-import { Divider, Text, VStack, Box, Flex, Button, Link } from '@chakra-ui/react';
+import { Divider, Text, VStack, Box, Flex, Button, Link, HStack,useDisclosure } from '@chakra-ui/react';
 import { useState } from 'react';
 import Uploader from './Uploader';
 import DataBrowser from './components/DataBrowser';
 import { User, Rat, Bug } from 'lucide-react';
+import DataEntryModal from './components/DataEntryModal';
 
 const Landing = () => {
   const [selectedSpecies, setSelectedSpecies] = useState('');
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <VStack spacing="24px" marginBottom={'100px'}>
@@ -116,6 +118,15 @@ const Landing = () => {
       )}
       {selectedSpecies && (
         <>
+        <HStack>
+          <Button
+            colorScheme="blue"
+            variant="outline"
+            onClick={onOpen}
+            ml={8}
+          >
+            ↑ Submit Data
+          </Button>
           <Button
             colorScheme="teal"
             variant="outline"
@@ -124,6 +135,8 @@ const Landing = () => {
           >
             ← Back
           </Button>
+          </HStack>
+          <DataEntryModal isOpen={isOpen} onClose={onClose} />
           <Divider />
           <DataBrowser species={selectedSpecies} />
         </>
