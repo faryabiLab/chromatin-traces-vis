@@ -25,9 +25,9 @@ const Landing = () => {
       </Box>
       <Box width="70%">
         <Link
-          href="https://github.com/faryabiLab/chromatin-traces-vis" // Replace with your actual GitHub URL
-          isExternal // This will open in a new tab
-          _hover={{ textDecoration: 'none' }} // Removes default link underline
+          href="https://github.com/faryabiLab/chromatin-traces-vis" 
+          isExternal 
+          _hover={{ textDecoration: 'none' }}
         >
           <Box
             p={4}

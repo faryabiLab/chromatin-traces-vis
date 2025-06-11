@@ -19,6 +19,7 @@ const DataBrowser = ({species}) => {
   const dataCtx = useContext(DataContext);
   const setDataBysHandler = dataCtx.setDataBysHandler;
   const setTotalReadouts=dataCtx.setTotalReadouts;
+  const setFilenameHandler = dataCtx.setFilename;
   const { isOpen, onOpen, onClose } = useDisclosure();
   useEffect(() => {
     //fetch metadata table from backend on load
@@ -43,6 +44,7 @@ const DataBrowser = ({species}) => {
         if (array && array.length > 0) {
           setDataBysHandler(array);
           setTotalReadouts(readoutSteps);
+          setFilenameHandler(id);
         }
         setIsLoading(false);
       },

@@ -65,3 +65,36 @@ export const getFilledReadouts = (data) => {
         .filter(item => item.filling === true)
         .map(item => item.readout);
 };
+
+export function processMetadata(obj) {
+  const formatKey = (key) => {
+      return key.split('_')
+          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ');
+  };
+
+  const processed = Object.entries(obj)
+      // Filter out readout_steps
+      .filter(([key]) => key !== 'readout_steps')
+      .reduce((acc, [key, value]) => {
+          acc[formatKey(key)] = value;
+          return acc;
+      }, {});
+
+  return processed;
+}
+
+export function extractFields(dataObject) {
+  // Check if dataObject exists
+  if (!dataObject || typeof dataObject !== 'object') {
+    return null;
+  }
+
+  return {
+    cell_type: dataObject.cell_type || null,
+    cell_line: dataObject.cell_line || null,
+    gene: dataObject.gene || null,
+    treatment: dataObject.treatment || null,
+    genotype: dataObject.genotype || null
+  };
+}

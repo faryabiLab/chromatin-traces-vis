@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Box, Table,  Tbody, Tr, Th, Td, IconButton, Flex } from '@chakra-ui/react';
 import { CloseIcon, DragHandleIcon } from '@chakra-ui/icons';
-
+import { processMetadata } from '../../../utils/displayUtils';
 const FloatingTable = ({ file, isOpen, onClose  }) => {
   const [position, setPosition] = useState({ x: 100, y: 100 });
   const [isDragging, setIsDragging] = useState(false);
@@ -9,24 +9,8 @@ const FloatingTable = ({ file, isOpen, onClose  }) => {
   const [table, setTable] = useState([]);
   const floatingRef = useRef(null);
 
-  function processMetadata(obj) {
-    const formatKey = (key) => {
-        return key.split('_')
-            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-            .join(' ');
-    };
 
-    const processed = Object.entries(obj)
-        // Filter out readout_steps
-        .filter(([key]) => key !== 'readout_steps')
-        .reduce((acc, [key, value]) => {
-            acc[formatKey(key)] = value;
-            return acc;
-        }, {});
 
-    return processed;
-}
-console.log(file);
   useEffect(() => {
     if (file !== '') {
       fetch('https://olive.faryabilab.com/experiment/' + file)

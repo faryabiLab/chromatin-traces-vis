@@ -96,7 +96,7 @@ const DataEntryModal = ({ isOpen, onClose }) => {
     try {
       // Prepare template parameters for EmailJS
       const templateParams = {
-        to_email: 'recipient@example.com', // Replace with recipient email
+        to_email: 'recipient@example.com', 
         from_name: formData.name,
         from_email: formData.email,
         subject: 'New Data Entry Form Submission',
@@ -137,7 +137,6 @@ const DataEntryModal = ({ isOpen, onClose }) => {
         EMAILJS_PUBLIC_KEY
       );
 
-      console.log('Email sent successfully:', result);
       return { success: true };
     } catch (error) {
       console.error('Email sending failed:', error);
