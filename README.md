@@ -4,7 +4,7 @@
 
 This is a web application to visualize chromatin traces and provide interactive features which can be accessed at https://faryabilab.github.io/chromatin-traces-vis/ 
 
-<img width="2100" alt="image" src="https://github.com/user-attachments/assets/0a3a6b43-3ea9-4ba7-b63f-075507275fd6" />
+<img width="1999" alt="image" src="https://github.com/user-attachments/assets/a743fa08-9045-4988-bcde-9df53f5d2485" />
 
 <img width="2062" alt="image" src="https://github.com/user-attachments/assets/1ec10746-75e6-4f0b-9daf-51711fdfe6c6" />
 
@@ -65,13 +65,15 @@ This program is using linear interpolation to impute the missing values.
 
 1.   Use the shortcuts to view available chromatin traces. <img width="2039" alt="image" src="https://github.com/user-attachments/assets/ceacd3af-7b0c-42ea-8ea5-9826bbd1a165" />
 
-2.   Keyword is pre-set for your convenience. You can clear the search bar to view the whole database. <img width="2050" alt="image" src="https://github.com/user-attachments/assets/72e95d50-d3d5-4d87-815d-18e32b4a01d2" />
+2.   You can fill the form to submit metadata to us.
 
-3.   Use column filter. <img width="2048" alt="image" src="https://github.com/user-attachments/assets/a893681f-f8ab-4560-936a-540a5307b7be" />
+3.   Keyword is pre-set for your convenience. You can clear the search bar to view the whole database. <img width="2050" alt="image" src="https://github.com/user-attachments/assets/72e95d50-d3d5-4d87-815d-18e32b4a01d2" />
 
-4.   Inspect metadata. <img width="2112" alt="image" src="https://github.com/user-attachments/assets/fe01632a-87b4-4e4f-aef1-fc3be2e4fcad" />
+4.   Use column filter. <img width="2048" alt="image" src="https://github.com/user-attachments/assets/a893681f-f8ab-4560-936a-540a5307b7be" />
 
-5.   Click view. <img width="1677" alt="Google Chrome 2025-05-29 12 18 03" src="https://github.com/user-attachments/assets/2b8bf651-9d98-434f-b988-a2bc806e24d4" />
+5.   Inspect metadata. <img width="2156" alt="image" src="https://github.com/user-attachments/assets/ed97d673-fe6a-432c-a0e1-4fdeefa649c9" />
+
+6.   Click view. <img width="1677" alt="Google Chrome 2025-05-29 12 18 03" src="https://github.com/user-attachments/assets/2b8bf651-9d98-434f-b988-a2bc806e24d4" />
 
 
 ### Step 2: Visualization
