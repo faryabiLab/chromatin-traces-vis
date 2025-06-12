@@ -101,7 +101,7 @@ const Landing = () => {
                   >
                     <Bug size={32} />
                     <VStack align="start" spacing={0}>
-                      <Text fontSize="3xl">Fly</Text>
+                      <Text fontSize="3xl">Fruitfly</Text>
                     </VStack>
                   </Button>
                 </Flex>
