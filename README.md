@@ -52,70 +52,70 @@ This program is using linear interpolation to impute the missing values.
 
 ### Step 1: Upload Your CSV File
 
-1.   Click the button to start uploading. <img width="2036" alt="image" src="https://github.com/user-attachments/assets/e43c301c-2227-4d80-8306-6bd872d5e8cf" />
+1.   Click the button to start uploading. <img width="2033" alt="image" src="https://github.com/user-attachments/assets/c49afe9c-0ee2-4a64-8493-732cf2cca4e4" />
 
-2.   Enter the number of Total Readouts. **This step is required** in order to fill in all the missing values. All the alleles will have this number of total readouts. <img width="2002" alt="image" src="https://github.com/user-attachments/assets/47121db2-cca5-40a2-a3de-8a4d86fa7ad2" />
 
-3.   Drop your CSV file or click to upload. Your file **WILL NOT** be saved to our database.<img width="1946" alt="image" src="https://github.com/user-attachments/assets/b736acb3-53da-4c14-8c8b-b0caf732167d" />
+2.   Enter the number of Total Readouts. **This step is required** in order to fill in all the missing values. All the alleles will have this number of total readouts. <img width="1422" alt="Google Chrome 2025-06-12 14 50 50" src="https://github.com/user-attachments/assets/9f430b3a-8d21-49d7-802c-c55bacb9ab82" />
+
+
+3.   Drop your CSV file or click to upload. Your file **WILL NOT** be saved to our database.<img width="1799" alt="image" src="https://github.com/user-attachments/assets/26a864b4-0a14-4499-b4c4-aedb98cd06e0" />
+
 
 4.   Click the button to view your traces. <img width="1913" alt="image" src="https://github.com/user-attachments/assets/0f170634-fd7d-4b57-9856-7964aab4338f" />
 
 
 ### OR: Browse the files stored in our database
 
-1.   Use the shortcuts to view available chromatin traces. <img width="2039" alt="image" src="https://github.com/user-attachments/assets/ceacd3af-7b0c-42ea-8ea5-9826bbd1a165" />
+1.   Use the shortcuts to view available chromatin traces. <img width="1998" alt="image" src="https://github.com/user-attachments/assets/a8e39ef5-e0df-4f66-b420-84df83dfcc01" />
 
-2.   You can fill the form to submit metadata to us.
+2.   You can fill the form to submit metadata to us. <img width="1693" alt="image" src="https://github.com/user-attachments/assets/2bc9c3ce-c701-424b-9de6-d36674f03b0c" />
 
 3.   Keyword is pre-set for your convenience. You can clear the search bar to view the whole database. <img width="2050" alt="image" src="https://github.com/user-attachments/assets/72e95d50-d3d5-4d87-815d-18e32b4a01d2" />
 
-4.   Use column filter. <img width="2048" alt="image" src="https://github.com/user-attachments/assets/a893681f-f8ab-4560-936a-540a5307b7be" />
+4.   Use column filter. <img width="1879" alt="image" src="https://github.com/user-attachments/assets/94c49e46-2711-4a45-9a0d-3d1ee206518c" />
 
 5.   Inspect metadata. <img width="2156" alt="image" src="https://github.com/user-attachments/assets/ed97d673-fe6a-432c-a0e1-4fdeefa649c9" />
 
 6.   Click view. <img width="1677" alt="Google Chrome 2025-05-29 12 18 03" src="https://github.com/user-attachments/assets/2b8bf651-9d98-434f-b988-a2bc806e24d4" />
 
 
-### Step 2: Visualization
+### Step 2: Visualization Analysis
 
+#### Basic
 1.   Select FOV and Allele to view any trace. <img width="775" alt="image" src="https://github.com/user-attachments/assets/aba0e634-d1b2-4a8b-95a8-9e45436619c1" />
 
-2.   Click any two dots in the model to view the distance.  <img width="991" alt="image" src="https://github.com/user-attachments/assets/6f3ab74a-94af-4d71-854d-e55686fd8d40" />
-
-3.   Use GUI to adjust
+2.   Use GUI to adjust
      1.   Color
      2.   Toggle Grid and axis
      3.   Line Size
      4.   Dot Size
      5.   Toggle the distance label of a selected linkage
-
-     6.   Radius: only dots that are within this distance to the selected dot are colored. <img width="1125" alt="image" src="https://github.com/user-attachments/assets/9ac4da27-fde4-44bc-83e6-bcbca909617a" />
-
-
-     7. Click Reset to clear all the selection of the dots. <img width="987" alt="image" src="https://github.com/user-attachments/assets/c52fa03e-5d2d-4591-b31d-4d60f31458c1" />
-
-
-
-4.   If you select the Perimeter option in the GUI, click any three dots to view the perimeter. Uncheck this box to go back to linkage mode. <img width="1105" alt="image" src="https://github.com/user-attachments/assets/f8e09728-2b69-412b-a44c-216698441ce4" />
-
-
-5.    Having clicked two nodes, by typing the threshold you can filter the alleles *within the same fov* that have the distance of this linkage smaller than this threshold. <img width="1807" alt="image" src="https://github.com/user-attachments/assets/16c01fb2-fec1-4f7d-a7ad-ccca5e133b59" />
+     6.   Click Reset to clear all the selection of the dots. <img width="987" alt="image" src="https://github.com/user-attachments/assets/c52fa03e-5d2d-4591-b31d-4d60f31458c1" />
+#### Distance Analysis
+1.   Select any of the three options. <img width="2106" alt="Google Chrome 2025-06-12 14 54 04" src="https://github.com/user-attachments/assets/068bbcd5-ab28-4e8c-b8ca-82548d9095b5" />
+2.   Filter readouts within a radius. <img width="1893" alt="image" src="https://github.com/user-attachments/assets/ab7ebb21-3e67-4d1d-8df4-1527673cd0e6" />
+3.   Calculate pairwise distance
+       1.  Click any two dots to view the distance. <img width="991" alt="image" src="https://github.com/user-attachments/assets/6f3ab74a-94af-4d71-854d-e55686fd8d40" />
+       2.  Filter alleles within the current fov with a maximum distance between two selected readouts. <img width="2025" alt="image" src="https://github.com/user-attachments/assets/9e40723c-f226-4ef4-8cf6-92ccbdd53851" />
+4.   Calculate 3-way perimeter. <img width="1496" alt="image" src="https://github.com/user-attachments/assets/107c5eb4-5dcb-44a5-a657-c3995adfbdc4" />
 
 
-### Step 3: Panels
+####   Distance Heatmap
 
-1.   Distance Heatmap
+1.   Click any grid cell to view the linkage in the 3D model. <img width="2067" alt="image" src="https://github.com/user-attachments/assets/8cd0cabd-80da-483d-9c66-5408753a0e2b" />
 
-     1.   Click any grid cell to view the linkage in the 3D model. <img width="1816" alt="image" src="https://github.com/user-attachments/assets/2000e2e3-32bd-42db-99ca-28886da9f3f9" />
+2.   Use the filter to filter the linkage distances that are within the range. <img width="698" alt="image" src="https://github.com/user-attachments/assets/a7bcb08d-ab24-4a39-b2dc-5db149142a01" />
 
+#### Centrality Profile
 
-     2.   Use the filter to filter the linkage distances that are within the range. <img width="698" alt="image" src="https://github.com/user-attachments/assets/a7bcb08d-ab24-4a39-b2dc-5db149142a01" />
+1.   Hover to view the distance to the geometric center. <img width="2059" alt="image" src="https://github.com/user-attachments/assets/1f78b433-c621-45ac-8463-c94da9506c6a" />
 
+2.   Click to download PDF
 
-2.   Distance to the geometric center. <img width="1987" alt="image" src="https://github.com/user-attachments/assets/92cb2074-2380-4c98-a21c-77ca6867e227" />
+#### Radius of Gyration
 
+1.   Radius of Gyration. <img width="2064" alt="image" src="https://github.com/user-attachments/assets/f822bb18-73e3-4aea-bd2c-f76b5f3d7213" />
 
-3.   Radius of Gyration. <img width="1929" alt="image" src="https://github.com/user-attachments/assets/6f1111a3-3bc9-43ec-bab1-87faf15d4bb8" />
 
 
 
