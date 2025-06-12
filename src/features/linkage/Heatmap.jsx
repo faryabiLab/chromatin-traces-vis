@@ -32,7 +32,7 @@ const Heatmap = ({ data, width, height }) => {
   const clicked = traceCtx.clicked;
 
   const clickedHandler = traceCtx.clickedHandler;
-  const selected = traceCtx.selected;
+
   const hightlightA = clicked.a + 1;
   const hightlightB = clicked.b + 1;
   const imputed=getFilledReadouts(traceCtx.data);
@@ -40,13 +40,14 @@ const Heatmap = ({ data, width, height }) => {
   const handleColorChange = (color) => {
     setColor(color.hex);
   };
-  useEffect(() => {}, [selected]);
+
   const [min, max] = d3.extent(data.map((d) => d.value));
   const [colorMax, setColorMax] = useState(max);
-  useEffect(() => {
-    const max = d3.extent(data.map((d) => d.value))[1];
-    setColorMax(max);
-  }, [data]);
+
+  // useEffect(() => {
+  //   const max = d3.extent(data.map((d) => d.value))[1];
+  //   setColorMax(max);
+  // }, [data]);
 
   const boundsWidth = width - MARGIN.right - MARGIN.left;
   const boundsHeight = height - MARGIN.top - MARGIN.bottom;
@@ -64,17 +65,6 @@ const Heatmap = ({ data, width, height }) => {
 
   // Color scale
   const colorScale = d3.scaleLinear().domain([min, colorMax]).range([color, 'white']);
-
-  const getTextColor=(name)=>{
-    if(name===hightlightA){
-      return 'red';
-    }
-    if(imputed.includes(name)){
-      return 'grey';
-    }
-    return 'black';
-  }
-
 
   const downloadPDF = async () => {
     setIsDownloading(true);
@@ -231,7 +221,7 @@ const Heatmap = ({ data, width, height }) => {
 
         <label>Color Scale Domain: 0 ~ </label>
         <NumberInput
-          size="md"
+          size="sm"
           maxW={125}
           step={50}
           defaultValue={colorMax}
