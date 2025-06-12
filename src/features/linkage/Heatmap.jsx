@@ -44,11 +44,6 @@ const Heatmap = ({ data, width, height }) => {
   const [min, max] = d3.extent(data.map((d) => d.value));
   const [colorMax, setColorMax] = useState(max);
 
-  // useEffect(() => {
-  //   const max = d3.extent(data.map((d) => d.value))[1];
-  //   setColorMax(max);
-  // }, [data]);
-
   const boundsWidth = width - MARGIN.right - MARGIN.left;
   const boundsHeight = height - MARGIN.top - MARGIN.bottom;
 
@@ -109,7 +104,7 @@ const Heatmap = ({ data, width, height }) => {
   
       // Add metadata at the top
       pdf.setFontSize(16);
-      pdf.text('ORCA Heatmap Analysis', 20, 30);
+      pdf.text('Distance Map', 20, 30);
       
       pdf.setFontSize(12);
       pdf.text(`Generated on: ${new Date().toLocaleString()}`, 20, 50);

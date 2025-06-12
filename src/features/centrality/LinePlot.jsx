@@ -63,7 +63,7 @@ const LinePlot = ({ data }) => {
       
       // Add title
       pdf.setFontSize(16);
-      pdf.text('Distance to Geometric Center Plot', 15, imgHeight + 25);
+      pdf.text('Distance to Geometric Center', 15, imgHeight + 25);
       
       // Add timestamp
       pdf.setFontSize(10);
