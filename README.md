@@ -4,10 +4,9 @@
 
 This is a web application to visualize chromatin traces and provide interactive features which can be accessed at https://faryabilab.github.io/chromatin-traces-vis/ 
 
-<img width="2157" alt="image" src="https://github.com/user-attachments/assets/a9ed9d39-3961-4429-ad70-64c9c69e6d73" />
+<img width="2100" alt="image" src="https://github.com/user-attachments/assets/0a3a6b43-3ea9-4ba7-b63f-075507275fd6" />
 
-<img width="2096" alt="image" src="https://github.com/user-attachments/assets/9018a01a-2734-49bb-81b4-363695c2f194" />
-
+<img width="2062" alt="image" src="https://github.com/user-attachments/assets/1ec10746-75e6-4f0b-9daf-51711fdfe6c6" />
 
 
 ## 🚀 Getting Started
@@ -46,27 +45,33 @@ The sample dataset include three field of views (FOV):
 
 This program is using linear interpolation to impute the missing values.
 
-<img width="1851" alt="image" src="https://github.com/user-attachments/assets/ca4848f7-4f6e-43fd-96e3-3ff820884aec" />
+<img width="2023" alt="image" src="https://github.com/user-attachments/assets/9a788284-cf77-404a-9b95-a7739a2aedcd" />
 
 
 ## 📋 How to Use
 
 ### Step 1: Upload Your CSV File
 
-1.   Enter the number of Total Readouts. **This step is required** in order to fill in all the missing values. All the alleles will have this number of total readouts. <img width="1863" alt="image" src="https://github.com/user-attachments/assets/ffe4f440-8023-497c-9d0e-136e468d35d0" />
+1.   Click the button to start uploading. <img width="2036" alt="image" src="https://github.com/user-attachments/assets/e43c301c-2227-4d80-8306-6bd872d5e8cf" />
 
-2.   Drop your CSV file or click to upload. Your file **WILL NOT** be saved to our database.<img width="878" alt="image" src="https://github.com/user-attachments/assets/4cb185c6-23de-43ae-8be4-820f28897d4a" />
+2.   Enter the number of Total Readouts. **This step is required** in order to fill in all the missing values. All the alleles will have this number of total readouts. <img width="2002" alt="image" src="https://github.com/user-attachments/assets/47121db2-cca5-40a2-a3de-8a4d86fa7ad2" />
 
-3.   Click the button to view your traces. <img width="720" alt="image" src="https://github.com/user-attachments/assets/18dcabfb-9000-47bd-8382-3ca6cc6fb974" />
+3.   Drop your CSV file or click to upload. Your file **WILL NOT** be saved to our database.<img width="1946" alt="image" src="https://github.com/user-attachments/assets/b736acb3-53da-4c14-8c8b-b0caf732167d" />
+
+4.   Click the button to view your traces. <img width="1913" alt="image" src="https://github.com/user-attachments/assets/0f170634-fd7d-4b57-9856-7964aab4338f" />
 
 
 ### OR: Browse the files stored in our database
 
-1.   Use table filter. <img width="1550" alt="image" src="https://github.com/user-attachments/assets/5fbb6c7f-9477-4001-a540-af85234307b1" />
+1.   Use the shortcuts to view available chromatin traces. <img width="2039" alt="image" src="https://github.com/user-attachments/assets/ceacd3af-7b0c-42ea-8ea5-9826bbd1a165" />
 
-2.   Inspect metadata. <img width="2128" alt="image" src="https://github.com/user-attachments/assets/e8535dcb-05ef-4d5b-b8dc-8ef4a271db3d" />
+2.   Keyword is pre-set for your convenience. You can clear the search bar to view the whole database. <img width="2050" alt="image" src="https://github.com/user-attachments/assets/72e95d50-d3d5-4d87-815d-18e32b4a01d2" />
 
-3.   Click view. <img width="1677" alt="Google Chrome 2025-05-29 12 18 03" src="https://github.com/user-attachments/assets/2b8bf651-9d98-434f-b988-a2bc806e24d4" />
+3.   Use column filter. <img width="2048" alt="image" src="https://github.com/user-attachments/assets/a893681f-f8ab-4560-936a-540a5307b7be" />
+
+4.   Inspect metadata. <img width="2112" alt="image" src="https://github.com/user-attachments/assets/fe01632a-87b4-4e4f-aef1-fc3be2e4fcad" />
+
+5.   Click view. <img width="1677" alt="Google Chrome 2025-05-29 12 18 03" src="https://github.com/user-attachments/assets/2b8bf651-9d98-434f-b988-a2bc806e24d4" />
 
 
 ### Step 2: Visualization
