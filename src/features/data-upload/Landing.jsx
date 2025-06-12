@@ -89,11 +89,11 @@ const Landing = () => {
                   </Button>
 
                   <Button
-                    onClick={() => setSelectedSpecies('fly')}
+                    onClick={() => setSelectedSpecies('fruitfly')}
                     height="150px"
                     width="80%"
                     colorScheme="teal"
-                    variant={selectedSpecies === 'fly' ? 'solid' : 'outline'}
+                    variant={selectedSpecies === 'fruitfly' ? 'solid' : 'outline'}
                     display="flex"
                     gap={4}
                     justifyContent="center"
@@ -101,7 +101,7 @@ const Landing = () => {
                   >
                     <Bug size={32} />
                     <VStack align="start" spacing={0}>
-                      <Text fontSize="3xl">Fly</Text>
+                      <Text fontSize="3xl">Fruitfly</Text>
                     </VStack>
                   </Button>
                 </Flex>
