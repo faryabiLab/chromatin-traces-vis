@@ -6,6 +6,7 @@ import { dataProcess } from '../utils/dataWrangler';
 import { calculateTraceRg } from '../utils/calculationUtils';
 export function DataProvider({children}){
   const [dataBys,setDataBys] = useState(null);
+  const [filename,setFilename] = useState(null);
   const [keys,setKeys] = useState(null);
   const [totalReadouts,setTotalReadouts] = useState(0);
   const extractKeys=(data)=>{
@@ -72,6 +73,8 @@ export function DataProvider({children}){
     dataBys:dataBys,
     keys:keys,
     totalReadouts:totalReadouts,
+    filename:filename,
+    setFilename:setFilename,
     setDataBysHandler:setDataBysHandler,
     filterDataBysHandler:filterHandler,
     resetHandler:resetHandler,

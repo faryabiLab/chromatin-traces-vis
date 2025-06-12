@@ -1,19 +1,9 @@
 import { useEffect, useContext, useState } from 'react';
 import { usePapaParse } from 'react-papaparse';
 import { DataContext } from '../../../stores/data-context';
+import FloatingTable from './FloatingWindow';
 import {
-  Table,
-  Tbody,
-  Tr,
-  Td,
-  TableContainer,
   Button,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverHeader,
-  PopoverCloseButton,
-  PopoverBody,
   VStack,
   Box,
   useDisclosure,
@@ -23,13 +13,13 @@ import { createColumnHelper } from '@tanstack/react-table';
 import DataTable from './DataTable';
 const DataBrowser = ({species}) => {
   const [table, setTable] = useState(null);
-  const [metadata, setMetadata] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [filename, setFilename] = useState('');
   const { readRemoteFile } = usePapaParse();
   const dataCtx = useContext(DataContext);
   const setDataBysHandler = dataCtx.setDataBysHandler;
   const setTotalReadouts=dataCtx.setTotalReadouts;
+  const setFilenameHandler = dataCtx.setFilename;
   const { isOpen, onOpen, onClose } = useDisclosure();
   useEffect(() => {
     //fetch metadata table from backend on load
@@ -45,20 +35,7 @@ const DataBrowser = ({species}) => {
       });
   }, []);
 
-  useEffect(() => {
-    if (filename !== '') {
-      fetch('https://olive.faryabilab.com/experiment/' + filename)
-        .then((response) => {
-          if (response.status >= 400) {
-            throw new Error('Bad response from server');
-          }
-          return response.json();
-        })
-        .then((data) => {
-          setMetadata(data);
-        });
-    }
-  }, [filename]);
+
 
   const fetchCSV = (id,readoutSteps) => {
     readRemoteFile(`https://faryabi-olive.s3.amazonaws.com/${id}.csv`, {
@@ -67,32 +44,12 @@ const DataBrowser = ({species}) => {
         if (array && array.length > 0) {
           setDataBysHandler(array);
           setTotalReadouts(readoutSteps);
+          setFilenameHandler(id);
         }
         setIsLoading(false);
       },
       header: true,
     });
-  };
-
-  const renderMetadata = (data) => {
-    if (!data) {
-      return <p>loading...</p>;
-    }
-
-    return (
-      <TableContainer>
-        <Table>
-          <Tbody>
-            {Object.entries(data).map(([key, value]) => (
-              <Tr key={key}>
-                <Td>{key}</Td>
-                <Td>{value}</Td>
-              </Tr>
-            ))}
-          </Tbody>
-        </Table>
-      </TableContainer>
-    );
   };
 
   const columnHelper = createColumnHelper();
@@ -107,10 +64,6 @@ const DataBrowser = ({species}) => {
       cell: (info) => info.getValue(),
       header: 'Species',
     }),
-    columnHelper.accessor('tissue', {
-      cell: (info) => info.getValue(),
-      header: 'Tissue',
-    }),
     columnHelper.accessor('cell_type', {
       cell: (info) => info.getValue(),
       header: 'Cell Type',
@@ -122,6 +75,14 @@ const DataBrowser = ({species}) => {
     columnHelper.accessor('gene', {
       cell: (info) => info.getValue(),
       header: 'Locus',
+    }),
+    columnHelper.accessor('genotype', {
+      cell: (info) => info.getValue(),
+      header: 'Genotype',
+    }),
+    columnHelper.accessor('treatment', {
+      cell: (info) => info.getValue(),
+      header: 'Treatment',
     }),
     columnHelper.accessor('number_readout', {
       id:'number_readout',
@@ -168,25 +129,14 @@ const DataBrowser = ({species}) => {
   return (
     <VStack spacing="24px">
       <Box>
-        <Popover
-          returnFocusOnClose={false}
-          isOpen={isOpen}
-          onClose={onClose}
-          placement="right"
-          closeOnBlur={false}
-          gutter={120}
-        >
-      <PopoverTrigger>
       <Box>
         {!table ? <p>loading...</p> : <DataTable data={table} columns={columns} species={species}/>}
       </Box>
-        </PopoverTrigger>
-          <PopoverContent>
-            <PopoverHeader fontWeight="semibold">Metadata</PopoverHeader>
-            <PopoverCloseButton />
-            <PopoverBody>{renderMetadata(metadata)}</PopoverBody>
-          </PopoverContent>
-        </Popover>
+      <FloatingTable 
+          file={filename} 
+          isOpen={isOpen} 
+          onClose={onClose}
+        />
       </Box>
     </VStack>
   );

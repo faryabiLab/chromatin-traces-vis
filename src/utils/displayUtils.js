@@ -65,3 +65,79 @@ export const getFilledReadouts = (data) => {
         .filter(item => item.filling === true)
         .map(item => item.readout);
 };
+
+export function processMetadata(obj) {
+  const header = [
+    'species',
+    'tissue',
+    'cell_type',
+    'cell_line',
+    'gene',
+    'chromosome',
+    'start_position',
+    'end_position',
+    'assembly',
+    'genetype',
+    'treatment',
+    'walk_length_kb',
+    'number_readout',
+    'step_size_kb',
+    'fov',
+    'photobleach',
+    'investigator',
+    'lab',
+    'protocol',
+    'notes',
+    'id',
+    'process_date',
+  ];
+
+  const headerMap={
+    "assembly": "Assembly",
+    "cell_line": "Cell Line",
+    "cell_type": "Cell Type",
+    "chromosome": "Chromosome",
+    "end_position": "End Position",
+    "fov": "FOV",
+    "gene": "Gene / locus",
+    "genotype": "Genotype",
+    "id": "ID",
+    "investigator": "Investigator",
+    "lab": "Lab",
+    "notes": "Notes",
+    "number_readout": "Number Readout",
+    "photobleach": "Photobleach",
+    "process_date": "Process Date",
+    "protocol": "Protocol",
+    "species": "Species",
+    "start_position": "Start Position",
+    "step_size_kb": "Step Size KB",
+    "tissue": "Tissue",
+    "treatment": "Treatment",
+    "walk_length_kb": "Walk Length KB"
+  }
+  const processed = header
+  .filter(key => obj.hasOwnProperty(key)) // Only include keys that exist in the object
+  .reduce((acc, key) => {
+    const mappedKey = headerMap[key] || key;
+    acc[mappedKey] = obj[key];
+    return acc;
+  }, {});
+
+return processed;
+}
+
+export function extractFields(dataObject) {
+  // Check if dataObject exists
+  if (!dataObject || typeof dataObject !== 'object') {
+    return null;
+  }
+
+  return {
+    cell_type: dataObject.cell_type || null,
+    cell_line: dataObject.cell_line || null,
+    gene: dataObject.gene || null,
+    treatment: dataObject.treatment || null,
+    genotype: dataObject.genotype || null
+  };
+}

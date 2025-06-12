@@ -11,7 +11,17 @@ import {
   Tab,
   TabPanel,
   VStack,
-  Radio, RadioGroup,HStack,
+  Radio,
+  RadioGroup,
+  HStack,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
+  TableContainer,
+  Box,
 } from '@chakra-ui/react';
 import { ArrowLeftIcon, ArrowRightIcon, DownloadIcon } from '@chakra-ui/icons';
 
@@ -26,12 +36,12 @@ import RadiusFilter from './components/RadiusFilter';
 import PerimeterCheckbox from './components/PerimeterCheckbox';
 import LinePlot from '../centrality/LinePlot';
 import BoxPlot from '../radiusGyration/BoxPlot';
-import { use } from 'react';
+import { extractFields } from '../../utils/displayUtils';
 const Dashboard = () => {
   const dataCtx = useContext(DataContext);
   const traceCtx = useContext(TraceContext);
   const resetTraceHandler = traceCtx.resetHandler;
-  const resetFilterHandler=dataCtx.resetHandler;
+  const resetFilterHandler = dataCtx.resetHandler;
   const data = traceCtx.data;
   //set the initial fov to be the first existing fov
   const initialFov = Object.keys(dataCtx.keys)[0];
@@ -42,26 +52,42 @@ const Dashboard = () => {
   const mode = traceCtx.mode;
   const setMode = traceCtx.modeHandler;
   const curFov = traceCtx.selected.fov;
+  const filename = dataCtx.filename;
+  const [metadata, setMetadata] = useState(null);
 
   const [isApplied, setIsApplied] = useState(false);
+
+  useEffect(() => {
+    if (filename && filename !== '') {
+      fetch('https://olive.faryabilab.com/experiment/' + filename)
+        .then((response) => {
+          if (response.status >= 400) {
+            throw new Error('Bad response from server');
+          }
+          return response.json();
+        })
+        .then((data) => {
+          setMetadata(extractFields(data));
+        });
+    }
+  }, [filename]);
 
   useEffect(() => {
     selectedHandler(fov.toString(), dataCtx.keys[fov][allele].toString());
   }, [fov, allele]);
 
   const shiftPanelHandler = () => {
-    if(isApplied){
+    if (isApplied) {
       setIsApplied(false);
       resetFilterHandler();
-      if(!dataCtx.keys[curFov]) return;
+      if (!dataCtx.keys[curFov]) return;
       selectedHandler(curFov.toString(), dataCtx.keys[curFov][0].toString());
       setAllele(0);
     }
 
     resetTraceHandler();
     setMode('2');
-
-  }
+  };
 
   const renderOptions = () => {
     let options = [];
@@ -201,7 +227,31 @@ const Dashboard = () => {
           </Button>
         </div>
       </Stack>
-
+      {metadata && <Box p={0}>
+      <TableContainer>
+        <Table variant="simple" size="sm">
+          <Thead>
+            <Tr>
+              <Th>Cell Type</Th>
+              {metadata.cell_line!=='N/A' && <Th>Cell Line</Th>}
+              <Th>Gene</Th>
+              <Th>Treatment</Th>
+              <Th>Genotype</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            <Tr>
+              <Td>{metadata.cell_type || 'N/A'}</Td>
+              {metadata.cell_line!=='N/A' &&<Td>{metadata.cell_line || 'N/A'}</Td>}
+              <Td>{metadata.gene || 'N/A'}</Td>
+              <Td>{metadata.treatment || 'N/A'}</Td>
+              <Td>{metadata.genotype || 'N/A'}</Td>
+            </Tr>
+          </Tbody>
+        </Table>
+      </TableContainer>
+    </Box>
+      }
       <Divider />
       <Tabs variant="soft-rounded" colorScheme="blue">
         <TabList>
@@ -214,14 +264,27 @@ const Dashboard = () => {
           <TabPanel>
             <RadioGroup onChange={setMode} value={mode}>
               <VStack>
-              <HStack><Radio value='1'/><RadiusFilter/></HStack>
-                <HStack><Radio value='2'/><LinkageFilter alleleHandler={setAllele} isApplied={isApplied} setIsApplied={setIsApplied}/></HStack>
-                <HStack><Radio value='3'/><PerimeterCheckbox/></HStack>
+                <HStack>
+                  <Radio value="1" />
+                  <RadiusFilter />
+                </HStack>
+                <HStack>
+                  <Radio value="2" />
+                  <LinkageFilter
+                    alleleHandler={setAllele}
+                    isApplied={isApplied}
+                    setIsApplied={setIsApplied}
+                  />
+                </HStack>
+                <HStack>
+                  <Radio value="3" />
+                  <PerimeterCheckbox />
+                </HStack>
               </VStack>
             </RadioGroup>
           </TabPanel>
           <TabPanel>
-            {distanceMap && <Heatmap data={distanceMap} width={650} height={600} />}
+            {distanceMap && <Heatmap data={distanceMap} width={600} height={550} />}
           </TabPanel>
           <TabPanel>{data && <LinePlot data={data} />}</TabPanel>
           <TabPanel>{data && <BoxPlot data={data} />}</TabPanel>
