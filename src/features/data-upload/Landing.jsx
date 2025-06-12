@@ -125,7 +125,7 @@ const Landing = () => {
             onClick={onOpen}
             ml={8}
           >
-            ↑ Submit Data
+            ↑ Submit Data Form
           </Button>
           <Button
             colorScheme="teal"

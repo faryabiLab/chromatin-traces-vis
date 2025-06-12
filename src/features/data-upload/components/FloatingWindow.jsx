@@ -1,15 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Box, Table,  Tbody, Tr, Th, Td, IconButton, Flex } from '@chakra-ui/react';
+import { Box, Table, Tbody, Tr, Th, Td, IconButton, Flex } from '@chakra-ui/react';
 import { CloseIcon, DragHandleIcon } from '@chakra-ui/icons';
 import { processMetadata } from '../../../utils/displayUtils';
-const FloatingTable = ({ file, isOpen, onClose  }) => {
+const FloatingTable = ({ file, isOpen, onClose }) => {
   const [position, setPosition] = useState({ x: 100, y: 100 });
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const [table, setTable] = useState([]);
-  const floatingRef = useRef(null);
-
-
+  const floatingRef = useRef(null);  
 
   useEffect(() => {
     if (file !== '') {
@@ -105,7 +103,7 @@ const FloatingTable = ({ file, isOpen, onClose  }) => {
 
       {/* Table Content */}
       <Box p={4} maxH="400px" overflowY="auto">
-      <Table variant="simple" size="sm" borderWidth="1px">
+        <Table variant="simple" size="sm" borderWidth="1px">
           <Tbody>
             {table.map((row, rowIndex) => (
               <React.Fragment key={rowIndex}>

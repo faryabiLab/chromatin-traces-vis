@@ -67,21 +67,64 @@ export const getFilledReadouts = (data) => {
 };
 
 export function processMetadata(obj) {
-  const formatKey = (key) => {
-      return key.split('_')
-          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-          .join(' ');
-  };
+  const header = [
+    'species',
+    'tissue',
+    'cell_type',
+    'cell_line',
+    'gene',
+    'chromosome',
+    'start_position',
+    'end_position',
+    'assembly',
+    'genetype',
+    'treatment',
+    'walk_length_kb',
+    'number_readout',
+    'step_size_kb',
+    'fov',
+    'photobleach',
+    'investigator',
+    'lab',
+    'protocol',
+    'notes',
+    'id',
+    'process_date',
+  ];
 
-  const processed = Object.entries(obj)
-      // Filter out readout_steps
-      .filter(([key]) => key !== 'readout_steps')
-      .reduce((acc, [key, value]) => {
-          acc[formatKey(key)] = value;
-          return acc;
-      }, {});
+  const headerMap={
+    "assembly": "Assembly",
+    "cell_line": "Cell Line",
+    "cell_type": "Cell Type",
+    "chromosome": "Chromosome",
+    "end_position": "End Position",
+    "fov": "FOV",
+    "gene": "Gene / locus",
+    "genotype": "Genotype",
+    "id": "ID",
+    "investigator": "Investigator",
+    "lab": "Lab",
+    "notes": "Notes",
+    "number_readout": "Number Readout",
+    "photobleach": "Photobleach",
+    "process_date": "Process Date",
+    "protocol": "Protocol",
+    "species": "Species",
+    "start_position": "Start Position",
+    "step_size_kb": "Step Size KB",
+    "tissue": "Tissue",
+    "treatment": "Treatment",
+    "walk_length_kb": "Walk Length KB"
+  }
+  const processed = header
+  .filter(key => obj.hasOwnProperty(key)) // Only include keys that exist in the object
+  .reduce((acc, key) => {
+    const mappedKey = headerMap[key] || key;
+    acc[mappedKey] = obj[key];
+    return acc;
+  }, {});
 
-  return processed;
+return processed;
 }
 
 export function extractFields(dataObject) {
