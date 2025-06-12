@@ -20,6 +20,7 @@ import {
   NumberIncrementStepper,
   NumberDecrementStepper,
   FormErrorMessage,
+  Select,
   useToast,
 } from '@chakra-ui/react';
 
@@ -96,11 +97,11 @@ const DataEntryModal = ({ isOpen, onClose }) => {
     try {
       // Prepare template parameters for EmailJS
       const templateParams = {
-        to_email: 'recipient@example.com', 
+        to_email: 'recipient@example.com',
         from_name: formData.name,
         from_email: formData.email,
         subject: 'New Data Entry Form Submission',
-        
+
         // Form data
         name: formData.name,
         email: formData.email,
@@ -125,7 +126,7 @@ const DataEntryModal = ({ isOpen, onClose }) => {
         photobleach: formData.photobleach,
         extraNote: formData.extraNote,
         csvUrl: formData.csvUrl,
-        
+
         // Additional info
         submission_date: new Date().toLocaleString(),
       };
@@ -143,8 +144,6 @@ const DataEntryModal = ({ isOpen, onClose }) => {
       return { success: false, error };
     }
   };
-
-
 
   const handleSubmit = async () => {
     if (!validateForm()) {
@@ -232,7 +231,7 @@ const DataEntryModal = ({ isOpen, onClose }) => {
           <VStack spacing={4} align="stretch">
             {/* Required Name Field */}
             <FormControl isRequired isInvalid={!!errors.name}>
-              <FormLabel>Name</FormLabel>
+              <FormLabel>Name:</FormLabel>
               <Input
                 value={formData.name}
                 onChange={(e) => handleInputChange('name', e.target.value)}
@@ -243,7 +242,7 @@ const DataEntryModal = ({ isOpen, onClose }) => {
 
             {/* Required Email Field */}
             <FormControl isRequired isInvalid={!!errors.email}>
-              <FormLabel>Email</FormLabel>
+              <FormLabel>Email:</FormLabel>
               <Input
                 type="email"
                 value={formData.email}
@@ -254,8 +253,8 @@ const DataEntryModal = ({ isOpen, onClose }) => {
             </FormControl>
 
             {/* Rest of the fields remain the same */}
-            <FormControl>
-              <FormLabel>Lab</FormLabel>
+            <FormControl isRequired isInvalid={!!errors.name}>
+              <FormLabel>Lab:</FormLabel>
               <Input
                 value={formData.lab}
                 onChange={(e) => handleInputChange('lab', e.target.value)}
@@ -263,8 +262,8 @@ const DataEntryModal = ({ isOpen, onClose }) => {
               />
             </FormControl>
 
-            <FormControl>
-              <FormLabel>Investigator</FormLabel>
+            <FormControl isRequired isInvalid={!!errors.name}>
+              <FormLabel>Investigator:</FormLabel>
               <Input
                 value={formData.investigator}
                 onChange={(e) => handleInputChange('investigator', e.target.value)}
@@ -273,7 +272,7 @@ const DataEntryModal = ({ isOpen, onClose }) => {
             </FormControl>
 
             <FormControl>
-              <FormLabel>Chromosome</FormLabel>
+              <FormLabel>Chromosome:</FormLabel>
               <Input
                 value={formData.chromosome}
                 onChange={(e) => handleInputChange('chromosome', e.target.value)}
@@ -282,7 +281,7 @@ const DataEntryModal = ({ isOpen, onClose }) => {
             </FormControl>
 
             <FormControl>
-              <FormLabel>Start</FormLabel>
+              <FormLabel>Start:</FormLabel>
               <NumberInput
                 value={formData.start}
                 onChange={(value) => handleInputChange('start', value)}
@@ -296,7 +295,7 @@ const DataEntryModal = ({ isOpen, onClose }) => {
             </FormControl>
 
             <FormControl>
-              <FormLabel>End</FormLabel>
+              <FormLabel>End:</FormLabel>
               <NumberInput
                 value={formData.end}
                 onChange={(value) => handleInputChange('end', value)}
@@ -310,7 +309,7 @@ const DataEntryModal = ({ isOpen, onClose }) => {
             </FormControl>
 
             <FormControl>
-              <FormLabel>Assembly</FormLabel>
+              <FormLabel>Assembly:</FormLabel>
               <Input
                 value={formData.assembly}
                 onChange={(e) => handleInputChange('assembly', e.target.value)}
@@ -319,7 +318,7 @@ const DataEntryModal = ({ isOpen, onClose }) => {
             </FormControl>
 
             <FormControl>
-              <FormLabel>Gene</FormLabel>
+              <FormLabel>Gene / locus:</FormLabel>
               <Input
                 value={formData.gene}
                 onChange={(e) => handleInputChange('gene', e.target.value)}
@@ -328,7 +327,7 @@ const DataEntryModal = ({ isOpen, onClose }) => {
             </FormControl>
 
             <FormControl>
-              <FormLabel>Species</FormLabel>
+              <FormLabel>Species:</FormLabel>
               <Input
                 value={formData.species}
                 onChange={(e) => handleInputChange('species', e.target.value)}
@@ -337,7 +336,7 @@ const DataEntryModal = ({ isOpen, onClose }) => {
             </FormControl>
 
             <FormControl>
-              <FormLabel>Tissue</FormLabel>
+              <FormLabel>Tissue:</FormLabel>
               <Input
                 value={formData.tissue}
                 onChange={(e) => handleInputChange('tissue', e.target.value)}
@@ -346,7 +345,7 @@ const DataEntryModal = ({ isOpen, onClose }) => {
             </FormControl>
 
             <FormControl>
-              <FormLabel>Cell Type</FormLabel>
+              <FormLabel>Cell Type:</FormLabel>
               <Input
                 value={formData.cellType}
                 onChange={(e) => handleInputChange('cellType', e.target.value)}
@@ -355,7 +354,7 @@ const DataEntryModal = ({ isOpen, onClose }) => {
             </FormControl>
 
             <FormControl>
-              <FormLabel>Cell Line</FormLabel>
+              <FormLabel>Cell Line:</FormLabel>
               <Input
                 value={formData.cellLine}
                 onChange={(e) => handleInputChange('cellLine', e.target.value)}
@@ -364,7 +363,7 @@ const DataEntryModal = ({ isOpen, onClose }) => {
             </FormControl>
 
             <FormControl>
-              <FormLabel>Genetype</FormLabel>
+              <FormLabel>Genetype:</FormLabel>
               <Input
                 value={formData.genetype}
                 onChange={(e) => handleInputChange('genetype', e.target.value)}
@@ -373,7 +372,7 @@ const DataEntryModal = ({ isOpen, onClose }) => {
             </FormControl>
 
             <FormControl>
-              <FormLabel>Treatment</FormLabel>
+              <FormLabel>Treatment:</FormLabel>
               <Input
                 value={formData.treatment}
                 onChange={(e) => handleInputChange('treatment', e.target.value)}
@@ -382,7 +381,7 @@ const DataEntryModal = ({ isOpen, onClose }) => {
             </FormControl>
 
             <FormControl>
-              <FormLabel>FOV</FormLabel>
+              <FormLabel>Number of FOV:</FormLabel>
               <NumberInput
                 value={formData.fov}
                 onChange={(value) => handleInputChange('fov', value)}
@@ -396,7 +395,7 @@ const DataEntryModal = ({ isOpen, onClose }) => {
             </FormControl>
 
             <FormControl>
-              <FormLabel>Step Size (unit: kb)</FormLabel>
+              <FormLabel>Step Size (unit: kb):</FormLabel>
               <NumberInput
                 value={formData.stepSize}
                 onChange={(value) => handleInputChange('stepSize', value)}
@@ -410,7 +409,7 @@ const DataEntryModal = ({ isOpen, onClose }) => {
             </FormControl>
 
             <FormControl>
-              <FormLabel>Walk Length (unit: kb)</FormLabel>
+              <FormLabel>Walk Length (unit: kb):</FormLabel>
               <NumberInput
                 value={formData.walkLength}
                 onChange={(value) => handleInputChange('walkLength', value)}
@@ -424,7 +423,7 @@ const DataEntryModal = ({ isOpen, onClose }) => {
             </FormControl>
 
             <FormControl>
-              <FormLabel>Number of Readout</FormLabel>
+              <FormLabel>Number of Readout:</FormLabel>
               <NumberInput
                 value={formData.numberOfReadout}
                 onChange={(value) => handleInputChange('numberOfReadout', value)}
@@ -438,7 +437,7 @@ const DataEntryModal = ({ isOpen, onClose }) => {
             </FormControl>
 
             <FormControl>
-              <FormLabel>Protocol</FormLabel>
+              <FormLabel>Protocol:</FormLabel>
               <Input
                 value={formData.protocol}
                 onChange={(e) => handleInputChange('protocol', e.target.value)}
@@ -447,16 +446,20 @@ const DataEntryModal = ({ isOpen, onClose }) => {
             </FormControl>
 
             <FormControl>
-              <FormLabel>Photobleach</FormLabel>
-              <Input
-                value={formData.photobleach}
+              <FormLabel>Photobleach:</FormLabel>
+              <Select
+                value={formData.photobleach || 'N/A'}
                 onChange={(e) => handleInputChange('photobleach', e.target.value)}
-                placeholder="Enter photobleach information"
-              />
+                defaultValue="N/A"
+              >
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+                <option value="N/A">N/A</option>
+              </Select>
             </FormControl>
 
             <FormControl>
-              <FormLabel>Extra Note</FormLabel>
+              <FormLabel>Extra Note:</FormLabel>
               <Textarea
                 value={formData.extraNote}
                 onChange={(e) => handleInputChange('extraNote', e.target.value)}
@@ -466,7 +469,7 @@ const DataEntryModal = ({ isOpen, onClose }) => {
             </FormControl>
 
             <FormControl>
-              <FormLabel>URL of CSV file (if available)</FormLabel>
+              <FormLabel>URL of CSV file (if available):</FormLabel>
               <Input
                 type="url"
                 value={formData.csvUrl}
@@ -481,8 +484,12 @@ const DataEntryModal = ({ isOpen, onClose }) => {
           <Button variant="ghost" mr={3} onClick={handleReset} disabled={isSubmitting}>
             Reset
           </Button>
-          <Button colorScheme="blue" onClick={handleSubmit} isLoading={isSubmitting}
-            loadingText="Sending...">
+          <Button
+            colorScheme="blue"
+            onClick={handleSubmit}
+            isLoading={isSubmitting}
+            loadingText="Sending..."
+          >
             Submit
           </Button>
         </ModalFooter>
