@@ -77,7 +77,7 @@ export function processMetadata(obj) {
     'start_position',
     'end_position',
     'assembly',
-    'genetype',
+    'genotype',
     'treatment',
     'walk_length_kb',
     'number_readout',
