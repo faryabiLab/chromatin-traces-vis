@@ -39,7 +39,7 @@ const DataEntryModal = ({ isOpen, onClose }) => {
     tissue: '',
     cellType: '',
     cellLine: '',
-    genetype: '',
+    genotype: '',
     treatment: '',
     fov: '',
     stepSize: '',
@@ -116,7 +116,7 @@ const DataEntryModal = ({ isOpen, onClose }) => {
         tissue: formData.tissue,
         cellType: formData.cellType,
         cellLine: formData.cellLine,
-        genetype: formData.genetype,
+        genotype: formData.genotype,
         treatment: formData.treatment,
         fov: formData.fov,
         stepSize: formData.stepSize,
@@ -207,7 +207,7 @@ const DataEntryModal = ({ isOpen, onClose }) => {
       tissue: '',
       cellType: '',
       cellLine: '',
-      genetype: '',
+      genotype: '',
       treatment: '',
       fov: '',
       stepSize: '',
@@ -363,11 +363,11 @@ const DataEntryModal = ({ isOpen, onClose }) => {
             </FormControl>
 
             <FormControl>
-              <FormLabel>Genetype:</FormLabel>
+              <FormLabel>Genotype:</FormLabel>
               <Input
-                value={formData.genetype}
-                onChange={(e) => handleInputChange('genetype', e.target.value)}
-                placeholder="Enter genetype"
+                value={formData.genotype}
+                onChange={(e) => handleInputChange('genotype', e.target.value)}
+                placeholder="Enter genotype"
               />
             </FormControl>
 
