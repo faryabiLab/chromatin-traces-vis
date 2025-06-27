@@ -42,6 +42,8 @@ const Dashboard = () => {
   const traceCtx = useContext(TraceContext);
   const resetTraceHandler = traceCtx.resetHandler;
   const resetFilterHandler = dataCtx.resetHandler;
+  const totalKeys = dataCtx.totalKeys;
+  
   const data = traceCtx.data;
   //set the initial fov to be the first existing fov
   const initialFov = Object.keys(dataCtx.keys)[0];
@@ -56,6 +58,14 @@ const Dashboard = () => {
   const [metadata, setMetadata] = useState(null);
 
   const [isApplied, setIsApplied] = useState(false);
+
+  const totalAllelesCount = useMemo(() => {
+    if (totalKeys[fov]) {
+      return totalKeys[fov].length;
+    }
+    return 0;
+  }, [totalKeys,fov]);
+
 
   useEffect(() => {
     if (filename && filename !== '') {
@@ -237,6 +247,7 @@ const Dashboard = () => {
               <Th>Gene</Th>
               <Th>Treatment</Th>
               <Th>Genotype</Th>
+              <Th>Total Alleles</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -246,6 +257,7 @@ const Dashboard = () => {
               <Td>{metadata.gene || 'N/A'}</Td>
               <Td>{metadata.treatment || 'N/A'}</Td>
               <Td>{metadata.genotype || 'N/A'}</Td>
+              <Td>{totalAllelesCount || 'N/A'}</Td>
             </Tr>
           </Tbody>
         </Table>
