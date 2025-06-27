@@ -52,10 +52,9 @@ This program is using linear interpolation to impute the missing values.
 
 ### Step 1: Upload Your CSV File
 
-1.   Click the button to start uploading. <img width="2033" alt="image" src="https://github.com/user-attachments/assets/c49afe9c-0ee2-4a64-8493-732cf2cca4e4" />
+1.   Click the button to start uploading. ![Frame 15](https://github.com/user-attachments/assets/9445d938-a7a5-4154-a4bc-9950ab0c7493)
 
-
-2.   Enter the number of Total Readouts. **This step is required** in order to fill in all the missing values. All the alleles will have this number of total readouts. <img width="1422" alt="Google Chrome 2025-06-12 14 50 50" src="https://github.com/user-attachments/assets/9f430b3a-8d21-49d7-802c-c55bacb9ab82" />
+2.   Enter the number of Total Readouts. **This step is required** in order to fill in all the missing values. All the alleles will have this number of total readouts. ![Frame 2](https://github.com/user-attachments/assets/1c375384-c032-4dd4-ba2a-4be650d29687)
 
 
 3.   Drop your CSV file or click to upload. Your file **WILL NOT** be saved to our database.<img width="1799" alt="image" src="https://github.com/user-attachments/assets/26a864b4-0a14-4499-b4c4-aedb98cd06e0" />
@@ -66,17 +65,17 @@ This program is using linear interpolation to impute the missing values.
 
 ### OR: Browse the files stored in our database
 
-1.   Use the shortcuts to view available chromatin traces. <img width="1998" alt="image" src="https://github.com/user-attachments/assets/a8e39ef5-e0df-4f66-b420-84df83dfcc01" />
+1.   Use the shortcuts to view available chromatin traces. ![Frame 1](https://github.com/user-attachments/assets/8d4fc776-13d8-4089-89e9-ba1e9048af47)
 
-2.   You can fill the form to submit metadata to us. <img width="1693" alt="image" src="https://github.com/user-attachments/assets/2bc9c3ce-c701-424b-9de6-d36674f03b0c" />
+2.   You can fill the form to submit metadata to us. ![Frame 4](https://github.com/user-attachments/assets/acf361ef-d8c7-420b-9050-46eeaf4085c5)
 
 3.   Keyword is pre-set for your convenience. You can clear the search bar to view the whole database. <img width="2050" alt="image" src="https://github.com/user-attachments/assets/72e95d50-d3d5-4d87-815d-18e32b4a01d2" />
 
-4.   Use column filter. <img width="1879" alt="image" src="https://github.com/user-attachments/assets/94c49e46-2711-4a45-9a0d-3d1ee206518c" />
+4.   Use column filter. ![Frame 6](https://github.com/user-attachments/assets/eb02c96b-4988-474f-8c21-235cb76a0952)
 
-5.   Inspect metadata. <img width="2156" alt="image" src="https://github.com/user-attachments/assets/ed97d673-fe6a-432c-a0e1-4fdeefa649c9" />
+5.   Inspect metadata. ![Frame 5](https://github.com/user-attachments/assets/fc72be7e-2ce7-4487-a331-e1a62108d477)
 
-6.   Click view. <img width="1677" alt="Google Chrome 2025-05-29 12 18 03" src="https://github.com/user-attachments/assets/2b8bf651-9d98-434f-b988-a2bc806e24d4" />
+6.   Click view. ![Frame 14](https://github.com/user-attachments/assets/4f25d223-4b9c-4ef1-a01f-4517003fdaa2)
 
 
 ### Step 2: Visualization Analysis
