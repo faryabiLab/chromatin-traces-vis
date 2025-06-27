@@ -1,6 +1,6 @@
 import { TraceContext } from '../../../stores/trace-context';
 import { DataContext } from '../../../stores/data-context';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState,useMemo } from 'react';
 import {
   NumberInput,
   NumberInputField,
@@ -26,6 +26,15 @@ const LinkageFilter = ({ alleleHandler, isApplied, setIsApplied }) => {
   const selectedHandler = traceCtx.selectedHandler;
   const [distance, setDistance] = useState(10000);
   const toast = useToast();
+
+  const totalKeys = dataCtx.totalKeys;
+
+  const totalKeysCount = useMemo(() => {
+    if (totalKeys[curFov]) {
+      return totalKeys[curFov].length;
+    }
+    return 0;
+  }, [totalKeys, curFov]);
   
 
   useEffect(() => {
@@ -72,7 +81,7 @@ const LinkageFilter = ({ alleleHandler, isApplied, setIsApplied }) => {
      {generateDefault()}
       <HStack spacing={4}>
         <Text fontWeight="light" width="600px">
-          Filter alleles with distance between {clicked.a + 1} and {clicked.b + 1} within:{' '}
+          {dataCtx.keys[curFov].length}/{totalKeysCount} alleles with distance between {clicked.a + 1} and {clicked.b + 1} within:{' '}
         </Text>
         <NumberInput
           size="xs"

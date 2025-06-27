@@ -8,6 +8,7 @@ export function DataProvider({children}){
   const [dataBys,setDataBys] = useState(null);
   const [filename,setFilename] = useState(null);
   const [keys,setKeys] = useState(null);
+  const [totalKeys,setTotalKeys] = useState(null);
   const [totalReadouts,setTotalReadouts] = useState(0);
   const extractKeys=(data)=>{
     const result={};
@@ -25,8 +26,11 @@ export function DataProvider({children}){
       (d)=>d.fov,
       (d)=>d.s
     );
-    setKeys(extractKeys(newDataBys));
+    const newKeys=extractKeys(newDataBys);
+    setKeys(newKeys);
+    setTotalKeys(newKeys);
     setDataBys(newDataBys);
+    
   }
   const filterHandler=(fov,a,b,distance)=>{
     const alleles=dataBys.get(fov);
@@ -67,11 +71,13 @@ export function DataProvider({children}){
 
   const resetHandler=()=>{
     setKeys(extractKeys(dataBys));
+    setTotalKeys(extractKeys(dataBys));
   }
 
   const dataContext={
     dataBys:dataBys,
     keys:keys,
+    totalKeys:totalKeys,
     totalReadouts:totalReadouts,
     filename:filename,
     setFilename:setFilename,
