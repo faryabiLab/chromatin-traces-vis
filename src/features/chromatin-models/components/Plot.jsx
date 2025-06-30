@@ -334,11 +334,6 @@ const Plot = () => {
       >
         <sphereGeometry args={[sphereRadius * 2, 64, 16]} />
         <meshStandardMaterial color={'orange'} />
-        <Html scaleFactor={10}>
-          <div className={styles.label}>
-            <p>Geometric Center</p>
-          </div>
-        </Html>
       </mesh>
     );
   };
