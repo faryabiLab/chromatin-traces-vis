@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect, useContext,useRef } from 'react';
+import React, { useMemo, useState, useContext, useRef } from 'react';
 import * as d3 from 'd3';
 import { TraceContext } from '../../stores/trace-context';
 import { TwitterPicker } from 'react-color';
@@ -16,7 +16,6 @@ import {
   Spinner,
 } from '@chakra-ui/react';
 import { DownloadIcon } from '@chakra-ui/icons';
-import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { getFilledReadouts } from '../../utils/displayUtils';
 
@@ -35,7 +34,7 @@ const Heatmap = ({ data, width, height }) => {
 
   const hightlightA = clicked.a + 1;
   const hightlightB = clicked.b + 1;
-  const imputed=getFilledReadouts(traceCtx.data);
+  const imputed = getFilledReadouts(traceCtx.data);
 
   const handleColorChange = (color) => {
     setColor(color.hex);
@@ -63,65 +62,92 @@ const Heatmap = ({ data, width, height }) => {
 
   const downloadPDF = async () => {
     setIsDownloading(true);
-    
+
     try {
-      const heatmapElement = heatmapRef.current;
-      
-      if (!heatmapElement) {
-        throw new Error('Heatmap element not found');
+      const svgElement = heatmapRef.current.querySelector('svg');
+
+      if (!svgElement) {
+        throw new Error('SVG element not found');
       }
-  
+
       toast({
         title: 'Generating PDF...',
         status: 'info',
         duration: 2000,
         isClosable: true,
       });
-  
-      const canvas = await html2canvas(heatmapElement, {
-        backgroundColor: 'white',
-        scale: 2, 
-        useCORS: true,
-        allowTaint: true,
-        logging: false,
-      });
-  
-      const imgData = canvas.toDataURL('image/png', 1.0);
-      
-      // Calculate PDF dimensions based on content
-      const imgWidth = canvas.width;
-      const imgHeight = canvas.height;
-      const ratio = imgWidth / imgHeight;
-      
-      // Choose orientation based on aspect ratio
-      const orientation = ratio > 1 ? 'landscape' : 'portrait';
-      
-      const pdf = new jsPDF({
-        orientation: orientation,
-        unit: 'px',
-        format: [imgWidth + 40, imgHeight + 80] // Add padding for metadata
-      });
-  
-      // Add metadata at the top
-      pdf.setFontSize(16);
-      pdf.text('Distance Map', 20, 30);
-      
-      pdf.setFontSize(12);
-      pdf.text(`Generated on: ${new Date().toLocaleString()}`, 20, 50);
-      pdf.text(`Color Scale: 0 - ${colorMax} nm`, 20, 65);
-  
-      // Add the heatmap image
-      pdf.addImage(imgData, 'PNG', 20, 80, imgWidth, imgHeight);
-      
-      pdf.save('distance-heatmap.pdf');
-  
-      toast({
-        title: 'PDF Downloaded Successfully!',
-        status: 'success',
-        duration: 3000,
-        isClosable: true,
-      });
-  
+
+      // Serialize SVG
+      const serializer = new XMLSerializer();
+      const svgString = serializer.serializeToString(svgElement);
+
+      // Create blob from SVG
+      const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+      const svgUrl = URL.createObjectURL(svgBlob);
+
+      // Create image from SVG
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = width * 2; // Higher resolution
+        canvas.height = height * 2;
+
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = 'white';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+        // Generate PDF
+        const pdf = new jsPDF({
+          orientation: width > height ? 'landscape' : 'portrait',
+          unit: 'mm',
+          format: 'a4',
+        });
+
+        pdf.setFontSize(16);
+        pdf.text('Distance Map', 20, 20);
+        pdf.setFontSize(12);
+        pdf.text(`Generated on: ${new Date().toLocaleString()}`, 20, 30);
+        pdf.text(`Color Scale: 0 - ${colorMax} nm`, 20, 40);
+
+        const imgData = canvas.toDataURL('image/png');
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = pdf.internal.pageSize.getHeight();
+
+        // Calculate available space for image (leaving margins and space for text)
+        const availableWidth = pdfWidth - 40; // 20mm margin on each side
+        const availableHeight = pdfHeight - 70; // Space for text at top and bottom margin
+
+        // Calculate scaling to fit both width and height
+        const scaleX = availableWidth / width;
+        const scaleY = availableHeight / height;
+        const scale = Math.min(scaleX, scaleY); // Use the smaller scale to ensure it fits
+
+        const imgWidth = width * scale;
+        const imgHeight = height * scale;
+
+        // Center the image
+        const xOffset = (pdfWidth - imgWidth) / 2;
+        const yOffset = 50; // Start after the text
+
+        pdf.addImage(imgData, 'PNG', xOffset, yOffset, imgWidth, imgHeight);
+        pdf.save('distance-heatmap.pdf');
+
+        URL.revokeObjectURL(svgUrl);
+
+        toast({
+          title: 'PDF Downloaded Successfully!',
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+        });
+      };
+
+      img.onerror = () => {
+        throw new Error('Failed to load SVG as image');
+      };
+
+      img.src = svgUrl;
     } catch (error) {
       console.error('Error generating PDF:', error);
       toast({
@@ -135,7 +161,6 @@ const Heatmap = ({ data, width, height }) => {
       setIsDownloading(false);
     }
   };
-  
 
   // Build the rectangles
   const allRects = data.map((d, i) => {
@@ -194,13 +219,14 @@ const Heatmap = ({ data, width, height }) => {
         fill={name === hightlightB ? 'red' : 'black'}
         fontWeight={name === hightlightB ? 'bold' : 'normal'}
       >
-        {imputed.includes(name) ? '*' : ''}{name}
+        {imputed.includes(name) ? '*' : ''}
+        {name}
       </text>
     );
   });
 
   return (
-    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center',width: '100%'}}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
       <HStack>
         <label>Color:</label>
         <Box
@@ -212,7 +238,9 @@ const Heatmap = ({ data, width, height }) => {
           bg={color}
           margin={3}
         />
-        {showColorPicker && <TwitterPicker color={color} onChange={handleColorChange} triangle='hide'/>}
+        {showColorPicker && (
+          <TwitterPicker color={color} onChange={handleColorChange} triangle="hide" />
+        )}
 
         <label>Color Scale Domain: 0 ~ </label>
         <NumberInput
@@ -246,20 +274,19 @@ const Heatmap = ({ data, width, height }) => {
         >
           PDF
         </Button>
-
       </HStack>
       <div ref={heatmapRef}>
-      <svg width={width} height={height}>
-        <g
-          width={boundsWidth}
-          height={boundsHeight}
-          transform={`translate(${[MARGIN.left, MARGIN.top].join(',')})`}
-        >
-          {allRects}
-          {xLabels}
-          {yLabels}
-        </g>
-      </svg>
+        <svg width={width} height={height}>
+          <g
+            width={boundsWidth}
+            height={boundsHeight}
+            transform={`translate(${[MARGIN.left, MARGIN.top].join(',')})`}
+          >
+            {allRects}
+            {xLabels}
+            {yLabels}
+          </g>
+        </svg>
       </div>
     </div>
   );
