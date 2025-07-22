@@ -19,7 +19,7 @@ import { DownloadIcon } from '@chakra-ui/icons';
 import jsPDF from 'jspdf';
 import { getFilledReadouts } from '../../utils/displayUtils';
 
-const MARGIN = { top: 10, right: 10, bottom: 40, left: 50 };
+const MARGIN = { top: 10, right: 20, bottom: 80, left: 50 };
 const Heatmap = ({ data, width, height,geoInfo }) => {
   console.log(geoInfo);
   const [showColorPicker, setShowColorPicker] = useBoolean(false);
@@ -186,16 +186,52 @@ const Heatmap = ({ data, width, height,geoInfo }) => {
     return d3.range(numSegments).map(i => rainbowScale(i));
   }, [allXGroups]);
 
-  const rainbowBar = allXGroups.map((_, i) => (
-    <rect
-      key={`rainbow-${i}`}
-      x={xScale(allXGroups[i])}
-      y={boundsHeight + 25} // Position below the x-axis labels
-      width={xScale.bandwidth()}
-      height={15}
-      fill={rainbowColors[i]}
-    />
-  ));
+  const rainbowBarGroup = (
+    <g>
+      {/* Rainbow rectangles */}
+      {allXGroups.map((_, i) => (
+        <rect
+          key={`rainbow-${i}`}
+          x={xScale(allXGroups[i])}
+          y={boundsHeight + 25}
+          width={xScale.bandwidth()}
+          height={15}
+          fill={rainbowColors[i]}
+        />
+      ))}
+      
+      {/* Start position label */}
+      <text
+        x={xScale(allXGroups[0]) + xScale.bandwidth() / 2}
+        y={boundsHeight + 55}
+        textAnchor="middle"
+        fontSize={10}
+      >
+        {geoInfo.start.toLocaleString()}
+      </text>
+
+      {/* Chromosome label */}
+      <text
+        x={boundsWidth / 2}
+        y={boundsHeight + 55}
+        textAnchor="middle"
+        fontSize={10}
+        fontWeight="bold"
+      >
+        {geoInfo.chromosome}
+      </text>
+
+      {/* End position label */}
+      <text
+        x={xScale(allXGroups[allXGroups.length - 1]) + xScale.bandwidth() / 2}
+        y={boundsHeight + 55}
+        textAnchor="middle"
+        fontSize={10}
+      >
+        {geoInfo.end.toLocaleString()}
+      </text>
+    </g>
+  );
 
 
   // Build the rectangles
@@ -321,7 +357,7 @@ const Heatmap = ({ data, width, height,geoInfo }) => {
             {allRects}
             {xLabels}
             {yLabels}
-            {rainbowBar}
+            {rainbowBarGroup}
           </g>
         </svg>
       </div>
