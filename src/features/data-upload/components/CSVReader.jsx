@@ -8,7 +8,6 @@ import {
   Text,
   VStack,
   useToast,
-  Highlight,
   HStack,
   FormLabel,
   NumberInput,
@@ -46,12 +45,49 @@ export default function CSVReader() {
   };
 
   return (
-    <VStack align={'center'} justify={'center'} spacing={5}>
+    <VStack align={'left'} justify={'center'} spacing={3}>
       <HStack spacing={2} alignItems="center">
         <FormLabel htmlFor="total-readouts" mb="0">
           Number of Total Readouts:
         </FormLabel>
         <NumberInput step={5} size="xs" onChange={setMaxReadout}>
+          <NumberInputField />
+          <NumberInputStepper>
+            <NumberIncrementStepper />
+            <NumberDecrementStepper />
+          </NumberInputStepper>
+        </NumberInput>
+      </HStack>
+      <HStack spacing={2} alignItems="center">
+        <FormLabel htmlFor="start-pos" mb="0">
+          Start Position:
+        </FormLabel>
+        <NumberInput step={5} size="xs">
+          <NumberInputField />
+          <NumberInputStepper>
+            <NumberIncrementStepper />
+            <NumberDecrementStepper />
+          </NumberInputStepper>
+        </NumberInput>
+      </HStack>
+      <HStack spacing={2} alignItems="center">
+        <FormLabel htmlFor="end-pos" mb="0">
+          End Position:
+        </FormLabel>
+        <NumberInput step={5} size="xs">
+          <NumberInputField />
+          <NumberInputStepper>
+            <NumberIncrementStepper />
+            <NumberDecrementStepper />
+          </NumberInputStepper>
+        </NumberInput>
+      </HStack>
+
+      <HStack spacing={2} alignItems="center">
+        <FormLabel htmlFor="chromosome" mb="0">
+          Chromosome:
+        </FormLabel>
+        <NumberInput step={5} size="xs">
           <NumberInputField />
           <NumberInputStepper>
             <NumberIncrementStepper />
