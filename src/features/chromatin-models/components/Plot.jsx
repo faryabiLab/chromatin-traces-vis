@@ -48,7 +48,7 @@ const Plot = () => {
   const { color, isGrid, tubeRadius, showDistance, sphereRadius } = useControls({
     color: 'red',
     isGrid: { value: true, label: 'Grid & Axis' },
-    tubeRadius: { value: 5, min: 0, max: 5, step: 0.5, label: 'Line Size' },
+    tubeRadius: { value: 3, min: 0, max: 5, step: 0.5, label: 'Line Size' },
     sphereRadius: { value: 15, min: 5, max: 25, step: 1, label: 'Dot Size' },
     showDistance: { value: true, label: 'Show Distance' },
     reset: button(traceCtx.resetHandler),
@@ -214,6 +214,7 @@ const Plot = () => {
     }
   };
 
+  //point is the index of the point in the points array
   const colorPoint = (point) => {
     if (isPerimeter) {
       if (pointX === -1 && pointY === -1 && pointZ === -1) {
