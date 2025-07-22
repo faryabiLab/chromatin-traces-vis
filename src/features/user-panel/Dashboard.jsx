@@ -59,13 +59,15 @@ const Dashboard = () => {
 
   const [isApplied, setIsApplied] = useState(false);
 
+
+  const [geoInfo, setGeoInfo] = useState(null);
+
   const totalAllelesCount = useMemo(() => {
     if (totalKeys[fov]) {
       return totalKeys[fov].length;
     }
     return 0;
   }, [totalKeys,fov]);
-
 
   useEffect(() => {
     if (filename && filename !== '') {
@@ -85,6 +87,16 @@ const Dashboard = () => {
   useEffect(() => {
     selectedHandler(fov.toString(), dataCtx.keys[fov][allele].toString());
   }, [fov, allele]);
+
+  useEffect(() => {
+    if (metadata){
+      setGeoInfo({
+        start: metadata.start_position,
+        chromosome: metadata.chromosome,
+        end: metadata.end_position,
+      });
+    }
+  }, [metadata]);
 
   const shiftPanelHandler = () => {
     if (isApplied) {
@@ -296,7 +308,7 @@ const Dashboard = () => {
             </RadioGroup>
           </TabPanel>
           <TabPanel>
-            {distanceMap && <Heatmap data={distanceMap} width={600} height={550} />}
+            {distanceMap && <Heatmap data={distanceMap} geoInfo={geoInfo} width={600} height={550} />}
           </TabPanel>
           <TabPanel>{data && <LinePlot data={data} />}</TabPanel>
           <TabPanel>{data && <BoxPlot data={data} />}</TabPanel>

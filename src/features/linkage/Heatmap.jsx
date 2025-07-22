@@ -20,7 +20,8 @@ import jsPDF from 'jspdf';
 import { getFilledReadouts } from '../../utils/displayUtils';
 
 const MARGIN = { top: 10, right: 10, bottom: 40, left: 50 };
-const Heatmap = ({ data, width, height }) => {
+const Heatmap = ({ data, width, height,geoInfo }) => {
+  console.log(geoInfo);
   const [showColorPicker, setShowColorPicker] = useBoolean(false);
   const [color, setColor] = useState('#0693E3');
   const [isDownloading, setIsDownloading] = useState(false);
@@ -162,6 +163,41 @@ const Heatmap = ({ data, width, height }) => {
     }
   };
 
+  const rainbowColors = useMemo(() => {
+    const numSegments = allXGroups.length;
+    
+    // Define rainbow color stops
+    const colorStops = [
+      '#FF0000', // Red
+      '#FF7F00', // Orange
+      '#FFFF00', // Yellow
+      '#00FF00', // Green
+      '#0000FF', // Blue
+      '#4B0082', // Indigo
+      '#8B00FF'  // Violet
+    ];
+
+    // Create color scale with multiple stops
+    const rainbowScale = d3.scaleLinear()
+      .domain(colorStops.map((_, i) => i * (numSegments - 1) / (colorStops.length - 1)))
+      .range(colorStops)
+      .interpolate(d3.interpolateRgb);
+
+    return d3.range(numSegments).map(i => rainbowScale(i));
+  }, [allXGroups]);
+
+  const rainbowBar = allXGroups.map((_, i) => (
+    <rect
+      key={`rainbow-${i}`}
+      x={xScale(allXGroups[i])}
+      y={boundsHeight + 25} // Position below the x-axis labels
+      width={xScale.bandwidth()}
+      height={15}
+      fill={rainbowColors[i]}
+    />
+  ));
+
+
   // Build the rectangles
   const allRects = data.map((d, i) => {
     const isHightlight =
@@ -285,6 +321,7 @@ const Heatmap = ({ data, width, height }) => {
             {allRects}
             {xLabels}
             {yLabels}
+            {rainbowBar}
           </g>
         </svg>
       </div>

@@ -138,6 +138,9 @@ export function extractFields(dataObject) {
     cell_line: dataObject.cell_line || null,
     gene: dataObject.gene || null,
     treatment: dataObject.treatment || null,
-    genotype: dataObject.genotype || null
+    genotype: dataObject.genotype || null,
+    start_position: dataObject.start_position || null,
+    end_position: dataObject.end_position || null,
+    chromosome: dataObject.chromosome || null,
   };
 }
