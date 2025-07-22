@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { DataContext } from '../../../stores/data-context';
 import { useCSVReader, lightenDarkenColor, formatFileSize } from 'react-papaparse';
-import { ArrowForwardIcon, QuestionIcon } from '@chakra-ui/icons';
+import { ArrowForwardIcon } from '@chakra-ui/icons';
 import styles from '../Uploader.module.css';
 import {
   Box,
@@ -10,6 +10,7 @@ import {
   useToast,
   HStack,
   FormLabel,
+  Input,
   NumberInput,
   NumberInputField,
   NumberInputStepper,
@@ -18,18 +19,24 @@ import {
 } from '@chakra-ui/react';
 
 const DEFAULT_REMOVE_HOVER_COLOR = '#A01919';
-const warningColor = '#e23636';
+
 const REMOVE_HOVER_COLOR_LIGHT = lightenDarkenColor(DEFAULT_REMOVE_HOVER_COLOR, 40);
 
 export default function CSVReader() {
   const { CSVReader } = useCSVReader();
   const [zoneHover, setZoneHover] = useState(false);
   const [maxReadout, setMaxReadout] = useState(null);
+
+  const [userInputStart, setUserInputStart] = useState(null);
+  const [userInputEnd, setUserInputEnd] = useState(null);
+  const [userInputChromosome, setUserInputChromosome] = useState(null);
+
   const [removeHoverColor, setRemoveHoverColor] = useState(DEFAULT_REMOVE_HOVER_COLOR);
   const [array, setArray] = useState([]);
   const dataCtx = useContext(DataContext);
   const setDataBysHandler = dataCtx.setDataBysHandler;
   const setTotalReadouts = dataCtx.setTotalReadouts;
+  const setGenomicsInfo=dataCtx.setInfo;
   const Toast = useToast();
 
   function checkHeaders(dataList) {
@@ -62,7 +69,7 @@ export default function CSVReader() {
         <FormLabel htmlFor="start-pos" mb="0">
           Start Position:
         </FormLabel>
-        <NumberInput step={5} size="xs">
+        <NumberInput step={5} size="xs" onChange={setUserInputStart}>
           <NumberInputField />
           <NumberInputStepper>
             <NumberIncrementStepper />
@@ -74,7 +81,7 @@ export default function CSVReader() {
         <FormLabel htmlFor="end-pos" mb="0">
           End Position:
         </FormLabel>
-        <NumberInput step={5} size="xs">
+        <NumberInput step={5} size="xs" onChange={setUserInputEnd}>
           <NumberInputField />
           <NumberInputStepper>
             <NumberIncrementStepper />
@@ -87,13 +94,7 @@ export default function CSVReader() {
         <FormLabel htmlFor="chromosome" mb="0">
           Chromosome:
         </FormLabel>
-        <NumberInput step={5} size="xs">
-          <NumberInputField />
-          <NumberInputStepper>
-            <NumberIncrementStepper />
-            <NumberDecrementStepper />
-          </NumberInputStepper>
-        </NumberInput>
+        <Input value={userInputChromosome} size="xs" onChange={(event)=>{setUserInputChromosome(event.target.value)}}/>
       </HStack>
       <CSVReader
         onUploadAccepted={(results) => {
@@ -196,6 +197,11 @@ export default function CSVReader() {
             } else {
               setDataBysHandler(array);
               setTotalReadouts(maxReadout);
+              const userInputInfo={};
+              userInputInfo['start'] = userInputStart;
+              userInputInfo['end'] = userInputEnd;
+              userInputInfo['chromosome'] = userInputChromosome;
+              setGenomicsInfo(userInputInfo);
             }
           }
         }}
