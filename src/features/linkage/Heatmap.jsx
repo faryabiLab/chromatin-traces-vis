@@ -17,7 +17,7 @@ import {
 } from '@chakra-ui/react';
 import { DownloadIcon } from '@chakra-ui/icons';
 import jsPDF from 'jspdf';
-import { getFilledReadouts } from '../../utils/displayUtils';
+import { getFilledReadouts,generateRainbowColors } from '../../utils/displayUtils';
 
 const MARGIN = { top: 10, right: 20, bottom: 80, left: 50 };
 const Heatmap = ({ data, width, height,geoInfo }) => {
@@ -163,28 +163,7 @@ const Heatmap = ({ data, width, height,geoInfo }) => {
     }
   };
 
-  const rainbowColors = useMemo(() => {
-    const numSegments = allXGroups.length;
-    
-    // Define rainbow color stops
-    const colorStops = [
-      '#FF0000', // Red
-      '#FF7F00', // Orange
-      '#FFFF00', // Yellow
-      '#00FF00', // Green
-      '#0000FF', // Blue
-      '#4B0082', // Indigo
-      '#8B00FF'  // Violet
-    ];
-
-    // Create color scale with multiple stops
-    const rainbowScale = d3.scaleLinear()
-      .domain(colorStops.map((_, i) => i * (numSegments - 1) / (colorStops.length - 1)))
-      .range(colorStops)
-      .interpolate(d3.interpolateRgb);
-
-    return d3.range(numSegments).map(i => rainbowScale(i));
-  }, [allXGroups]);
+  const rainbowColors = generateRainbowColors(allXGroups.length);
 
   const rainbowBarGroup = (
     <g>
@@ -207,7 +186,7 @@ const Heatmap = ({ data, width, height,geoInfo }) => {
         textAnchor="middle"
         fontSize={10}
       >
-        {geoInfo.start.toLocaleString()}
+        {geoInfo?geoInfo.start.toLocaleString():null}
       </text>
 
       {/* Chromosome label */}
@@ -218,7 +197,7 @@ const Heatmap = ({ data, width, height,geoInfo }) => {
         fontSize={10}
         fontWeight="bold"
       >
-        {geoInfo.chromosome}
+        {geoInfo?geoInfo.chromosome:null}
       </text>
 
       {/* End position label */}
@@ -228,7 +207,7 @@ const Heatmap = ({ data, width, height,geoInfo }) => {
         textAnchor="middle"
         fontSize={10}
       >
-        {geoInfo.end.toLocaleString()}
+        {geoInfo?geoInfo.end.toLocaleString():null}
       </text>
     </g>
   );
