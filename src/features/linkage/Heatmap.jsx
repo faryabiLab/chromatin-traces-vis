@@ -17,10 +17,11 @@ import {
 } from '@chakra-ui/react';
 import { DownloadIcon } from '@chakra-ui/icons';
 import jsPDF from 'jspdf';
-import { getFilledReadouts } from '../../utils/displayUtils';
+import { getFilledReadouts,generateRainbowColors } from '../../utils/displayUtils';
 
-const MARGIN = { top: 10, right: 10, bottom: 40, left: 50 };
-const Heatmap = ({ data, width, height }) => {
+const MARGIN = { top: 10, right: 20, bottom: 80, left: 50 };
+const Heatmap = ({ data, width, height,geoInfo }) => {
+  console.log(geoInfo);
   const [showColorPicker, setShowColorPicker] = useBoolean(false);
   const [color, setColor] = useState('#0693E3');
   const [isDownloading, setIsDownloading] = useState(false);
@@ -162,6 +163,56 @@ const Heatmap = ({ data, width, height }) => {
     }
   };
 
+  const rainbowColors = generateRainbowColors(allXGroups.length);
+
+  const rainbowBarGroup = (
+    <g>
+      {/* Rainbow rectangles */}
+      {allXGroups.map((_, i) => (
+        <rect
+          key={`rainbow-${i}`}
+          x={xScale(allXGroups[i])}
+          y={boundsHeight + 25}
+          width={xScale.bandwidth()}
+          height={15}
+          fill={rainbowColors[i]}
+        />
+      ))}
+      
+      {/* Start position label */}
+      <text
+        x={xScale(allXGroups[0]) + xScale.bandwidth() / 2}
+        y={boundsHeight + 55}
+        textAnchor="middle"
+        fontSize={10}
+      >
+        {geoInfo?geoInfo.start.toLocaleString():null}
+      </text>
+
+      {/* Chromosome label */}
+      <text
+        x={boundsWidth / 2}
+        y={boundsHeight + 55}
+        textAnchor="middle"
+        fontSize={10}
+        fontWeight="bold"
+      >
+        {geoInfo?geoInfo.chromosome:null}
+      </text>
+
+      {/* End position label */}
+      <text
+        x={xScale(allXGroups[allXGroups.length - 1]) + xScale.bandwidth() / 2}
+        y={boundsHeight + 55}
+        textAnchor="middle"
+        fontSize={10}
+      >
+        {geoInfo?geoInfo.end.toLocaleString():null}
+      </text>
+    </g>
+  );
+
+
   // Build the rectangles
   const allRects = data.map((d, i) => {
     const isHightlight =
@@ -285,6 +336,7 @@ const Heatmap = ({ data, width, height }) => {
             {allRects}
             {xLabels}
             {yLabels}
+            {rainbowBarGroup}
           </g>
         </svg>
       </div>

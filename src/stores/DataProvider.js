@@ -10,6 +10,8 @@ export function DataProvider({children}){
   const [keys,setKeys] = useState(null);
   const [totalKeys,setTotalKeys] = useState(null);
   const [totalReadouts,setTotalReadouts] = useState(0);
+  const [info,setInfo] = useState({});
+
   const extractKeys=(data)=>{
     const result={};
     for(const fovKey of data.keys()){
@@ -80,12 +82,14 @@ export function DataProvider({children}){
     totalKeys:totalKeys,
     totalReadouts:totalReadouts,
     filename:filename,
+    info:info,
     setFilename:setFilename,
     setDataBysHandler:setDataBysHandler,
     filterDataBysHandler:filterHandler,
     resetHandler:resetHandler,
     setTotalReadouts:setTotalReadouts,
     radiusOfGyrationHandler:radiusOfGyrationHandler,
+    setInfo:setInfo,
   };
 
   return (

@@ -43,7 +43,7 @@ const Dashboard = () => {
   const resetTraceHandler = traceCtx.resetHandler;
   const resetFilterHandler = dataCtx.resetHandler;
   const totalKeys = dataCtx.totalKeys;
-  
+  const userInputInfo = dataCtx.info;
   const data = traceCtx.data;
   //set the initial fov to be the first existing fov
   const initialFov = Object.keys(dataCtx.keys)[0];
@@ -59,13 +59,14 @@ const Dashboard = () => {
 
   const [isApplied, setIsApplied] = useState(false);
 
+  const [geoInfo, setGeoInfo] = useState(null);
+
   const totalAllelesCount = useMemo(() => {
     if (totalKeys[fov]) {
       return totalKeys[fov].length;
     }
     return 0;
-  }, [totalKeys,fov]);
-
+  }, [totalKeys, fov]);
 
   useEffect(() => {
     if (filename && filename !== '') {
@@ -85,6 +86,24 @@ const Dashboard = () => {
   useEffect(() => {
     selectedHandler(fov.toString(), dataCtx.keys[fov][allele].toString());
   }, [fov, allele]);
+
+  useEffect(() => {
+    if (metadata) {
+      setGeoInfo({
+        start: metadata.start_position,
+        chromosome: metadata.chromosome,
+        end: metadata.end_position,
+      });
+    } else {
+      if (Object.keys(userInputInfo).length !== 0) {
+        setGeoInfo({
+          start: userInputInfo.start,
+          chromosome: userInputInfo.chromosome,
+          end: userInputInfo.end,
+        });
+      }
+    }
+  }, [metadata]);
 
   const shiftPanelHandler = () => {
     if (isApplied) {
@@ -237,33 +256,34 @@ const Dashboard = () => {
           </Button>
         </div>
       </Stack>
-      {metadata && <Box p={0}>
-      <TableContainer>
-        <Table variant="simple" size="sm">
-          <Thead>
-            <Tr>
-              <Th>Cell Type</Th>
-              {metadata.cell_line!=='N/A' && <Th>Cell Line</Th>}
-              <Th>Gene</Th>
-              <Th>Treatment</Th>
-              <Th>Genotype</Th>
-              <Th>Total Alleles</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            <Tr>
-              <Td>{metadata.cell_type || 'N/A'}</Td>
-              {metadata.cell_line!=='N/A' &&<Td>{metadata.cell_line || 'N/A'}</Td>}
-              <Td>{metadata.gene || 'N/A'}</Td>
-              <Td>{metadata.treatment || 'N/A'}</Td>
-              <Td>{metadata.genotype || 'N/A'}</Td>
-              <Td>{totalAllelesCount || 'N/A'}</Td>
-            </Tr>
-          </Tbody>
-        </Table>
-      </TableContainer>
-    </Box>
-      }
+      {metadata && (
+        <Box p={0}>
+          <TableContainer>
+            <Table variant="simple" size="sm">
+              <Thead>
+                <Tr>
+                  <Th>Cell Type</Th>
+                  {metadata.cell_line !== 'N/A' && <Th>Cell Line</Th>}
+                  <Th>Gene</Th>
+                  <Th>Treatment</Th>
+                  <Th>Genotype</Th>
+                  <Th>Total Alleles</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                <Tr>
+                  <Td>{metadata.cell_type || 'N/A'}</Td>
+                  {metadata.cell_line !== 'N/A' && <Td>{metadata.cell_line || 'N/A'}</Td>}
+                  <Td>{metadata.gene || 'N/A'}</Td>
+                  <Td>{metadata.treatment || 'N/A'}</Td>
+                  <Td>{metadata.genotype || 'N/A'}</Td>
+                  <Td>{totalAllelesCount || 'N/A'}</Td>
+                </Tr>
+              </Tbody>
+            </Table>
+          </TableContainer>
+        </Box>
+      )}
       <Divider />
       <Tabs variant="soft-rounded" colorScheme="blue">
         <TabList>
@@ -296,7 +316,9 @@ const Dashboard = () => {
             </RadioGroup>
           </TabPanel>
           <TabPanel>
-            {distanceMap && <Heatmap data={distanceMap} width={600} height={550} />}
+            {distanceMap && (
+              <Heatmap data={distanceMap} geoInfo={geoInfo} width={600} height={550} />
+            )}
           </TabPanel>
           <TabPanel>{data && <LinePlot data={data} />}</TabPanel>
           <TabPanel>{data && <BoxPlot data={data} />}</TabPanel>

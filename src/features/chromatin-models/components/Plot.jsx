@@ -8,7 +8,7 @@ import { jsPDF } from 'jspdf';
 import { useControls, button, levaStore } from 'leva';
 import { SVGRenderer } from 'three/examples/jsm/renderers/SVGRenderer';
 import { svg2pdf } from 'svg2pdf.js';
-import { max } from 'd3';
+import { generateRainbowColors } from '../../../utils/displayUtils';
 const Plot = () => {
   //index of the points that are clicked
   const traceCtx = useContext(TraceContext);
@@ -29,6 +29,9 @@ const Plot = () => {
   const isRadius = traceCtx.mode === '1' ? true : false;
   const isLinkage = traceCtx.mode === '2' ? true : false;
 
+  //color scale
+  const rainbowColors = generateRainbowColors(data.length);
+
   //linkage
   const clickedHandler = traceCtx.clickedHandler;
   const clicked = traceCtx.clicked;
@@ -45,7 +48,7 @@ const Plot = () => {
   const { color, isGrid, tubeRadius, showDistance, sphereRadius } = useControls({
     color: 'red',
     isGrid: { value: true, label: 'Grid & Axis' },
-    tubeRadius: { value: 5, min: 0, max: 5, step: 0.5, label: 'Line Size' },
+    tubeRadius: { value: 3, min: 0, max: 5, step: 0.5, label: 'Line Size' },
     sphereRadius: { value: 15, min: 5, max: 25, step: 1, label: 'Dot Size' },
     showDistance: { value: true, label: 'Show Distance' },
     reset: button(traceCtx.resetHandler),
@@ -211,10 +214,11 @@ const Plot = () => {
     }
   };
 
+  //point is the index of the point in the points array
   const colorPoint = (point) => {
     if (isPerimeter) {
       if (pointX === -1 && pointY === -1 && pointZ === -1) {
-        return 'black';
+        return rainbowColors[point];
       }
       //color when point is clicked
       if (pointX === point || pointY === point || pointZ === point) {
@@ -224,7 +228,7 @@ const Plot = () => {
       return 'white';
     }else if(isRadius){  
       //check if the point is within the radius
-      if(current === -1) return 'black';
+      if(current === -1) return rainbowColors[point];
       if(point === current) return color;
       if (points[current].distanceTo(points[point]) < radius) {
         return 'black';
@@ -235,7 +239,7 @@ const Plot = () => {
     } else {
       //default color
       if (pointA === -1 && pointB === -1) {
-        return 'black';
+        return rainbowColors[point];
       }
       //color when point is clicked
       if (pointA === point || pointB === point) {

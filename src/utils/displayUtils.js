@@ -1,3 +1,5 @@
+
+import * as d3 from 'd3';
 /**
 * 
 * @param data [{readout:number,pos:{x:number,y:number,z:number}}}}] 
@@ -138,6 +140,28 @@ export function extractFields(dataObject) {
     cell_line: dataObject.cell_line || null,
     gene: dataObject.gene || null,
     treatment: dataObject.treatment || null,
-    genotype: dataObject.genotype || null
+    genotype: dataObject.genotype || null,
+    start_position: dataObject.start_position || null,
+    end_position: dataObject.end_position || null,
+    chromosome: dataObject.chromosome || null,
   };
 }
+
+export const generateRainbowColors = (numSegments) => {
+  const colorStops = [
+    '#FF0000', // Red
+    '#FF7F00', // Orange
+    '#FFFF00', // Yellow
+    '#00FF00', // Green
+    '#0000FF', // Blue
+    '#4B0082', // Indigo
+    '#8B00FF'  // Violet
+  ];
+
+  const rainbowScale = d3.scaleLinear()
+    .domain(colorStops.map((_, i) => i * (numSegments - 1) / (colorStops.length - 1)))
+    .range(colorStops)
+    .interpolate(d3.interpolateRgb);
+
+  return d3.range(numSegments).map(i => rainbowScale(i));
+};
