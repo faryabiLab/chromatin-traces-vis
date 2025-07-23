@@ -22,6 +22,7 @@ import {
   Td,
   TableContainer,
   Box,
+  Switch,
 } from '@chakra-ui/react';
 import { ArrowLeftIcon, ArrowRightIcon, DownloadIcon } from '@chakra-ui/icons';
 
@@ -60,6 +61,9 @@ const Dashboard = () => {
   const [isApplied, setIsApplied] = useState(false);
 
   const [geoInfo, setGeoInfo] = useState(null);
+
+  const interpolate = traceCtx.interpolate;
+  const setInterpolate = traceCtx.interpolateHandler;
 
   const totalAllelesCount = useMemo(() => {
     if (totalKeys[fov]) {
@@ -161,6 +165,10 @@ const Dashboard = () => {
     selectedHandler(fov.toString(), newAllele.toString());
   };
 
+  const handleToggle = (value) => {
+    setInterpolate(value);
+  };
+
   const distanceMap = useMemo(() => generatePairwiseDistanceMap(data), [data]);
 
   const downloadHandler = () => {
@@ -226,7 +234,9 @@ const Dashboard = () => {
             {renderAlleleOptions()}
           </Select>
         </div>
-
+        <div>
+        <Switch onChange={(e) => handleToggle(e.target.checked)}/>
+        </div>
         <div className={styles.buttons}>
           <IconButton
             colorScheme="black"

@@ -23,6 +23,8 @@ const Plot = () => {
 
   const data = traceCtx.data;
 
+  const interpolate = traceCtx.interpolate;
+
   const selected = traceCtx.selected;
 
   // mode = 1 for radius, 2 for linkage, 3 for perimeter
@@ -219,11 +221,10 @@ const Plot = () => {
     }
   };
   const defaultColor=(point)=>{
-    if(interpolatedPoints.includes(point)){
-      return 'white';
-    }else{
+    if(interpolate){
       return rainbowColors[point];
     }
+    return interpolatedPoints.includes(point) ? 'white' : rainbowColors[point];
   }
 
   //point is the index of the point in the points array

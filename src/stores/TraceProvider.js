@@ -16,6 +16,7 @@ const defaultTraceState = {
   radius:200,
   current:-1,
   mode: '2',
+  interpolate:false,
 };
 const traceReducer = (state, action) => {
   if (action.type === 'SELECT') {
@@ -77,6 +78,19 @@ const traceReducer = (state, action) => {
     }
   }
 
+  if(action.type==='INTERPOLATE'){
+    return{
+      data:state.data,
+      selected:state.selected,
+      clicked:state.clicked,
+      triplet:state.triplet,
+      radius:state.radius,
+      current:state.current,
+      mode:state.mode,
+      interpolate:action.interpolate,
+    }
+  }
+
 
   if(action.type==='MODE'){
     return{
@@ -133,6 +147,10 @@ export function TraceProvider({ children }) {
     dispatchTraceAction({type:'MODE',mode:mode});
   }
 
+  const interpolateHandler=(interpolate)=>{
+    dispatchTraceAction({type:'INTERPOLATE',interpolate:interpolate});
+  }
+
   const traceContext = {
     data:traceState.data,
     selected: traceState.selected,
@@ -140,6 +158,7 @@ export function TraceProvider({ children }) {
     triplet:traceState.triplet,
     current:traceState.current,
     mode:traceState.mode,
+    interpolate:traceState.interpolate,
     currentHandler:currentHandler,
     selectedHandler: selectTraceHandler,
     clickedHandler: clickTraceHandler,
@@ -148,6 +167,7 @@ export function TraceProvider({ children }) {
     radius:traceState.radius,
     radiusHandler:radiusHandler,
     modeHandler:modeHandler,
+    interpolateHandler:interpolateHandler
   };
 
   return <TraceContext.Provider value={traceContext}>{children}</TraceContext.Provider>;
