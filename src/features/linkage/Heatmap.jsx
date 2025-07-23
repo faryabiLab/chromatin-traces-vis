@@ -221,7 +221,7 @@ const Heatmap = ({ data, width, height,geoInfo }) => {
 
   const interpolateMasking=(x,y,scale)=>{
     if(!interpolate&&(interpolateList.includes(x)||interpolateList.includes(y))){
-      return 'white';
+      return 'gray';
     }
     return scale;
   }
