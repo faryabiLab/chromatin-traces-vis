@@ -21,7 +21,6 @@ import { getFilledReadouts,generateRainbowColors } from '../../utils/displayUtil
 
 const MARGIN = { top: 10, right: 20, bottom: 80, left: 50 };
 const Heatmap = ({ data, width, height,geoInfo }) => {
-  console.log(geoInfo);
   const [showColorPicker, setShowColorPicker] = useBoolean(false);
   const [color, setColor] = useState('#0693E3');
   const [isDownloading, setIsDownloading] = useState(false);
@@ -30,6 +29,14 @@ const Heatmap = ({ data, width, height,geoInfo }) => {
 
   const traceCtx = useContext(TraceContext);
   const clicked = traceCtx.clicked;
+  const interpolate = traceCtx.interpolate;
+  const interpolateList=[];
+  const traceData=traceCtx.data;
+  for(const item of traceData){
+    if(item.filling){
+      interpolateList.push(item.readout);
+    }
+  }
 
   const clickedHandler = traceCtx.clickedHandler;
 
@@ -212,6 +219,13 @@ const Heatmap = ({ data, width, height,geoInfo }) => {
     </g>
   );
 
+  const interpolateMasking=(x,y,scale)=>{
+    if(!interpolate&&(interpolateList.includes(x)||interpolateList.includes(y))){
+      return 'white';
+    }
+    return scale;
+  }
+
 
   // Build the rectangles
   const allRects = data.map((d, i) => {
@@ -229,7 +243,7 @@ const Heatmap = ({ data, width, height,geoInfo }) => {
         width={xScale.bandwidth()}
         height={yScale.bandwidth()}
         opacity={1}
-        fill={colorScale(d.value)}
+        fill={interpolateMasking(d.x,d.y,colorScale(d.value))}
         rx={1}
         stroke={isHightlight ? 'orange ' : 'white'}
         strokeWidth={isHightlight ? 3 : 1}

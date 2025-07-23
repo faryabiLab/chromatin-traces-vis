@@ -28,6 +28,7 @@ const traceReducer = (state, action) => {
       radius:state.radius,
       current:state.current,
       mode:state.mode,
+      interpolate:state.interpolate,
     };
   }
   if (action.type === 'CLICK') {
@@ -39,6 +40,7 @@ const traceReducer = (state, action) => {
       radius:200,
       current:-1,
       mode:state.mode,
+      interpolate:state.interpolate,
     };
   }
 
@@ -51,6 +53,7 @@ const traceReducer = (state, action) => {
       radius:200,
       current:-1,
       mode:state.mode,
+      interpolate:state.interpolate,
     }
   }
 
@@ -63,6 +66,7 @@ const traceReducer = (state, action) => {
       radius:state.radius,
       current:action.current,
       mode:state.mode,
+      interpolate:state.interpolate,
     }
   }
 
@@ -75,6 +79,7 @@ const traceReducer = (state, action) => {
       radius:action.radius,
       current:state.current,
       mode:state.mode,
+      interpolate:state.interpolate,
     }
   }
 
@@ -101,6 +106,7 @@ const traceReducer = (state, action) => {
       radius:200,
       current:-1,
       mode:action.mode,
+      interpolate:state.interpolate,
     }
   }
 
@@ -113,6 +119,7 @@ const traceReducer = (state, action) => {
       radius:200,
       current:-1,
       mode:state.mode,
+      interpolate:state.interpolate,
     }
   }  
   return defaultTraceState;
