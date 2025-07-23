@@ -350,7 +350,7 @@ const Plot = () => {
         position={calculateGeometricCenter(points)}
       >
         <sphereGeometry args={[sphereRadius * 2, 64, 16]} />
-        <meshStandardMaterial color={'orange'} />
+        <meshStandardMaterial color={'black'} />
       </mesh>
     );
   };
