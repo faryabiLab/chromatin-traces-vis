@@ -23,6 +23,7 @@ import {
   TableContainer,
   Box,
   Switch,
+  Text,
 } from '@chakra-ui/react';
 import { ArrowLeftIcon, ArrowRightIcon, DownloadIcon } from '@chakra-ui/icons';
 
@@ -210,7 +211,7 @@ const Dashboard = () => {
       <Heading as="h1" className={styles.header}>
         Optical Looping Interactive Viewing Engine (OLIVE)
       </Heading>
-      <Stack direction="row" spacing="30px">
+      <Stack direction="row" spacing="16px">
         <div className={styles.select}>
           <label>FOV:</label>
           <Select
@@ -234,8 +235,9 @@ const Dashboard = () => {
             {renderAlleleOptions()}
           </Select>
         </div>
-        <div>
-        <Switch onChange={(e) => handleToggle(e.target.checked)}/>
+        <div className={styles.switchContainer}>
+          <Text className={styles.label}>Interpolate:</Text>
+          <Switch onChange={(e) => handleToggle(e.target.checked)} />
         </div>
         <div className={styles.buttons}>
           <IconButton
