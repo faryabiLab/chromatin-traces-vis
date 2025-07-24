@@ -38,6 +38,7 @@ import RadiusFilter from './components/RadiusFilter';
 import PerimeterCheckbox from './components/PerimeterCheckbox';
 import LinePlot from '../centrality/LinePlot';
 import BoxPlot from '../radiusGyration/BoxPlot';
+import MedianHeatmap from '../linkage/MedianHeatmap';
 import { extractFields } from '../../utils/displayUtils';
 const Dashboard = () => {
   const dataCtx = useContext(DataContext);
@@ -297,12 +298,13 @@ const Dashboard = () => {
         </Box>
       )}
       <Divider />
-      <Tabs variant="soft-rounded" colorScheme="blue">
+      <Tabs size="sm" variant="soft-rounded" colorScheme="blue">
         <TabList>
           <Tab onClick={() => shiftPanelHandler()}>Distance Analysis</Tab>
           <Tab onClick={() => shiftPanelHandler()}>Distance Map</Tab>
           <Tab onClick={() => shiftPanelHandler()}>Centrality Profile</Tab>
           <Tab onClick={() => shiftPanelHandler()}>Radius of Gyration</Tab>
+          <Tab onClick={() => shiftPanelHandler()}>Median Distance Map</Tab>
         </TabList>
         <TabPanels>
           <TabPanel>
@@ -334,6 +336,7 @@ const Dashboard = () => {
           </TabPanel>
           <TabPanel>{data && <LinePlot data={data} />}</TabPanel>
           <TabPanel>{data && <BoxPlot data={data} />}</TabPanel>
+          <TabPanel>{<MedianHeatmap />}</TabPanel>
         </TabPanels>
       </Tabs>
     </div>
