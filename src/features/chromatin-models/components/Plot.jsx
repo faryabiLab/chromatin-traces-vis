@@ -22,6 +22,9 @@ const Plot = () => {
   const groupRef = useRef();
 
   const data = traceCtx.data;
+
+  const interpolate = traceCtx.interpolate;
+
   const selected = traceCtx.selected;
 
   // mode = 1 for radius, 2 for linkage, 3 for perimeter
@@ -111,10 +114,14 @@ const Plot = () => {
 
   //convert data to list of THREE.Vector3
   let points = [];
-  for (let row of data) {
+  let interpolatedPoints = [];
+  for (const [index,row] of data.entries()) {
     let point = new THREE.Vector3(row.pos.x, row.pos.y, row.pos.z);
     points.push(point);
+    //store the index of the interpolated points
+    if(row.filling) interpolatedPoints.push(index);
   }
+  
 
   //calculate geometric center and set the model origin
   let center = calculateGeometricCenter(points);
@@ -213,12 +220,18 @@ const Plot = () => {
       tripletHandler(x, y, z);
     }
   };
+  const defaultColor=(point)=>{
+    if(interpolate){
+      return rainbowColors[point];
+    }
+    return interpolatedPoints.includes(point) ? 'white' : rainbowColors[point];
+  }
 
   //point is the index of the point in the points array
   const colorPoint = (point) => {
     if (isPerimeter) {
       if (pointX === -1 && pointY === -1 && pointZ === -1) {
-        return rainbowColors[point];
+        return defaultColor(point);
       }
       //color when point is clicked
       if (pointX === point || pointY === point || pointZ === point) {
@@ -228,7 +241,7 @@ const Plot = () => {
       return 'white';
     }else if(isRadius){  
       //check if the point is within the radius
-      if(current === -1) return rainbowColors[point];
+      if(current === -1) return defaultColor(point);
       if(point === current) return color;
       if (points[current].distanceTo(points[point]) < radius) {
         return 'black';
@@ -239,7 +252,7 @@ const Plot = () => {
     } else {
       //default color
       if (pointA === -1 && pointB === -1) {
-        return rainbowColors[point];
+        return defaultColor(point);
       }
       //color when point is clicked
       if (pointA === point || pointB === point) {
@@ -337,7 +350,7 @@ const Plot = () => {
         position={calculateGeometricCenter(points)}
       >
         <sphereGeometry args={[sphereRadius * 2, 64, 16]} />
-        <meshStandardMaterial color={'orange'} />
+        <meshStandardMaterial color={'black'} />
       </mesh>
     );
   };

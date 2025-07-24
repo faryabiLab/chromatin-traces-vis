@@ -22,6 +22,8 @@ import {
   Td,
   TableContainer,
   Box,
+  Switch,
+  Text,
 } from '@chakra-ui/react';
 import { ArrowLeftIcon, ArrowRightIcon, DownloadIcon } from '@chakra-ui/icons';
 
@@ -60,6 +62,9 @@ const Dashboard = () => {
   const [isApplied, setIsApplied] = useState(false);
 
   const [geoInfo, setGeoInfo] = useState(null);
+
+  const interpolate = traceCtx.interpolate;
+  const setInterpolate = traceCtx.interpolateHandler;
 
   const totalAllelesCount = useMemo(() => {
     if (totalKeys[fov]) {
@@ -161,6 +166,10 @@ const Dashboard = () => {
     selectedHandler(fov.toString(), newAllele.toString());
   };
 
+  const handleToggle = (value) => {
+    setInterpolate(value);
+  };
+
   const distanceMap = useMemo(() => generatePairwiseDistanceMap(data), [data]);
 
   const downloadHandler = () => {
@@ -202,7 +211,7 @@ const Dashboard = () => {
       <Heading as="h1" className={styles.header}>
         Optical Looping Interactive Viewing Engine (OLIVE)
       </Heading>
-      <Stack direction="row" spacing="30px">
+      <Stack direction="row" spacing="16px">
         <div className={styles.select}>
           <label>FOV:</label>
           <Select
@@ -226,7 +235,10 @@ const Dashboard = () => {
             {renderAlleleOptions()}
           </Select>
         </div>
-
+        <div className={styles.switchContainer}>
+          <Text className={styles.label}>Interpolate:</Text>
+          <Switch onChange={(e) => handleToggle(e.target.checked)} />
+        </div>
         <div className={styles.buttons}>
           <IconButton
             colorScheme="black"

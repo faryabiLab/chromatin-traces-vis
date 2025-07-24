@@ -6,7 +6,7 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { calculateDistancesToCenter } from '../../utils/displayUtils';
 
-const CustomTooltip = ({ active, payload, label }) => {
+const CustomTooltip = ({ active, payload, label,interpolateList }) => {
   if (active && payload && payload.length) {
     return (
       <div style={{
@@ -17,6 +17,7 @@ const CustomTooltip = ({ active, payload, label }) => {
       }}>
         <p>{`Readout: ${label}`}</p>
         <p>{`Distance: ${payload[0].value} nm`}</p>
+        {interpolateList.includes(label)&&<p>Interpolated</p>}
       </div>
     );
   }
@@ -25,6 +26,12 @@ const CustomTooltip = ({ active, payload, label }) => {
 };
 
 const LinePlot = ({ data }) => {
+  const interpolateList=[];
+  for(const item of data){
+    if(item.filling){
+      interpolateList.push(item.readout);
+    }
+  }
   const distances = calculateDistancesToCenter(data);
   const chartRef = useRef();
 
@@ -128,7 +135,7 @@ const LinePlot = ({ data }) => {
               dx: -10,
             }}
           />
-          <Tooltip content={<CustomTooltip />} />
+          <Tooltip content={<CustomTooltip interpolateList={interpolateList}/>} />
         </LineChart>
       </Box>
     </VStack>
