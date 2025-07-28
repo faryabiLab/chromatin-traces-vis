@@ -3,7 +3,7 @@ import {DataContext} from './data-context';
 import * as d3 from 'd3';
 import { calculatePairDistance } from '../utils/displayUtils';
 import { dataProcess } from '../utils/dataWrangler';
-import { calculateTraceRg } from '../utils/calculationUtils';
+import { calculateTraceRg,calculate3DDistance,calculateMedian } from '../utils/calculationUtils';
 export function DataProvider({children}){
   const [dataBys,setDataBys] = useState(null);
   const [filename,setFilename] = useState(null);
@@ -71,6 +71,55 @@ export function DataProvider({children}){
 
   }
 
+  const medianDistanceHandler=()=>{
+    const result={};
+    for(const fovKey of dataBys.keys()){
+      if(fovKey!==undefined){
+        result[fovKey]=Array.from(dataBys.get(fovKey));
+      }
+    }
+
+    const distances = {};
+    
+    // Iterate through each FOV
+    Object.values(result).forEach(fovData => {
+        // Iterate through each allele in the FOV
+        fovData.forEach(([_, points]) => {
+            const processedPoints=dataProcess(points,totalReadouts);
+            // Get points by readout number
+            const pointsByReadout = {};
+            processedPoints.forEach(point => {
+                pointsByReadout[point.readout] = point;
+            });
+            
+            // Calculate distances between readout pairs
+            for (let i = 1; i < 5; i++) {
+                for (let j = i + 1; j <= 5; j++) {
+                    const key = `${i}&${j}`;
+                    if (!distances[key]) distances[key] = [];
+                    
+                    const point1 = pointsByReadout[i.toString()];
+                    const point2 = pointsByReadout[j.toString()];
+                    
+                    if (point1 && point2) {
+                        const distance = calculate3DDistance(point1, point2);
+                        distances[key].push(distance);
+                    }
+                }
+            }
+        });
+    });
+    console.log('distances',distances);
+
+    const medians = {};
+    for (const [key, distanceArray] of Object.entries(distances)) {
+        medians[key] = calculateMedian(distanceArray);
+    }
+    
+    return medians;
+
+  }
+
   const resetHandler=()=>{
     setKeys(extractKeys(dataBys));
     setTotalKeys(extractKeys(dataBys));
@@ -90,6 +139,7 @@ export function DataProvider({children}){
     setTotalReadouts:setTotalReadouts,
     radiusOfGyrationHandler:radiusOfGyrationHandler,
     setInfo:setInfo,
+    medianDistanceHandler:medianDistanceHandler
   };
 
   return (

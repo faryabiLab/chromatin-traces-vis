@@ -193,7 +193,7 @@ const Heatmap = ({ data, width, height,geoInfo }) => {
         textAnchor="middle"
         fontSize={10}
       >
-        {geoInfo?geoInfo.start.toLocaleString():null}
+        {geoInfo&&geoInfo.start?geoInfo.start.toLocaleString():null}
       </text>
 
       {/* Chromosome label */}
@@ -204,7 +204,7 @@ const Heatmap = ({ data, width, height,geoInfo }) => {
         fontSize={10}
         fontWeight="bold"
       >
-        {geoInfo?geoInfo.chromosome:null}
+        {geoInfo&&geoInfo.chromosome?geoInfo.chromosome:null}
       </text>
 
       {/* End position label */}
@@ -214,7 +214,7 @@ const Heatmap = ({ data, width, height,geoInfo }) => {
         textAnchor="middle"
         fontSize={10}
       >
-        {geoInfo?geoInfo.end.toLocaleString():null}
+        {geoInfo&&geoInfo.end?geoInfo.end.toLocaleString():null}
       </text>
     </g>
   );
