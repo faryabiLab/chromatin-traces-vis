@@ -5,13 +5,25 @@ import * as d3 from 'd3';
 const MedianHeatmap = ({ width = 600, height = 600}) => {
   const dataCtx = useContext(DataContext);
   const [medianDistanceMap, setMedianDistanceMap] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const svgRef = useRef();
 
   // Initial calculation of median distance
   useEffect(() => {
     if (!medianDistanceMap) {
-      const result = dataCtx.medianDistanceHandler();
-      setMedianDistanceMap(result);
+      setLoading(true);
+      setError(null);
+      
+      dataCtx.medianDistanceHandler()
+        .then(result => {
+          setMedianDistanceMap(result);
+          setLoading(false);
+        })
+        .catch(err => {
+          setError(err.message);
+          setLoading(false);
+        });
     }
   }, []);
 
@@ -99,37 +111,32 @@ const MedianHeatmap = ({ width = 600, height = 600}) => {
         .text(d => Math.round(d.value));
     }
 
-    // Add row labels (1-15)
+
     g.selectAll('.row-label')
       .data(matrix)
       .enter()
       .append('text')
       .attr('class', 'row-label')
+      .attr('font-size', '8px')
       .attr('x', -10)
       .attr('y', (_, i) => i * cellSize + cellSize / 2)
       .attr('text-anchor', 'end')
       .attr('dominant-baseline', 'middle')
       .text((_, i) => i + 1);
 
-    // Add column labels (1-15)
+
     g.selectAll('.col-label')
       .data(matrix[0])
       .enter()
       .append('text')
       .attr('class', 'col-label')
+      .attr('font-size', '8px')
       .attr('x', (_, i) => i * cellSize + cellSize / 2)
       .attr('y', -10)
       .attr('text-anchor', 'middle')
       .text((_, i) => i + 1);
 
-    // Add title
-    svg.append('text')
-      .attr('x', width / 2)
-      .attr('y', 20)
-      .attr('text-anchor', 'middle')
-      .attr('font-size', '16px')
-      .attr('font-weight', 'bold')
-      .text('Median Distance Heatmap');
+ 
 
     // Add color legend
     const legendWidth = 200;
@@ -168,6 +175,18 @@ const MedianHeatmap = ({ width = 600, height = 600}) => {
     }
 
   }, [medianDistanceMap, width, height]);
+
+  if (loading) {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '400px' }}>
+        <div>Calculating median distances...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
     <div>

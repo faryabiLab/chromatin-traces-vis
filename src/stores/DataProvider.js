@@ -3,7 +3,7 @@ import {DataContext} from './data-context';
 import * as d3 from 'd3';
 import { calculatePairDistance } from '../utils/displayUtils';
 import { dataProcess } from '../utils/dataWrangler';
-import { calculateTraceRg,calculate3DDistance,calculateMedian } from '../utils/calculationUtils';
+import { calculateTraceRg, calculateMedian } from '../utils/calculationUtils';
 export function DataProvider({children}){
   const [dataBys,setDataBys] = useState(null);
   const [filename,setFilename] = useState(null);
@@ -71,52 +71,68 @@ export function DataProvider({children}){
 
   }
 
-  const medianDistanceHandler=()=>{
-    const result={};
-    for(const fovKey of dataBys.keys()){
-      if(fovKey!==undefined){
-        result[fovKey]=Array.from(dataBys.get(fovKey));
+  const medianDistanceHandler = () => {
+    return new Promise((resolve) => {
+      const result = {};
+      for (const [fovKey, fovValue] of dataBys.entries()) {
+        if (fovKey !== undefined) {
+          result[fovKey] = Array.from(fovValue.entries());
+        }
       }
-    }
-
-    const distances = {};
-    
-    // Iterate through each FOV
-    Object.values(result).forEach(fovData => {
-        // Iterate through each allele in the FOV
-        fovData.forEach(([_, points]) => {
-            const processedPoints=dataProcess(points,totalReadouts);
-            // Get points by readout number
-            const pointsByReadout = {};
-            processedPoints.forEach(point => {
-                pointsByReadout[point.readout] = point;
-            });
-            // Calculate distances between readout pairs
-            for (let i = 1; i < processedPoints.length; i++) {
-                for (let j = i + 1; j <= processedPoints.length; j++) {
-                    const key = `${i}&${j}`;
-                    if (!distances[key]) distances[key] = [];
-                    
-                    const point1 = pointsByReadout[i.toString()];
-                    const point2 = pointsByReadout[j.toString()];
-                    
-                    if (point1 && point2) {
-                        const distance = calculatePairDistance(point1, point2);
-                        distances[key].push(distance);
-                    }
-                }
+  
+      const distances = {};
+      const allFovData = Object.values(result).flat();
+      let currentIndex = 0;
+      const chunkSize = 5; // Process 5 items at a time to keep UI responsive
+  
+      const processChunk = () => {
+        const endIndex = Math.min(currentIndex + chunkSize, allFovData.length);
+        
+        for (let idx = currentIndex; idx < endIndex; idx++) {
+          const [_, points] = allFovData[idx];
+          const processedPoints = dataProcess(points, totalReadouts);
+          const pointsByReadout = {};
+          
+          processedPoints.forEach(point => {
+            pointsByReadout[point.readout] = point;
+          });
+          
+          for (let i = 1; i < processedPoints.length; i++) {
+            for (let j = i + 1; j <= processedPoints.length; j++) {
+              const key = `${i}&${j}`;
+              if (!distances[key]) distances[key] = [];
+              
+              const point1 = pointsByReadout[i.toString()];
+              const point2 = pointsByReadout[j.toString()];
+              
+              if (point1 && point2) {
+                const distance = calculatePairDistance(point1, point2);
+                distances[key].push(distance);
+              }
             }
-        });
+          }
+        }
+        
+        currentIndex = endIndex;
+        
+        if (currentIndex < allFovData.length) {
+          // Continue processing in next frame
+          setTimeout(processChunk, 10); // Small delay to keep UI responsive
+        } else {
+          // Calculation complete
+          const medians = {};
+          for (const [key, distanceArray] of Object.entries(distances)) {
+            medians[key] = calculateMedian(distanceArray);
+          }
+          resolve(medians);
+        }
+      };
+      
+      processChunk();
     });
+  };
+  
 
-    const medians = {};
-    for (const [key, distanceArray] of Object.entries(distances)) {
-        medians[key] = calculateMedian(distanceArray);
-    }
-    
-    return medians;
-
-  }
 
   const resetHandler=()=>{
     setKeys(extractKeys(dataBys));
