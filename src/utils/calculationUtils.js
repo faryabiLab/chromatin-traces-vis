@@ -23,15 +23,6 @@ export function calculateTraceRg(points) {
 };
   
 
-
-// Helper function to calculate 3D distance between two points
-export const calculate3DDistance = (point1, point2) => {
-  const dx = parseFloat(point1.x) - parseFloat(point2.x);
-  const dy = parseFloat(point1.y) - parseFloat(point2.y);
-  const dz = parseFloat(point1.z) - parseFloat(point2.z);
-  return Math.sqrt(dx * dx + dy * dy + dz * dz);
-};
-
 // Helper function to calculate median of an array
 export const calculateMedian = (arr) => {
   const sorted = [...arr].sort((a, b) => a - b);

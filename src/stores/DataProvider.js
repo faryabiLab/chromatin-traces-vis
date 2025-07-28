@@ -91,10 +91,9 @@ export function DataProvider({children}){
             processedPoints.forEach(point => {
                 pointsByReadout[point.readout] = point;
             });
-            
             // Calculate distances between readout pairs
-            for (let i = 1; i < 5; i++) {
-                for (let j = i + 1; j <= 5; j++) {
+            for (let i = 1; i < processedPoints.length; i++) {
+                for (let j = i + 1; j <= processedPoints.length; j++) {
                     const key = `${i}&${j}`;
                     if (!distances[key]) distances[key] = [];
                     
@@ -102,14 +101,13 @@ export function DataProvider({children}){
                     const point2 = pointsByReadout[j.toString()];
                     
                     if (point1 && point2) {
-                        const distance = calculate3DDistance(point1, point2);
+                        const distance = calculatePairDistance(point1, point2);
                         distances[key].push(distance);
                     }
                 }
             }
         });
     });
-    console.log('distances',distances);
 
     const medians = {};
     for (const [key, distanceArray] of Object.entries(distances)) {
