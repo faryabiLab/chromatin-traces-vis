@@ -236,10 +236,6 @@ const Dashboard = () => {
             {renderAlleleOptions()}
           </Select>
         </div>
-        <div className={styles.switchContainer}>
-          <Text className={styles.label}>Interpolate:</Text>
-          <Switch onChange={(e) => handleToggle(e.target.checked)} />
-        </div>
         <div className={styles.buttons}>
           <IconButton
             colorScheme="black"
@@ -297,6 +293,10 @@ const Dashboard = () => {
           </TableContainer>
         </Box>
       )}
+      <div className={styles.switchContainer}>
+          <Text className={styles.label}>Interpolate:</Text>
+          <Switch onChange={(e) => handleToggle(e.target.checked)} />
+        </div>
       <Divider />
       <Tabs size="sm" variant="soft-rounded" colorScheme="blue">
         <TabList>
