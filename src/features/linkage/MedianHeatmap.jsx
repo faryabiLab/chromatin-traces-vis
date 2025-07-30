@@ -30,6 +30,7 @@ const MedianHeatmap = ({ width = 600, height = 600 }) => {
   const [color, setColor] = useState('#0693E3');
   const [colorMax, setColorMax] = useState(0);
   const [isDownloading, setIsDownloading] = useState(false);
+  const [loadingTime, setLoadingTime] = useState(0);
 
   const svgRef = useRef();
   const heatmapRef = useRef();
@@ -141,6 +142,24 @@ const MedianHeatmap = ({ width = 600, height = 600 }) => {
       setIsDownloading(false);
     }
   };
+
+  //timer for loading
+  useEffect(() => {
+    let timer;
+    if (loading) {
+      // Reset timer when loading starts
+      setLoadingTime(0);
+      // Start counting
+      timer = setInterval(() => {
+        setLoadingTime(prev => prev + 1);
+      }, 1000);
+    }
+    
+    // Cleanup timer
+    return () => {
+      if (timer) clearInterval(timer);
+    };
+  }, [loading]);
 
   // Initial calculation of median distance
   useEffect(() => {
@@ -276,9 +295,17 @@ const MedianHeatmap = ({ width = 600, height = 600 }) => {
   if (loading) {
     return (
       <div
-        style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '400px' }}
+        style={{ 
+          display: 'flex', 
+          flexDirection: 'column',
+          justifyContent: 'center', 
+          alignItems: 'center', 
+          height: '400px',
+          gap: '10px'
+        }}
       >
-        <div>Calculating median distances...</div>
+        <div>Calculating median distances... ({loadingTime}s)</div>
+        <Spinner size="md" />
       </div>
     );
   }
