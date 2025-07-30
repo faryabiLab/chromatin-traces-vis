@@ -19,8 +19,9 @@ const Panel = () => {
       {isUploaded ? (
         <>
           <Box
-            w={{ base: '95%', md: '45%' }}
-            minH={{ base: '50vh', md: '80vh' }}
+            position="relative"
+            w={{ base: '95%', lg: '45%' }}
+            minH={{ base: '50vh', lg: '80vh' }}
             p={4}
             m={2}
             border={'1px solid #ccc'}
@@ -29,8 +30,8 @@ const Panel = () => {
             <CanvasWrapper component={Plot} />
           </Box>
           <Box
-            w={{ base: '95%', md: '45%' }}
-            minH={{ base: '50vh', md: '80vh' }}
+            w={{ base: '95%', lg: '45%' }}
+            minH={{ base: '50vh', lg: '80vh' }}
             p={4}
             m={2}
             border={'1px solid #ccc'}
