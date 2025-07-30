@@ -1,29 +1,49 @@
 import CanvasWrapper from '../../features/chromatin-models/components/CanvasWrapper';
 import Plot from '../../features/chromatin-models/components/Plot';
 import Dashboard from '../../features/user-panel/Dashboard';
-import styles from './Panel.module.css';
 import Landing from '../../features/data-upload/Landing';
 import { DataContext } from '../../stores/data-context';
-import {useContext} from 'react';
+import { useContext } from 'react';
+import { Flex, Box } from '@chakra-ui/react';
 const Panel = () => {
-  const dataCtx=useContext(DataContext);
-  const isUploaded=dataCtx.dataBys===null?false:true;
+  const dataCtx = useContext(DataContext);
+  const isUploaded = dataCtx.dataBys === null ? false : true;
   return (
-    <div className={styles.container}>
-    {isUploaded?
-    <>
-    <div>
-      <CanvasWrapper 
-        component={Plot}
-      />
-    </div>
-    <div className={styles.two}>
-      <Dashboard/>
-    </div>
-      </>
-    :<Landing/>}
-    </div>
+    <Flex
+      direction={{ base: 'column', md: 'row' }}
+      minH="100vh"
+      wrap="wrap"
+      justify="center"
+      overflow="auto"
+      p={4} // padding: 1rem
+    >
+      {isUploaded ? (
+        <>
+          <Box
+            w={{ base: '95%', md: '45%' }}
+            minH={{ base: '50vh', md: '80vh' }}
+            p={4}
+            m={2}
+            bg="rgb(246, 201, 201)"
+            borderRadius="md"
+          >
+            <CanvasWrapper component={Plot} />
+          </Box>
+          <Box
+            w={{ base: '95%', md: '45%' }}
+            minH={{ base: '50vh', md: '80vh' }}
+            p={4}
+            m={2}
+            bg="rgb(202, 225, 248)"
+            borderRadius="md"
+          >
+            <Dashboard />
+          </Box>
+        </>
+      ) : (
+        <Landing />
+      )}
+    </Flex>
   );
 };
 export default Panel;
-  

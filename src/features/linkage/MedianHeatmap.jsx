@@ -168,7 +168,7 @@ const MedianHeatmap = ({ width = 600, height = 600 }) => {
     if (!medianDistanceMap || !svgRef.current) return;
 
     try {
-      console.log('Median distance map:', medianDistanceMap);
+      //console.log('Median distance map:', medianDistanceMap);
       // Dynamically calculate matrix size from the keys
       const allNumbers = Object.keys(medianDistanceMap).flatMap((key) =>
         key.split('&').map(Number)

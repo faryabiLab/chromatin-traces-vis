@@ -331,7 +331,7 @@ const Dashboard = () => {
           </TabPanel>
           <TabPanel>
             {distanceMap && (
-              <Heatmap data={distanceMap} geoInfo={geoInfo} width={600} height={550} />
+              <Heatmap data={distanceMap} geoInfo={geoInfo} width={600} height={600} />
             )}
           </TabPanel>
           <TabPanel>{data && <LinePlot data={data} />}</TabPanel>
