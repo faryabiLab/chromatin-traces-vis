@@ -85,7 +85,7 @@ const MedianHeatmap = ({ width = 600, height = 600 }) => {
         });
 
         pdf.setFontSize(16);
-        pdf.text('Distance Map', 20, 20);
+        pdf.text('Median Distance Map', 20, 20);
         pdf.setFontSize(12);
         pdf.text(`Generated on: ${new Date().toLocaleString()}`, 20, 30);
         pdf.text(`Color Scale: 0 - ${colorMax} nm`, 20, 40);
