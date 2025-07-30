@@ -17,10 +17,11 @@ import {
 } from '@chakra-ui/react';
 import { DownloadIcon } from '@chakra-ui/icons';
 import jsPDF from 'jspdf';
-import { getFilledReadouts,generateRainbowColors } from '../../utils/displayUtils';
+import { getFilledReadouts, generateRainbowColors } from '../../utils/displayUtils';
+import styles from './heatmap.module.css';
 
 const MARGIN = { top: 10, right: 20, bottom: 80, left: 50 };
-const Heatmap = ({ data, width, height,geoInfo }) => {
+const Heatmap = ({ data, width, height, geoInfo }) => {
   const [showColorPicker, setShowColorPicker] = useBoolean(false);
   const [color, setColor] = useState('#0693E3');
   const [isDownloading, setIsDownloading] = useState(false);
@@ -30,10 +31,10 @@ const Heatmap = ({ data, width, height,geoInfo }) => {
   const traceCtx = useContext(TraceContext);
   const clicked = traceCtx.clicked;
   const interpolate = traceCtx.interpolate;
-  const interpolateList=[];
-  const traceData=traceCtx.data;
-  for(const item of traceData){
-    if(item.filling){
+  const interpolateList = [];
+  const traceData = traceCtx.data;
+  for (const item of traceData) {
+    if (item.filling) {
       interpolateList.push(item.readout);
     }
   }
@@ -185,7 +186,7 @@ const Heatmap = ({ data, width, height,geoInfo }) => {
           fill={rainbowColors[i]}
         />
       ))}
-      
+
       {/* Start position label */}
       <text
         x={xScale(allXGroups[0]) + xScale.bandwidth() / 2}
@@ -193,7 +194,7 @@ const Heatmap = ({ data, width, height,geoInfo }) => {
         textAnchor="middle"
         fontSize={10}
       >
-        {geoInfo&&geoInfo.start?geoInfo.start.toLocaleString():null}
+        {geoInfo && geoInfo.start ? geoInfo.start.toLocaleString() : null}
       </text>
 
       {/* Chromosome label */}
@@ -204,7 +205,7 @@ const Heatmap = ({ data, width, height,geoInfo }) => {
         fontSize={10}
         fontWeight="bold"
       >
-        {geoInfo&&geoInfo.chromosome?geoInfo.chromosome:null}
+        {geoInfo && geoInfo.chromosome ? geoInfo.chromosome : null}
       </text>
 
       {/* End position label */}
@@ -214,18 +215,17 @@ const Heatmap = ({ data, width, height,geoInfo }) => {
         textAnchor="middle"
         fontSize={10}
       >
-        {geoInfo&&geoInfo.end?geoInfo.end.toLocaleString():null}
+        {geoInfo && geoInfo.end ? geoInfo.end.toLocaleString() : null}
       </text>
     </g>
   );
 
-  const interpolateMasking=(x,y,scale)=>{
-    if(!interpolate&&(interpolateList.includes(x)||interpolateList.includes(y))){
+  const interpolateMasking = (x, y, scale) => {
+    if (!interpolate && (interpolateList.includes(x) || interpolateList.includes(y))) {
       return 'gray';
     }
     return scale;
-  }
-
+  };
 
   // Build the rectangles
   const allRects = data.map((d, i) => {
@@ -243,7 +243,7 @@ const Heatmap = ({ data, width, height,geoInfo }) => {
         width={xScale.bandwidth()}
         height={yScale.bandwidth()}
         opacity={1}
-        fill={interpolateMasking(d.x,d.y,colorScale(d.value))}
+        fill={interpolateMasking(d.x, d.y, colorScale(d.value))}
         rx={1}
         stroke={isHightlight ? 'orange ' : 'white'}
         strokeWidth={isHightlight ? 3 : 1}
@@ -291,23 +291,25 @@ const Heatmap = ({ data, width, height,geoInfo }) => {
   });
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
-      <HStack>
-        <label>Color:</label>
+    <div className={styles.container}>
+      <div className={styles.controlsContainer}>
+        <label className={styles.label}>Color:</label>
         <Box
           as="button"
-          borderRadius="md"
-          px={3}
-          h={6}
+          borderRadius="lg"
+          px={2}
+          h={4}
           onClick={setShowColorPicker.toggle}
           bg={color}
           margin={3}
         />
         {showColorPicker && (
-          <TwitterPicker color={color} onChange={handleColorChange} triangle="hide" />
+          <div style={{ position: 'absolute', zIndex: 2, marginTop: '15%' }}>
+            <TwitterPicker color={color} onChange={handleColorChange} triangle="hide" />
+          </div>
         )}
 
-        <label>Color Scale Domain: 0 ~ </label>
+        <label className={styles.label}>Color Scale Domain: 0 ~ </label>
         <NumberInput
           size="sm"
           maxW={125}
@@ -326,7 +328,7 @@ const Heatmap = ({ data, width, height,geoInfo }) => {
             <NumberDecrementStepper />
           </NumberInputStepper>
         </NumberInput>
-        <label>nm</label>
+        <label className={styles.label}>nm</label>
 
         <Button
           leftIcon={isDownloading ? <Spinner size="sm" /> : <DownloadIcon />}
@@ -339,8 +341,8 @@ const Heatmap = ({ data, width, height,geoInfo }) => {
         >
           PDF
         </Button>
-      </HStack>
-      <div ref={heatmapRef}>
+      </div>
+      <div ref={heatmapRef} className={styles.heatmapContainer}>
         <svg width={width} height={height}>
           <g
             width={boundsWidth}
