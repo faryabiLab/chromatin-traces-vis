@@ -1,14 +1,25 @@
 import React, { useContext, useEffect, useState, useRef } from 'react';
 import { DataContext } from '../../stores/data-context';
 import * as d3 from 'd3';
+import { TwitterPicker } from 'react-color';
+import { useBoolean,HStack,Box,NumberInput,NumberInputField,NumberInputStepper,NumberIncrementStepper,NumberDecrementStepper } from '@chakra-ui/react';
 
 const MedianHeatmap = ({ width = 600, height = 600}) => {
   const dataCtx = useContext(DataContext);
   const [medianDistanceMap, setMedianDistanceMap] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [showColorPicker, setShowColorPicker] = useBoolean(false);
+  const [color, setColor] = useState('#0693E3');
+  const [colorMax, setColorMax] = useState(0);
+
+
   const svgRef = useRef();
 
+  const handleColorChange = (color) => {
+    setColor(color.hex);
+  };
+  
   // Initial calculation of median distance
   useEffect(() => {
     if (!medianDistanceMap) {
@@ -18,6 +29,8 @@ const MedianHeatmap = ({ width = 600, height = 600}) => {
       dataCtx.medianDistanceHandler()
         .then(result => {
           setMedianDistanceMap(result);
+          const maxValue = Math.max(...Object.values(result));
+          setColorMax(maxValue);
           setLoading(false);
         })
         .catch(err => {
@@ -63,8 +76,8 @@ const MedianHeatmap = ({ width = 600, height = 600}) => {
 
     // Create color scale
     const colorScale = d3.scaleSequential()
-      .domain([0, d3.max(matrix.flat())])
-      .interpolator(d3.interpolateViridis);
+      .domain([0, colorMax])
+      .range([color, 'white']);
 
     // Create SVG
     const svg = d3.select(svgRef.current)
@@ -136,45 +149,12 @@ const MedianHeatmap = ({ width = 600, height = 600}) => {
       .attr('text-anchor', 'middle')
       .text((_, i) => i + 1);
 
- 
 
-    // Add color legend
-    const legendWidth = 200;
-    const legendHeight = 20;
-    
-    const legendScale = d3.scaleLinear()
-      .domain([0, d3.max(matrix.flat())])
-      .range([0, legendWidth]);
-
-    const legendAxis = d3.axisBottom(legendScale)
-      .ticks(5)
-      .tickFormat(d3.format('.0f'));
-
-    const legend = svg.append('g')
-      .attr('transform', `translate(${margin.left},${height - margin.bottom + 20})`);
-
-    // Create gradient for legend
-    const gradientData = d3.range(0, legendWidth);
-    
-    legend.selectAll('rect')
-      .data(gradientData)
-      .enter()
-      .append('rect')
-      .attr('x', d => d)
-      .attr('y', 0)
-      .attr('width', 1)
-      .attr('height', legendHeight)
-      .attr('fill', d => colorScale(d * d3.max(matrix.flat()) / legendWidth));
-
-    // Add legend axis
-    legend.append('g')
-      .attr('transform', `translate(0,${legendHeight})`)
-      .call(legendAxis);
     } catch (error) {
       console.error('Error creating heatmap:', error);
     }
 
-  }, [medianDistanceMap, width, height]);
+  }, [medianDistanceMap, width, height, color, colorMax]);
 
   if (loading) {
     return (
@@ -190,6 +170,45 @@ const MedianHeatmap = ({ width = 600, height = 600}) => {
 
   return (
     <div>
+    <div>
+    <HStack>
+        <label>Color:</label>
+        <Box
+          as="button"
+          borderRadius="lg"
+          px={2}
+          h={4}
+          onClick={setShowColorPicker.toggle}
+          bg={color}
+        />
+        {showColorPicker && (
+          <TwitterPicker color={color} onChange={handleColorChange} triangle="hide" />
+        )}
+
+        <label>Color Scale Domain: 0 ~ </label>
+        <NumberInput
+          size="sm"
+          maxW={120}
+          step={50}
+          min={0}
+          value={colorMax}
+          onChange={(valueString) => {
+            const value = parseInt(valueString);
+              if (!isNaN(value) && value >= 0) {
+                setColorMax(value);
+              }
+          }}
+        >
+          <NumberInputField />
+          <NumberInputStepper>
+            <NumberIncrementStepper />
+            <NumberDecrementStepper />
+          </NumberInputStepper>
+        </NumberInput>
+        <label>nm</label>
+       
+      </HStack>
+    </div>
       <svg ref={svgRef}></svg>
     </div>
   );
