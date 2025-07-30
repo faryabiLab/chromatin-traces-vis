@@ -34,7 +34,7 @@ const Panel = () => {
             minH={{ base: '50vh', lg: '80vh' }}
             p={4}
             m={2}
-            border={'1px solid #ccc'}
+          
             borderRadius="md"
           >
             <Dashboard />
