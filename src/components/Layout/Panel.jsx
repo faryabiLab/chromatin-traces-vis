@@ -24,7 +24,7 @@ const Panel = () => {
             minH={{ base: '50vh', md: '80vh' }}
             p={4}
             m={2}
-            bg="rgb(246, 201, 201)"
+            border={'1px solid #ccc'}
             borderRadius="md"
           >
             <CanvasWrapper component={Plot} />
@@ -34,7 +34,7 @@ const Panel = () => {
             minH={{ base: '50vh', md: '80vh' }}
             p={4}
             m={2}
-            bg="rgb(202, 225, 248)"
+            border={'1px solid #ccc'}
             borderRadius="md"
           >
             <Dashboard />
