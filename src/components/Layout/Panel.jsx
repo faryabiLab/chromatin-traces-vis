@@ -15,7 +15,6 @@ const Panel = () => {
       wrap="wrap"
       justify="center"
       overflow="auto"
-      p={4} // padding: 1rem
     >
       {isUploaded ? (
         <>
