@@ -90,20 +90,25 @@ export function DataProvider({children}){
         
         for (let idx = currentIndex; idx < endIndex; idx++) {
           const [_, points] = allFovData[idx];
-          const processedPoints = dataProcess(points, totalReadouts);
+          //use non-interpolated data to calulate median distance map
+          const processedPoints = dataProcess(points, totalReadouts,false);
           const pointsByReadout = {};
           
           processedPoints.forEach(point => {
             pointsByReadout[point.readout] = point;
           });
+          console.log('processedPoints',processedPoints);
+          console.log('pointsByReadout',pointsByReadout);
           
-          for (let i = 1; i < processedPoints.length; i++) {
-            for (let j = i + 1; j <= processedPoints.length; j++) {
-              const key = `${i}&${j}`;
+          for (let i = 0; i < processedPoints.length; i++) {
+            for (let j = i + 1; j < processedPoints.length; j++) {
+              const readout1 = processedPoints[i].readout;
+              const readout2 = processedPoints[j].readout;
+              const key = `${readout1}&${readout2}`;
               if (!distances[key]) distances[key] = [];
               
-              const point1 = pointsByReadout[i.toString()];
-              const point2 = pointsByReadout[j.toString()];
+              const point1 = pointsByReadout[readout1.toString()];
+              const point2 = pointsByReadout[readout2.toString()];
               
               if (point1 && point2) {
                 const distance = calculatePairDistance(point1, point2);
@@ -112,6 +117,9 @@ export function DataProvider({children}){
             }
           }
         }
+
+
+        console.log('distances',distances);
         
         currentIndex = endIndex;
         

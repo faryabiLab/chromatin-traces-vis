@@ -69,7 +69,7 @@ if(!last||!secondLast){return []}
   return fillingArray;
 };
 
-export const dataProcess=(data,totalReadouts)=>{
+export const dataProcess=(data,totalReadouts,interpolate=true)=>{
   if(!data){return null}
   let result=[];
   for(let i=0;i<data.length;i++){
@@ -82,6 +82,8 @@ export const dataProcess=(data,totalReadouts)=>{
   }
 
   result.sort((a, b) => a.readout - b.readout);
+  
+  if(!interpolate){return result}
   
   // Handle missing head
   if (result[0].readout > 1) {
