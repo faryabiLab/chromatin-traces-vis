@@ -72,7 +72,9 @@ export function DataProvider({children}){
   }
 
   const medianDistanceHandler = () => {
-    return new Promise((resolve) => {
+    let isCancelled = false;
+
+    const calculation= new Promise((resolve,reject) => {
       const result = {};
       for (const [fovKey, fovValue] of dataBys.entries()) {
         if (fovKey !== undefined) {
@@ -86,6 +88,11 @@ export function DataProvider({children}){
       const chunkSize = 5; // Process 5 items at a time to keep UI responsive
   
       const processChunk = () => {
+        if (isCancelled) {
+          reject(new Error('Calculation cancelled'));
+          return;
+        }
+
         const endIndex = Math.min(currentIndex + chunkSize, allFovData.length);
         
         for (let idx = currentIndex; idx < endIndex; idx++) {
@@ -97,8 +104,6 @@ export function DataProvider({children}){
           processedPoints.forEach(point => {
             pointsByReadout[point.readout] = point;
           });
-          console.log('processedPoints',processedPoints);
-          console.log('pointsByReadout',pointsByReadout);
           
           for (let i = 0; i < processedPoints.length; i++) {
             for (let j = i + 1; j < processedPoints.length; j++) {
@@ -117,9 +122,6 @@ export function DataProvider({children}){
             }
           }
         }
-
-
-        console.log('distances',distances);
         
         currentIndex = endIndex;
         
@@ -127,7 +129,6 @@ export function DataProvider({children}){
           // Continue processing in next frame
           setTimeout(processChunk, 10); // Small delay to keep UI responsive
         } else {
-          // Calculation complete
           const medians = {};
           for (const [key, distanceArray] of Object.entries(distances)) {
             medians[key] = calculateMedian(distanceArray);
@@ -138,6 +139,13 @@ export function DataProvider({children}){
       
       processChunk();
     });
+
+    return{
+      promise: calculation,
+      cancel: () => {
+        isCancelled = true;
+      }
+    }
   };
   
 

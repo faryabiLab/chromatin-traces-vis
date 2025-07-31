@@ -31,11 +31,28 @@ const MedianHeatmap = ({ width = 600, height = 600 }) => {
   const [colorMax, setColorMax] = useState(0);
   const [isDownloading, setIsDownloading] = useState(false);
   const [loadingTime, setLoadingTime] = useState(0);
+  const [calculation,setCalculation] = useState(null);
+  const TIMEOUT_DURATION=200000;
 
   const svgRef = useRef();
   const heatmapRef = useRef();
 
   const toast = useToast();
+
+  const handleTimeout = (calculationHandler) => {
+    toast({
+      title: 'Calculation Timeout',
+      description: 'The calculation is taking too long and might crash the browser. Please try with a smaller dataset.',
+      status: 'error',
+      duration: 5000,
+      isClosable: true,
+    });
+    
+    if (calculationHandler) {
+      calculationHandler.cancel();
+    }
+    setLoading(false);
+  };
 
   const handleColorChange = (color) => {
     setColor(color.hex);
@@ -161,33 +178,60 @@ const MedianHeatmap = ({ width = 600, height = 600 }) => {
     };
   }, [loading]);
 
-  // Initial calculation of median distance
   useEffect(() => {
     if (!medianDistanceMap) {
+      let isMounted = true; // Track mounted state
       setLoading(true);
       setError(null);
 
-      dataCtx
-        .medianDistanceHandler()
+      // Start the calculation
+      const calculationHandler = dataCtx.medianDistanceHandler();
+      setCalculation(calculationHandler);
+
+      // Set timeout
+      const timeoutId = setTimeout(() => {
+        if (isMounted) {
+          handleTimeout(calculationHandler);
+        }
+      }, TIMEOUT_DURATION);
+
+      calculationHandler.promise
         .then((result) => {
-          setMedianDistanceMap(result);
-          const maxValue = Math.max(...Object.values(result));
-          setColorMax(maxValue);
-          setLoading(false);
+          if (isMounted) { // Only update state if component is still mounted
+            clearTimeout(timeoutId);
+            setMedianDistanceMap(result);
+            const maxValue = Math.max(...Object.values(result));
+            setColorMax(maxValue);
+            setLoading(false);
+          }
         })
         .catch((err) => {
-          setError(err.message);
-          setLoading(false);
+          if (isMounted) { // Only update state if component is still mounted
+            clearTimeout(timeoutId);
+            if (err.message !== 'Calculation cancelled') {
+              setError(err.message);
+            }
+            setLoading(false);
+          }
         });
+
+      // Cleanup function
+      return () => {
+        isMounted = false; // Mark as unmounted
+        clearTimeout(timeoutId);
+        if (calculationHandler) {
+          calculationHandler.cancel();
+        }
+      };
     }
-  }, []);
+  }, [medianDistanceMap]); // Add medianDistanceMap as dependency
+
 
   // D3 Heatmap creation
   useEffect(() => {
     if (!medianDistanceMap || !svgRef.current) return;
 
     try {
-      //console.log('Median distance map:', medianDistanceMap);
       // Dynamically calculate matrix size from the keys
       const allNumbers = Object.keys(medianDistanceMap).flatMap((key) =>
         key.split('&').map(Number)
@@ -306,6 +350,25 @@ const MedianHeatmap = ({ width = 600, height = 600 }) => {
       >
         <div>Calculating median distances... ({loadingTime}s)</div>
         <Spinner size="md" />
+        <Button
+          colorScheme="red"
+          size="sm"
+          onClick={() => {
+            if (calculation) {
+              calculation.cancel();
+              setLoading(false);
+              toast({
+                title: 'Calculation Cancelled',
+                description: 'The calculation was cancelled by user.',
+                status: 'info',
+                duration: 3000,
+                isClosable: true,
+              });
+            }
+          }}
+        >
+          Cancel Calculation
+        </Button>
       </div>
     );
   }
