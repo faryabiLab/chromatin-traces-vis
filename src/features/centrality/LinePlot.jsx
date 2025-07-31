@@ -100,7 +100,7 @@ const LinePlot = ({ data }) => {
       <Box ref={chartRef}>
         <LineChart
           data={distances}
-          width={800}
+          width={700}
           height={450}
           margin={{
             top: 30,
