@@ -6,7 +6,8 @@ This is a web application to visualize chromatin traces and provide interactive 
 
 <img width="1999" alt="image" src="https://github.com/user-attachments/assets/a743fa08-9045-4988-bcde-9df53f5d2485" />
 
-<img width="2062" alt="image" src="https://github.com/user-attachments/assets/1ec10746-75e6-4f0b-9daf-51711fdfe6c6" />
+<img width="2122" height="1098" alt="image" src="https://github.com/user-attachments/assets/7b6b0503-72c6-4f4b-949c-28ea0afebe6b" />
+
 
 
 ## 🚀 Getting Started
@@ -44,8 +45,10 @@ The sample dataset include three field of views (FOV):
 ### Data pre-process
 
 This program is using linear interpolation to impute the missing values.
+When the interpolation switch is off by default, the missing readouts are colored gray on the model and the distance heatmap.
 
-<img width="2023" alt="image" src="https://github.com/user-attachments/assets/9a788284-cf77-404a-9b95-a7739a2aedcd" />
+<img width="2068" height="1088" alt="image" src="https://github.com/user-attachments/assets/4671f769-61f2-406c-8f9a-5ac9c7590214" />
+
 
 
 ## 📋 How to Use
@@ -54,7 +57,9 @@ This program is using linear interpolation to impute the missing values.
 
 1.   Click the button to start uploading. ![Frame 15](https://github.com/user-attachments/assets/9445d938-a7a5-4154-a4bc-9950ab0c7493)
 
-2.   Enter the number of Total Readouts. **This step is required** in order to fill in all the missing values. All the alleles will have this number of total readouts. ![Frame 2](https://github.com/user-attachments/assets/1c375384-c032-4dd4-ba2a-4be650d29687)
+2.   Enter the number of Total Readouts. **This step is required** in order to fill in all the missing values. All the alleles will have this number of total readouts. You can enter other genomics infomation to display them on the distance map.<img width="2085" height="1089" alt="image" src="https://github.com/user-attachments/assets/79489cae-7bbb-43ea-b139-ee7c4e4f1c90" />
+<img width="1035" height="794" alt="image" src="https://github.com/user-attachments/assets/999b3807-c171-413b-a072-46a91922fdda" />
+
 
 
 3.   Drop your CSV file or click to upload. Your file **WILL NOT** be saved to our database.<img width="1799" alt="image" src="https://github.com/user-attachments/assets/26a864b4-0a14-4499-b4c4-aedb98cd06e0" />
@@ -101,7 +106,8 @@ This program is using linear interpolation to impute the missing values.
 
 ####   Distance Heatmap
 
-1.   Click any grid cell to view the linkage in the 3D model. <img width="2067" alt="image" src="https://github.com/user-attachments/assets/8cd0cabd-80da-483d-9c66-5408753a0e2b" />
+1.   Click any grid cell to view the linkage in the 3D model. <img width="2012" height="1069" alt="image" src="https://github.com/user-attachments/assets/5be7f1c3-3917-40bf-b816-5002e60b2ea0" />
+
 
 2.   Use the filter to filter the linkage distances that are within the range. <img width="698" alt="image" src="https://github.com/user-attachments/assets/a7bcb08d-ab24-4a39-b2dc-5db149142a01" />
 
@@ -116,6 +122,9 @@ This program is using linear interpolation to impute the missing values.
 1.   Radius of Gyration. <img width="2064" alt="image" src="https://github.com/user-attachments/assets/f822bb18-73e3-4aea-bd2c-f76b5f3d7213" />
 
 
+#### Population Average Distance Map
+A median distance map is calculated using **non-interpolated** data for all the alleles in all the FOV. 
+<img width="2169" height="1078" alt="image" src="https://github.com/user-attachments/assets/7ea05c99-ea0e-45b8-b767-95426e5b7b0c" />
 
 
 
