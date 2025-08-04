@@ -23,7 +23,7 @@ import styles from './heatmap.module.css';
 
 import { generateRainbowColors } from '../../utils/displayUtils';
 
-const MedianHeatmap = ({ width = 600, height = 600,geoInfo }) => {
+const MedianHeatmap = ({ width = 600, height = 600, geoInfo }) => {
   const dataCtx = useContext(DataContext);
   const [medianDistanceMap, setMedianDistanceMap] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -261,7 +261,7 @@ const MedianHeatmap = ({ width = 600, height = 600,geoInfo }) => {
       d3.select(svgRef.current).selectAll('*').remove();
 
       // Set up margins
-      const margin = { top: 50, right: 50, bottom: 70, left: 50 };
+      const margin = { top: 50, right: 50, bottom: 100, left: 50 };
       const innerWidth = width - margin.left - margin.right;
       const innerHeight = height - margin.top - margin.bottom;
 
@@ -336,7 +336,6 @@ const MedianHeatmap = ({ width = 600, height = 600,geoInfo }) => {
         .attr('text-anchor', 'middle')
         .text((_, i) => i + 1);
 
-
       // Calculate the number of cells in the matrix
       const matrixSize = matrix.length;
 
@@ -344,7 +343,9 @@ const MedianHeatmap = ({ width = 600, height = 600,geoInfo }) => {
       const rainbowColors = generateRainbowColors(matrixSize);
 
       // Create rainbow grid cells group
-      const rainbowGroup = g.append('g').attr('transform', `translate(0, ${innerHeight + cellSize})`); // Position below heatmap
+      const rainbowGroup = g
+        .append('g')
+        .attr('transform', `translate(0, ${innerHeight + cellSize})`); // Position below heatmap
 
       // Add rainbow grid cells
       rainbowGroup
@@ -355,34 +356,37 @@ const MedianHeatmap = ({ width = 600, height = 600,geoInfo }) => {
         .attr('x', (_, i) => i * cellSize)
         .attr('y', 0)
         .attr('width', cellSize)
-        .attr('height', cellSize)
+        .attr('height', cellSize/2)
         .attr('fill', (d) => d)
         .attr('stroke', '#fff')
         .attr('stroke-width', 1);
 
-        const labelPositions = [
-          { index: 0, text: `${geoInfo && geoInfo.start ? geoInfo.start.toLocaleString() : null}` },  
-          { index: Math.floor((matrixSize - 1) / 2), text: `${geoInfo && geoInfo.chromosome ? geoInfo.chromosome : null}` }, 
-          { index: matrixSize - 1, text: `${geoInfo && geoInfo.end ? geoInfo.end.toLocaleString() : null}`} 
-        ];
-        
-        rainbowGroup
-          .selectAll('.position-label')
-          .data(labelPositions)
-          .enter()
-          .append('text')
-          .attr('class', 'position-label')
-          .attr('x', d => d.index * cellSize + cellSize / 2)
-          .attr('y', cellSize + 15)
-          .attr('text-anchor', 'middle')
-          .attr('font-size', '8px')
-          .text(d => d.text);
+      const labelPositions = [
+        { index: 0, text: `${geoInfo?.start?.toLocaleString() || null}` },
+        {
+          index: Math.floor((matrixSize - 1) / 2),
+          text: `${geoInfo?.chromosome || null}`,
+        },
+        { index: matrixSize - 1, text: `${geoInfo?.end?.toLocaleString() || null}` },
+      ];
 
-     
+
+      rainbowGroup
+        .selectAll('.position-label')
+        .data(labelPositions)
+        .enter()
+        .append('text')
+        .attr('class', 'position-label')
+        .attr('x', (d) => d.index * cellSize + cellSize / 2)
+        .attr('y', cellSize*1.5)
+        .attr('text-anchor', 'middle')
+        .attr('font-size', '12px') 
+        .attr('fill', 'black') 
+        .text((d) => d.text);
     } catch (error) {
       console.error('Error creating heatmap:', error);
     }
-  }, [medianDistanceMap, width, height, color, colorMax,generateRainbowColors]);
+  }, [medianDistanceMap, width, height, color, colorMax, generateRainbowColors, geoInfo]);
 
   if (loading) {
     return (
