@@ -35,7 +35,7 @@ const MedianHeatmap = ({ width = 600, height = 600, geoInfo }) => {
   const [loadingTime, setLoadingTime] = useState(0);
   const [calculation, setCalculation] = useState(null);
   const TIMEOUT_DURATION = 200000;
-
+  const MARGIN = { top: 30, right: 50, bottom: 80, left: 50 };
   const svgRef = useRef();
   const heatmapRef = useRef();
 
@@ -261,9 +261,9 @@ const MedianHeatmap = ({ width = 600, height = 600, geoInfo }) => {
       d3.select(svgRef.current).selectAll('*').remove();
 
       // Set up margins
-      const margin = { top: 50, right: 50, bottom: 100, left: 50 };
-      const innerWidth = width - margin.left - margin.right;
-      const innerHeight = height - margin.top - margin.bottom;
+      
+      const innerWidth = width - MARGIN.left - MARGIN.right;
+      const innerHeight = height - MARGIN.top - MARGIN.bottom;
 
       // Create color scale
       const colorScale = d3.scaleSequential().domain([0, colorMax]).range([color, 'white']);
@@ -272,7 +272,7 @@ const MedianHeatmap = ({ width = 600, height = 600, geoInfo }) => {
       const svg = d3.select(svgRef.current).attr('width', width).attr('height', height);
 
       // Create main group
-      const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+      const g = svg.append('g').attr('transform', `translate(${MARGIN.left},${MARGIN.top})`);
 
       // Calculate cell size
       const cellSize = Math.min(innerWidth, innerHeight) / size;
@@ -378,7 +378,7 @@ const MedianHeatmap = ({ width = 600, height = 600, geoInfo }) => {
         .append('text')
         .attr('class', 'position-label')
         .attr('x', (d) => d.index * cellSize + cellSize / 2)
-        .attr('y', cellSize*1.5)
+        .attr('y', 28)
         .attr('text-anchor', 'middle')
         .attr('font-size', '12px') 
         .attr('fill', 'black') 
