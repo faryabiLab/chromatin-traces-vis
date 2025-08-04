@@ -304,7 +304,7 @@ const Dashboard = () => {
           <Tab onClick={() => shiftPanelHandler()}>Distance Map</Tab>
           <Tab onClick={() => shiftPanelHandler()}>Centrality Profile</Tab>
           <Tab onClick={() => shiftPanelHandler()}>Radius of Gyration</Tab>
-          <Tab onClick={() => shiftPanelHandler()}>Median Distance Map</Tab>
+          <Tab onClick={() => shiftPanelHandler()}>Population Average Distance Map</Tab>
         </TabList>
         <TabPanels>
           <TabPanel>
@@ -336,7 +336,7 @@ const Dashboard = () => {
           </TabPanel>
           <TabPanel>{data && <LinePlot data={data} />}</TabPanel>
           <TabPanel>{data && <BoxPlot data={data} />}</TabPanel>
-          <TabPanel>{<MedianHeatmap />}</TabPanel>
+          <TabPanel>{<MedianHeatmap geoInfo={geoInfo} />}</TabPanel>
         </TabPanels>
       </Tabs>
     </div>
