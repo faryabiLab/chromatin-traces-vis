@@ -439,8 +439,8 @@ const Plot = () => {
         <div
           style={{
             position: 'absolute',
-            top: window.innerWidth >= 992 ? '-550px' : '10px', 
-            left: window.innerWidth >= 992 ? '150px' : '10px',
+            top: window.innerWidth >= 992 ? '-450px' : '10px', 
+            left: window.innerWidth >= 992 ? '-350px' : '10px',
             zIndex: 1,
           }}
         >

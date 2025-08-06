@@ -21,7 +21,8 @@ const Panel = () => {
           <Box
             position="relative"
             w={{ base: '95%', lg: '45%' }}
-            minH={{ base: '50vh', lg: '1200px' }}
+            h={{ base: '50vh', lg: '100vh' }}
+            minH={{ base: '50vh', lg: '100vh' }}
             p={4}
             m={2}
             border={'1px solid #ccc'}
