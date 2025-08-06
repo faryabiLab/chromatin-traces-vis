@@ -91,7 +91,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     selectedHandler(fov.toString(), dataCtx.keys[fov][allele].toString());
-  }, [fov, allele]);
+  }, [fov, allele,isApplied]);
 
   useEffect(() => {
     if (metadata) {
