@@ -31,6 +31,7 @@ const MedianHeatmap = ({ width = 600, height = 600, geoInfo }) => {
   const [showColorPicker, setShowColorPicker] = useBoolean(false);
   const [color, setColor] = useState('#0693E3');
   const [colorMax, setColorMax] = useState(0);
+  const [colorMin, setColorMin] = useState(0);
   const [isDownloading, setIsDownloading] = useState(false);
   const [loadingTime, setLoadingTime] = useState(0);
   const [calculation, setCalculation] = useState(null);
@@ -109,7 +110,7 @@ const MedianHeatmap = ({ width = 600, height = 600, geoInfo }) => {
         pdf.text('Median Distance Map', 20, 20);
         pdf.setFontSize(12);
         pdf.text(`Generated on: ${new Date().toLocaleString()}`, 20, 30);
-        pdf.text(`Color Scale: 0 - ${colorMax} nm`, 20, 40);
+        pdf.text(`Color Scale: ${colorMin} - ${colorMax} nm`, 20, 40);
 
         const imgData = canvas.toDataURL('image/png');
         const pdfWidth = pdf.internal.pageSize.getWidth();
@@ -261,12 +262,16 @@ const MedianHeatmap = ({ width = 600, height = 600, geoInfo }) => {
       d3.select(svgRef.current).selectAll('*').remove();
 
       // Set up margins
-      
+
       const innerWidth = width - MARGIN.left - MARGIN.right;
       const innerHeight = height - MARGIN.top - MARGIN.bottom;
 
       // Create color scale
-      const colorScale = d3.scaleSequential().domain([0, colorMax]).range([color, 'white']);
+      const colorScale = d3
+        .scaleSequential()
+        .domain([colorMin, colorMax])
+        .range([color, 'white'])
+        .clamp(true);
 
       // Create SVG
       const svg = d3.select(svgRef.current).attr('width', width).attr('height', height);
@@ -356,7 +361,7 @@ const MedianHeatmap = ({ width = 600, height = 600, geoInfo }) => {
         .attr('x', (_, i) => i * cellSize)
         .attr('y', 0)
         .attr('width', cellSize)
-        .attr('height', cellSize/2)
+        .attr('height', cellSize / 2)
         .attr('fill', (d) => d)
         .attr('stroke', '#fff')
         .attr('stroke-width', 1);
@@ -370,7 +375,6 @@ const MedianHeatmap = ({ width = 600, height = 600, geoInfo }) => {
         { index: matrixSize - 1, text: `${geoInfo?.end?.toLocaleString() || null}` },
       ];
 
-
       rainbowGroup
         .selectAll('.position-label')
         .data(labelPositions)
@@ -380,13 +384,13 @@ const MedianHeatmap = ({ width = 600, height = 600, geoInfo }) => {
         .attr('x', (d) => d.index * cellSize + cellSize / 2)
         .attr('y', 28)
         .attr('text-anchor', 'middle')
-        .attr('font-size', '12px') 
-        .attr('fill', 'black') 
+        .attr('font-size', '12px')
+        .attr('fill', 'black')
         .text((d) => d.text);
     } catch (error) {
       console.error('Error creating heatmap:', error);
     }
-  }, [medianDistanceMap, width, height, color, colorMax, generateRainbowColors, geoInfo]);
+  }, [medianDistanceMap, width, height, color, colorMax, colorMin, generateRainbowColors, geoInfo]);
 
   if (loading) {
     return (
@@ -447,7 +451,27 @@ const MedianHeatmap = ({ width = 600, height = 600, geoInfo }) => {
           </div>
         )}
 
-        <label className={styles.label}>Color Scale Domain: 0 ~ </label>
+        <label className={styles.label}>Color Scale Domain: </label>
+        <NumberInput
+          size="sm"
+          maxW={120}
+          step={50}
+          min={0}
+          value={Math.ceil(parseFloat(colorMin))}
+          onChange={(valueString) => {
+            const value = parseInt(valueString);
+            if (!isNaN(value) && value >= 0) {
+              setColorMin(value);
+            }
+          }}
+        >
+          <NumberInputField />
+          <NumberInputStepper>
+            <NumberIncrementStepper />
+            <NumberDecrementStepper />
+          </NumberInputStepper>
+        </NumberInput>
+        <label className={styles.label}>~</label>
         <NumberInput
           size="sm"
           maxW={120}
