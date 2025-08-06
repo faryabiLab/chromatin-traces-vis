@@ -94,7 +94,8 @@ When the interpolation switch is off by default, the missing readouts are colore
      3.   Line Size
      4.   Dot Size
      5.   Toggle the distance label of a selected linkage
-     6.   Click Reset to clear all the selection of the dots. <img width="987" alt="image" src="https://github.com/user-attachments/assets/c52fa03e-5d2d-4591-b31d-4d60f31458c1" />
+     6.   Click Reset to clear all the selection of the dots. <img width="989" height="718" alt="image" src="https://github.com/user-attachments/assets/8ad6c8cf-32b0-4917-a6a9-fb537590d2ab" />
+
 #### Distance Analysis
 1.   Select any of the three options. <img width="2106" alt="Google Chrome 2025-06-12 14 54 04" src="https://github.com/user-attachments/assets/068bbcd5-ab28-4e8c-b8ca-82548d9095b5" />
 2.   Filter readouts within a radius. <img width="1893" alt="image" src="https://github.com/user-attachments/assets/ab7ebb21-3e67-4d1d-8df4-1527673cd0e6" />
