@@ -24,6 +24,7 @@ import {
   Box,
   Switch,
   Text,
+  useToast,
 } from '@chakra-ui/react';
 import { ArrowLeftIcon, ArrowRightIcon, DownloadIcon } from '@chakra-ui/icons';
 
@@ -59,16 +60,19 @@ const Dashboard = () => {
   const curFov = traceCtx.selected.fov;
   const filename = dataCtx.filename;
   const [metadata, setMetadata] = useState(null);
-
+  const [alleleList, setAlleleList] = useState([]);
   const [isApplied, setIsApplied] = useState(false);
 
   const [geoInfo, setGeoInfo] = useState(null);
+
+  const toast = useToast();
 
   const interpolate = traceCtx.interpolate;
   const setInterpolate = traceCtx.interpolateHandler;
 
   const totalAllelesCount = useMemo(() => {
     if (totalKeys[fov]) {
+      setAlleleList(totalKeys[fov]);
       return totalKeys[fov].length;
     }
     return 0;
@@ -114,10 +118,19 @@ const Dashboard = () => {
   const shiftPanelHandler = () => {
     if (isApplied) {
       setIsApplied(false);
+      const curAllele = dataCtx.keys[curFov][allele];
+      const defaultAlleleIndex=alleleList.indexOf(curAllele);
       resetFilterHandler();
-      if (!dataCtx.keys[curFov]) return;
-      selectedHandler(curFov.toString(), dataCtx.keys[curFov][0].toString());
-      setAllele(0);
+      setAllele(defaultAlleleIndex);
+
+      toast({
+        title: 'Filter Restored',
+        description: 'Reset to default',
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+        position: 'top-center',
+      });
     }
 
     resetTraceHandler();
@@ -317,6 +330,7 @@ const Dashboard = () => {
                 <HStack>
                   <Radio value="2" />
                   <LinkageFilter
+                  curAlleleIndex={allele}
                     alleleHandler={setAllele}
                     isApplied={isApplied}
                     setIsApplied={setIsApplied}
