@@ -36,7 +36,7 @@ export default function CSVReader() {
   const dataCtx = useContext(DataContext);
   const setDataBysHandler = dataCtx.setDataBysHandler;
   const setTotalReadouts = dataCtx.setTotalReadouts;
-  const setGenomicsInfo=dataCtx.setInfo;
+  const setGenomicsInfo = dataCtx.setInfo;
   const Toast = useToast();
 
   function checkHeaders(dataList) {
@@ -57,31 +57,7 @@ export default function CSVReader() {
         <FormLabel htmlFor="total-readouts" mb="0">
           Number of Total Readouts:
         </FormLabel>
-        <NumberInput step={5} size="xs" onChange={setMaxReadout}>
-          <NumberInputField />
-          <NumberInputStepper>
-            <NumberIncrementStepper />
-            <NumberDecrementStepper />
-          </NumberInputStepper>
-        </NumberInput>
-      </HStack>
-      <HStack spacing={2} alignItems="center">
-        <FormLabel htmlFor="start-pos" mb="0">
-          Start Position:
-        </FormLabel>
-        <NumberInput step={5} size="xs" onChange={setUserInputStart}>
-          <NumberInputField />
-          <NumberInputStepper>
-            <NumberIncrementStepper />
-            <NumberDecrementStepper />
-          </NumberInputStepper>
-        </NumberInput>
-      </HStack>
-      <HStack spacing={2} alignItems="center">
-        <FormLabel htmlFor="end-pos" mb="0">
-          End Position:
-        </FormLabel>
-        <NumberInput step={5} size="xs" onChange={setUserInputEnd}>
+        <NumberInput step={5} size="xs" onChange={setMaxReadout} width={'100px'}>
           <NumberInputField />
           <NumberInputStepper>
             <NumberIncrementStepper />
@@ -94,8 +70,41 @@ export default function CSVReader() {
         <FormLabel htmlFor="chromosome" mb="0">
           Chromosome:
         </FormLabel>
-        <Input value={userInputChromosome} size="xs" onChange={(event)=>{setUserInputChromosome(event.target.value)}}/>
+        <Input
+          value={userInputChromosome}
+          size="xs"
+          width={'100px'}
+          onChange={(event) => {
+            setUserInputChromosome(event.target.value);
+          }}
+        />
       </HStack>
+
+      <HStack spacing={2} alignItems="center">
+        <FormLabel htmlFor="start-pos" mb="0">
+          Start Position:
+        </FormLabel>
+        <NumberInput step={5} size="xs" onChange={setUserInputStart} width={'100px'}>
+          <NumberInputField />
+          <NumberInputStepper>
+            <NumberIncrementStepper />
+            <NumberDecrementStepper />
+          </NumberInputStepper>
+        </NumberInput>
+      </HStack>
+      <HStack spacing={2} alignItems="center">
+        <FormLabel htmlFor="end-pos" mb="0">
+          End Position:
+        </FormLabel>
+        <NumberInput step={5} size="xs" onChange={setUserInputEnd} width={'100px'}>
+          <NumberInputField />
+          <NumberInputStepper>
+            <NumberIncrementStepper />
+            <NumberDecrementStepper />
+          </NumberInputStepper>
+        </NumberInput>
+      </HStack>
+
       <CSVReader
         onUploadAccepted={(results) => {
           const csvHeader = convertHeaders(results.data[0]);
@@ -197,7 +206,7 @@ export default function CSVReader() {
             } else {
               setDataBysHandler(array);
               setTotalReadouts(maxReadout);
-              const userInputInfo={};
+              const userInputInfo = {};
               userInputInfo['start'] = userInputStart;
               userInputInfo['end'] = userInputEnd;
               userInputInfo['chromosome'] = userInputChromosome;

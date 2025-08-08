@@ -15,7 +15,7 @@ import {
   Tooltip,
 } from '@chakra-ui/react';
 import { CircleHelp } from 'lucide-react';
-const LinkageFilter = ({ alleleHandler, isApplied, setIsApplied }) => {
+const LinkageFilter = ({ curAlleleIndex,alleleHandler, isApplied, setIsApplied }) => {
   const traceCtx = useContext(TraceContext);
   const dataCtx = useContext(DataContext);
   const curFov = traceCtx.selected.fov;
@@ -24,6 +24,7 @@ const LinkageFilter = ({ alleleHandler, isApplied, setIsApplied }) => {
   const toFilter = dataCtx.filterDataBysHandler;
   const resetClickHandler = dataCtx.resetHandler;
   const selectedHandler = traceCtx.selectedHandler;
+  const [alleleList, setAlleleList] = useState([]);
   const [distance, setDistance] = useState(10000);
   const toast = useToast();
 
@@ -31,19 +32,29 @@ const LinkageFilter = ({ alleleHandler, isApplied, setIsApplied }) => {
 
   const totalKeysCount = useMemo(() => {
     if (totalKeys[curFov]) {
+      setAlleleList(totalKeys[curFov]);
       return totalKeys[curFov].length;
     }
     return 0;
   }, [totalKeys, curFov]);
-  
 
+//reset the filter when mode changes
   useEffect(() => {
     if(isApplied){
       setIsApplied(false);
+      const curAllele = dataCtx.keys[curFov][curAlleleIndex];
+      const defaultAlleleIndex=alleleList.indexOf(curAllele);
       resetClickHandler();
-      if(!dataCtx.keys[curFov]) return;
-      selectedHandler(curFov.toString(), dataCtx.keys[curFov][0].toString());
-      alleleHandler(0);
+      alleleHandler(defaultAlleleIndex);
+
+      toast({
+        title: 'Filter Restored',
+        description: 'Reset to default',
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+        position: 'top-center',
+      });
     }
    
   }, [mode]);
@@ -136,9 +147,10 @@ const LinkageFilter = ({ alleleHandler, isApplied, setIsApplied }) => {
           variant="ghost"
           onClick={() => {
             setIsApplied(false);
+            const curAllele = dataCtx.keys[curFov][curAlleleIndex];
+            const defaultAlleleIndex=alleleList.indexOf(curAllele);
             resetClickHandler();
-            selectedHandler(curFov.toString(), dataCtx.keys[curFov][0].toString());
-            alleleHandler(0);
+            alleleHandler(defaultAlleleIndex);
             
             toast({
               title: 'Filter Restored',

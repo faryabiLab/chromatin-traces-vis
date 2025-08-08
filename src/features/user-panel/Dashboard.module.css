@@ -28,10 +28,6 @@
   justify-content: flex-start;
 }
 
-/* .filter span{
-  font-size: 1.0rem;
-} */
-
 .dashboard{
   display: flex;
   flex-direction: column;

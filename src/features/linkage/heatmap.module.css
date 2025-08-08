@@ -1,0 +1,29 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.controlsContainer {
+  margin-top: 6px;
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  justify-content: center;
+  align-items: center;
+}
+
+.label {
+  font-size: 14px;
+  color: #4A5568;
+  white-space: nowrap;
+}
+
+
+.heatmapContainer {
+  margin-top: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

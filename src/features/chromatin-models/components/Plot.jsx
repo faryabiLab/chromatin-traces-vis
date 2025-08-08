@@ -59,11 +59,7 @@ const Plot = () => {
 
   const { gl } = useThree();
   const { scene, camera } = useThree();
-  //initialize pointA and pointB to null when selected changes
-  // useEffect(() => {
-  //   setPointA(-1);
-  //   setPointB(-1);
-  // }, [selected]);
+
 
   useEffect(() => {
     //check if clicked point exist in this allele
@@ -115,13 +111,12 @@ const Plot = () => {
   //convert data to list of THREE.Vector3
   let points = [];
   let interpolatedPoints = [];
-  for (const [index,row] of data.entries()) {
+  for (const [index, row] of data.entries()) {
     let point = new THREE.Vector3(row.pos.x, row.pos.y, row.pos.z);
     points.push(point);
     //store the index of the interpolated points
-    if(row.filling) interpolatedPoints.push(index);
+    if (row.filling) interpolatedPoints.push(index);
   }
-  
 
   //calculate geometric center and set the model origin
   let center = calculateGeometricCenter(points);
@@ -220,12 +215,12 @@ const Plot = () => {
       tripletHandler(x, y, z);
     }
   };
-  const defaultColor=(point)=>{
-    if(interpolate){
+  const defaultColor = (point) => {
+    if (interpolate) {
       return rainbowColors[point];
     }
     return interpolatedPoints.includes(point) ? 'white' : rainbowColors[point];
-  }
+  };
 
   //point is the index of the point in the points array
   const colorPoint = (point) => {
@@ -239,16 +234,15 @@ const Plot = () => {
       }
 
       return 'white';
-    }else if(isRadius){  
+    } else if (isRadius) {
       //check if the point is within the radius
-      if(current === -1) return defaultColor(point);
-      if(point === current) return color;
+      if (current === -1) return defaultColor(point);
+      if (point === current) return color;
       if (points[current].distanceTo(points[point]) < radius) {
         return 'black';
       } else {
         return 'white';
       }
-      
     } else {
       //default color
       if (pointA === -1 && pointB === -1) {
@@ -257,7 +251,7 @@ const Plot = () => {
       //color when point is clicked
       if (pointA === point || pointB === point) {
         return color;
-      }  else {
+      } else {
         return 'white';
       }
     }
@@ -345,10 +339,7 @@ const Plot = () => {
 
   const renderGeometricCenter = (points) => {
     return (
-      <mesh
-        key={0}
-        position={calculateGeometricCenter(points)}
-      >
+      <mesh key={0} position={calculateGeometricCenter(points)}>
         <sphereGeometry args={[sphereRadius * 2, 64, 16]} />
         <meshStandardMaterial color={'black'} />
       </mesh>
@@ -444,8 +435,8 @@ const Plot = () => {
         <div
           style={{
             position: 'absolute',
-            top: '-450px',
-            left: '-450px',
+            top: window.innerWidth >= 1240 ? '-430px' : '-250px', 
+            left: window.innerWidth >= 1240 ? '-320px' : '-400px',
             zIndex: 1,
           }}
         >

@@ -24,6 +24,7 @@ import {
   Box,
   Switch,
   Text,
+  useToast,
 } from '@chakra-ui/react';
 import { ArrowLeftIcon, ArrowRightIcon, DownloadIcon } from '@chakra-ui/icons';
 
@@ -38,6 +39,7 @@ import RadiusFilter from './components/RadiusFilter';
 import PerimeterCheckbox from './components/PerimeterCheckbox';
 import LinePlot from '../centrality/LinePlot';
 import BoxPlot from '../radiusGyration/BoxPlot';
+import MedianHeatmap from '../linkage/MedianHeatmap';
 import { extractFields } from '../../utils/displayUtils';
 const Dashboard = () => {
   const dataCtx = useContext(DataContext);
@@ -58,16 +60,18 @@ const Dashboard = () => {
   const curFov = traceCtx.selected.fov;
   const filename = dataCtx.filename;
   const [metadata, setMetadata] = useState(null);
-
+  const [alleleList, setAlleleList] = useState([]);
   const [isApplied, setIsApplied] = useState(false);
 
   const [geoInfo, setGeoInfo] = useState(null);
 
-  const interpolate = traceCtx.interpolate;
+  const toast = useToast();
+
   const setInterpolate = traceCtx.interpolateHandler;
 
   const totalAllelesCount = useMemo(() => {
     if (totalKeys[fov]) {
+      setAlleleList(totalKeys[fov]);
       return totalKeys[fov].length;
     }
     return 0;
@@ -90,7 +94,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     selectedHandler(fov.toString(), dataCtx.keys[fov][allele].toString());
-  }, [fov, allele]);
+  }, [fov, allele, isApplied]);
 
   useEffect(() => {
     if (metadata) {
@@ -113,10 +117,19 @@ const Dashboard = () => {
   const shiftPanelHandler = () => {
     if (isApplied) {
       setIsApplied(false);
+      const curAllele = dataCtx.keys[curFov][allele];
+      const defaultAlleleIndex = alleleList.indexOf(curAllele);
       resetFilterHandler();
-      if (!dataCtx.keys[curFov]) return;
-      selectedHandler(curFov.toString(), dataCtx.keys[curFov][0].toString());
-      setAllele(0);
+      setAllele(defaultAlleleIndex);
+
+      toast({
+        title: 'Filter Restored',
+        description: 'Reset to default',
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+        position: 'top-center',
+      });
     }
 
     resetTraceHandler();
@@ -235,10 +248,6 @@ const Dashboard = () => {
             {renderAlleleOptions()}
           </Select>
         </div>
-        <div className={styles.switchContainer}>
-          <Text className={styles.label}>Interpolate:</Text>
-          <Switch onChange={(e) => handleToggle(e.target.checked)} />
-        </div>
         <div className={styles.buttons}>
           <IconButton
             colorScheme="black"
@@ -296,13 +305,18 @@ const Dashboard = () => {
           </TableContainer>
         </Box>
       )}
+      <div className={styles.switchContainer}>
+        <Text className={styles.label}>Interpolate:</Text>
+        <Switch onChange={(e) => handleToggle(e.target.checked)} />
+      </div>
       <Divider />
-      <Tabs variant="soft-rounded" colorScheme="blue">
+      <Tabs size="sm" variant="soft-rounded" colorScheme="blue">
         <TabList>
           <Tab onClick={() => shiftPanelHandler()}>Distance Analysis</Tab>
           <Tab onClick={() => shiftPanelHandler()}>Distance Map</Tab>
           <Tab onClick={() => shiftPanelHandler()}>Centrality Profile</Tab>
           <Tab onClick={() => shiftPanelHandler()}>Radius of Gyration</Tab>
+          <Tab onClick={() => shiftPanelHandler()}>Population Average Distance Map</Tab>
         </TabList>
         <TabPanels>
           <TabPanel>
@@ -315,6 +329,7 @@ const Dashboard = () => {
                 <HStack>
                   <Radio value="2" />
                   <LinkageFilter
+                    curAlleleIndex={allele}
                     alleleHandler={setAllele}
                     isApplied={isApplied}
                     setIsApplied={setIsApplied}
@@ -329,11 +344,12 @@ const Dashboard = () => {
           </TabPanel>
           <TabPanel>
             {distanceMap && (
-              <Heatmap data={distanceMap} geoInfo={geoInfo} width={600} height={550} />
+              <Heatmap data={distanceMap} geoInfo={geoInfo} width={600} height={600} />
             )}
           </TabPanel>
           <TabPanel>{data && <LinePlot data={data} />}</TabPanel>
           <TabPanel>{data && <BoxPlot data={data} />}</TabPanel>
+          <TabPanel>{<MedianHeatmap geoInfo={geoInfo} />}</TabPanel>
         </TabPanels>
       </Tabs>
     </div>

@@ -2,7 +2,6 @@ import {Canvas} from '@react-three/fiber';
 import {useContext} from 'react';
 import { TraceContext } from '../../../stores/trace-context';
 import WelcomeSelect from './WelcomeSelect';
-import styles from '../../../components/Layout/Panel.module.css';
 
 const CanvasWrapper = (props) => {
   const Component=props.component;
@@ -10,7 +9,7 @@ const CanvasWrapper = (props) => {
   const selected=traceCtx.selected;
   const showCanvas=selected.fov!==null&&selected.s!==null;
   return(
-    <div className={styles.one}>
+    <div style={{height:'100%',width:'100%'}}>
     {!showCanvas&&<WelcomeSelect/>}
     {showCanvas&&<Canvas
         orthographic
