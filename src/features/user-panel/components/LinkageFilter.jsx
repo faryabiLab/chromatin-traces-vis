@@ -29,7 +29,6 @@ const LinkageFilter = ({ curAlleleIndex,alleleHandler, isApplied, setIsApplied }
   const toast = useToast();
 
   const totalKeys = dataCtx.totalKeys;
-  const alleleNames=totalKeys[curFov];
 
   const totalKeysCount = useMemo(() => {
     if (totalKeys[curFov]) {

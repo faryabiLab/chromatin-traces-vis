@@ -59,11 +59,7 @@ const Plot = () => {
 
   const { gl } = useThree();
   const { scene, camera } = useThree();
-  //initialize pointA and pointB to null when selected changes
-  // useEffect(() => {
-  //   setPointA(-1);
-  //   setPointB(-1);
-  // }, [selected]);
+
 
   useEffect(() => {
     //check if clicked point exist in this allele

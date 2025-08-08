@@ -67,7 +67,6 @@ const Dashboard = () => {
 
   const toast = useToast();
 
-  const interpolate = traceCtx.interpolate;
   const setInterpolate = traceCtx.interpolateHandler;
 
   const totalAllelesCount = useMemo(() => {
@@ -95,7 +94,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     selectedHandler(fov.toString(), dataCtx.keys[fov][allele].toString());
-  }, [fov, allele,isApplied]);
+  }, [fov, allele, isApplied]);
 
   useEffect(() => {
     if (metadata) {
@@ -119,7 +118,7 @@ const Dashboard = () => {
     if (isApplied) {
       setIsApplied(false);
       const curAllele = dataCtx.keys[curFov][allele];
-      const defaultAlleleIndex=alleleList.indexOf(curAllele);
+      const defaultAlleleIndex = alleleList.indexOf(curAllele);
       resetFilterHandler();
       setAllele(defaultAlleleIndex);
 
@@ -307,9 +306,9 @@ const Dashboard = () => {
         </Box>
       )}
       <div className={styles.switchContainer}>
-          <Text className={styles.label}>Interpolate:</Text>
-          <Switch onChange={(e) => handleToggle(e.target.checked)} />
-        </div>
+        <Text className={styles.label}>Interpolate:</Text>
+        <Switch onChange={(e) => handleToggle(e.target.checked)} />
+      </div>
       <Divider />
       <Tabs size="sm" variant="soft-rounded" colorScheme="blue">
         <TabList>
@@ -330,7 +329,7 @@ const Dashboard = () => {
                 <HStack>
                   <Radio value="2" />
                   <LinkageFilter
-                  curAlleleIndex={allele}
+                    curAlleleIndex={allele}
                     alleleHandler={setAllele}
                     isApplied={isApplied}
                     setIsApplied={setIsApplied}
