@@ -367,12 +367,12 @@ const MedianHeatmap = ({ width = 600, height = 600, geoInfo }) => {
         .attr('stroke-width', 1);
 
       const labelPositions = [
-        { index: 0, text: `${geoInfo?.start?.toLocaleString() || null}` },
+        { index: 0, text: `${geoInfo?.start?.toLocaleString() || ''}` },
         {
           index: Math.floor((matrixSize - 1) / 2),
-          text: `${geoInfo?.chromosome || null}`,
+          text: `${geoInfo?.chromosome || ''}`,
         },
-        { index: matrixSize - 1, text: `${geoInfo?.end?.toLocaleString() || null}` },
+        { index: matrixSize - 1, text: `${geoInfo?.end?.toLocaleString() || ''}` },
       ];
 
       rainbowGroup
