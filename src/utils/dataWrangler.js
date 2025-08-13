@@ -84,6 +84,8 @@ export const dataProcess=(data,totalReadouts,interpolate=true)=>{
     }
   }
 
+  if(result.length===0){return null}
+
   result.sort((a, b) => a.readout - b.readout);
   
   if(!interpolate){return result}

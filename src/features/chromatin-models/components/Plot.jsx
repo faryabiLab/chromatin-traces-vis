@@ -33,7 +33,7 @@ const Plot = () => {
   const isLinkage = traceCtx.mode === '2' ? true : false;
 
   //color scale
-  const rainbowColors = generateRainbowColors(data.length);
+  const rainbowColors = data&&generateRainbowColors(data.length);
 
   //linkage
   const clickedHandler = traceCtx.clickedHandler;

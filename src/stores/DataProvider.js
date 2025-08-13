@@ -62,7 +62,8 @@ export function DataProvider({children}){
     
     Object.values(result).forEach(fovGroup => {
         fovGroup.forEach(([_, points]) => {
-            rgValues.push(calculateTraceRg(dataProcess(points,totalReadouts)));
+            const processedPoints = dataProcess(points, totalReadouts);
+            if(processedPoints) rgValues.push(calculateTraceRg(processedPoints));
         });
     });
 
@@ -100,7 +101,10 @@ export function DataProvider({children}){
           //use non-interpolated data to calulate median distance map
           const processedPoints = dataProcess(points, totalReadouts,false);
           const pointsByReadout = {};
-          
+          // Skip if empty allele
+          if (!processedPoints) {
+            continue;
+          }
           processedPoints.forEach(point => {
             pointsByReadout[point.readout] = point;
           });
