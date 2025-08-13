@@ -282,6 +282,11 @@ const MedianHeatmap = ({ width = 600, height = 600, geoInfo }) => {
       // Calculate cell size
       const cellSize = Math.min(innerWidth, innerHeight) / size;
 
+      const shouldShowLabel = (index, size) => {
+        if (size <= 30) return true; 
+        return index % 2 === 0; 
+      };
+
       // Create cells
       const cells = g
         .selectAll('g')
@@ -328,6 +333,7 @@ const MedianHeatmap = ({ width = 600, height = 600, geoInfo }) => {
         .attr('y', (_, i) => i * cellSize + cellSize / 2)
         .attr('text-anchor', 'end')
         .attr('dominant-baseline', 'middle')
+        .style('display', (_, i) => shouldShowLabel(i, matrix.length) ? null : 'none')
         .text((_, i) => i + 1);
 
       g.selectAll('.col-label')
@@ -339,6 +345,7 @@ const MedianHeatmap = ({ width = 600, height = 600, geoInfo }) => {
         .attr('x', (_, i) => i * cellSize + cellSize / 2)
         .attr('y', -10)
         .attr('text-anchor', 'middle')
+        .style('display', (_, i) => shouldShowLabel(i, matrix.length) ? null : 'none')
         .text((_, i) => i + 1);
 
       // Calculate the number of cells in the matrix

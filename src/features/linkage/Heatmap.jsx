@@ -255,6 +255,13 @@ const Heatmap = ({ data, width, height, geoInfo }) => {
   const xLabels = allXGroups.map((name, i) => {
     const xPos = xScale(name) ?? 0;
 
+    const shouldShowLabel = 
+    name === hightlightA || 
+    allXGroups.length <= 30 || 
+    i % 2 === 0;
+
+    if (!shouldShowLabel) return null;
+
     return (
       <text
         key={i}
@@ -273,6 +280,15 @@ const Heatmap = ({ data, width, height, geoInfo }) => {
 
   const yLabels = allYGroups.map((name, i) => {
     const yPos = yScale(name) ?? 0;
+
+    const shouldShowLabel = 
+    name === hightlightB || 
+    allYGroups.length <= 30 || 
+    i % 2 === 0;
+
+    if (!shouldShowLabel) return null;
+
+
     return (
       <text
         key={i}
