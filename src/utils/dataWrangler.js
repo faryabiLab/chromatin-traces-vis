@@ -74,11 +74,14 @@ export const dataProcess=(data,totalReadouts,interpolate=true)=>{
   let result=[];
   for(let i=0;i<data.length;i++){
       const row=data[i];
+      const readout=+row.readout;
+      if(readout<=totalReadouts){
       result.push({
-          readout:+row.readout,
+          readout:readout,
           pos:{'x':+row.x,'y':+row.y,'z':+row.z},
           filling:false,
       })
+    }
   }
 
   result.sort((a, b) => a.readout - b.readout);
@@ -107,6 +110,8 @@ export const dataProcess=(data,totalReadouts,interpolate=true)=>{
       );
       result = [...result, ...tailFilling];
   }
+
+
   
   return result;
 };
