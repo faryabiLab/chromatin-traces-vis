@@ -280,31 +280,69 @@ const Heatmap = ({ data, width, height, geoInfo }) => {
 
   const yLabels = allYGroups.map((name, i) => {
     const yPos = yScale(name) ?? 0;
-
-    const shouldShowLabel = 
-    name === hightlightB || 
-    allYGroups.length <= 30 || 
-    i % 2 === 0;
-
-    if (!shouldShowLabel) return null;
-
-
-    return (
-      <text
-        key={i}
-        x={-5}
-        y={yPos + yScale.bandwidth() / 2}
-        textAnchor="end"
-        dominantBaseline="middle"
-        fontSize={name === hightlightB ? 18 : 10}
-        fill={name === hightlightB ? 'red' : 'black'}
-        fontWeight={name === hightlightB ? 'bold' : 'normal'}
-      >
-        {imputed.includes(name) ? '*' : ''}
-        {name}
-      </text>
-    );
+    const centerY = yPos + yScale.bandwidth() / 2;
+    const isHighlighted = name === hightlightB;
+    const isImputed = imputed.includes(name);
+    const isHidden = i % 2;
+  
+    // Always show highlighted items
+    if (isHighlighted) {
+      return (
+        <text
+          key={i}
+          x={-5}
+          y={centerY}
+          textAnchor="end"
+          dominantBaseline="middle"
+          fontSize={18}
+          fill="red"
+          fontWeight="bold"
+        >
+          {isImputed ? '*' : ''}{name}
+        </text>
+      );
+    }
+  
+    // For even numbers with interpolation, show only asterisk
+    if (interpolate && isImputed && isHidden) {
+      return (
+        <text
+          key={i}
+          x={-5}
+          y={centerY + 2}
+          textAnchor="end"
+          dominantBaseline="middle"
+          fontSize={10}
+          fill="black"
+          fontWeight="normal"
+        >
+          *
+        </text>
+      );
+    }
+  
+    // Show only odd numbers
+    if (!isHidden) {
+      return (
+        <text
+          key={i}
+          x={-5}
+          y={centerY}
+          textAnchor="end"
+          dominantBaseline="middle"
+          fontSize={10}
+          fill="black"
+          fontWeight="normal"
+        >
+          {isImputed ? '*' : ''}{name}
+        </text>
+      );
+    }
+  
+    return null;
   });
+  
+  
 
   return (
     <div className={styles.container}>
