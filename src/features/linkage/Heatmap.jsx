@@ -283,7 +283,7 @@ const Heatmap = ({ data, width, height, geoInfo }) => {
     const centerY = yPos + yScale.bandwidth() / 2;
     const isHighlighted = name === hightlightB;
     const isImputed = imputed.includes(name);
-    const isHidden = i % 2;
+    const isHidden = allYGroups.length > 30 ? i % 2 : false;
   
     // Always show highlighted items
     if (isHighlighted) {
@@ -303,7 +303,7 @@ const Heatmap = ({ data, width, height, geoInfo }) => {
       );
     }
   
-    // For even numbers with interpolation, show only asterisk
+    // When interpolation is on, for imputed numbers that are hidden, show only asterisk
     if (interpolate && isImputed && isHidden) {
       return (
         <text
@@ -321,7 +321,7 @@ const Heatmap = ({ data, width, height, geoInfo }) => {
       );
     }
   
-    // Show only odd numbers
+    // Show numbers that are not hidden
     if (!isHidden) {
       return (
         <text
