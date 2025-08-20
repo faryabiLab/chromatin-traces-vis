@@ -2,7 +2,7 @@ import {useState} from 'react';
 import {DataContext} from './data-context';
 import * as d3 from 'd3';
 import { calculatePairDistance } from '../utils/displayUtils';
-import { dataProcess } from '../utils/dataWrangler';
+import { dataProcess, sampleAllele } from '../utils/dataWrangler';
 import { calculateTraceRg, calculateMedian } from '../utils/calculationUtils';
 export function DataProvider({children}){
   const [dataBys,setDataBys] = useState(null);
@@ -84,7 +84,7 @@ export function DataProvider({children}){
       }
   
       const distances = {};
-      const allFovData = Object.values(result).flat();
+      const allFovData = sampleAllele(Object.values(result).flat());
       let currentIndex = 0;
       const chunkSize = 5; // Process 5 items at a time to keep UI responsive
   
