@@ -23,7 +23,7 @@ import styles from './heatmap.module.css';
 
 import { generateRainbowColors } from '../../utils/displayUtils';
 
-const MedianHeatmap = ({ width = 600, height = 600, geoInfo }) => {
+const MedianHeatmap = ({ width = 700, height = 700, geoInfo }) => {
   const dataCtx = useContext(DataContext);
   const [medianDistanceMap, setMedianDistanceMap] = useState(null);
   const [loading, setLoading] = useState(false);

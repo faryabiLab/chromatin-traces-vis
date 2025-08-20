@@ -221,9 +221,6 @@ const Dashboard = () => {
   };
   return (
     <div className={styles.dashboard}>
-      <Heading as="h1" className={styles.header}>
-        Optical Looping Interactive Viewing Engine (OLIVE)
-      </Heading>
       <Stack direction="row" spacing="16px">
         <div className={styles.select}>
           <label>FOV:</label>
@@ -344,7 +341,7 @@ const Dashboard = () => {
           </TabPanel>
           <TabPanel>
             {distanceMap && (
-              <Heatmap data={distanceMap} geoInfo={geoInfo} width={600} height={600} />
+              <Heatmap data={distanceMap} geoInfo={geoInfo} width={700} height={700} />
             )}
           </TabPanel>
           <TabPanel>{data && <LinePlot data={data} />}</TabPanel>
