@@ -118,11 +118,11 @@ export const dataProcess=(data,totalReadouts,interpolate=true)=>{
   return result;
 };
 
-export const sampleAllele=(data,sampleSize=20000)=>{
+export const sampleAllele=(data,sampleSize=20000,setIsSampled)=>{
     if (data.length <= sampleSize) {
         return data;
     }
-    
+    setIsSampled(true);
     // Fisher-Yates (Knuth) shuffle algorithm with early termination
     const result = [...data];
     for (let i = 0; i < sampleSize; i++) {
@@ -130,7 +130,6 @@ export const sampleAllele=(data,sampleSize=20000)=>{
         [result[i], result[j]] = [result[j], result[i]];
     }
     
-    // Return only the first sampleSize elements
     return result.slice(0, sampleSize);
 }
 

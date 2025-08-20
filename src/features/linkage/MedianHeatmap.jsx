@@ -514,6 +514,7 @@ const MedianHeatmap = ({ width = 700, height = 700, geoInfo }) => {
       <div ref={heatmapRef} className={styles.heatmapContainer}>
         <svg ref={svgRef}></svg>
       </div>
+    {dataCtx.isSampled&&<label className={styles.label}>Showing a random sample of 20,000 alleles for optimal performance. </label>}
     </div>
   );
 };

@@ -11,6 +11,7 @@ export function DataProvider({children}){
   const [totalKeys,setTotalKeys] = useState(null);
   const [totalReadouts,setTotalReadouts] = useState(0);
   const [info,setInfo] = useState({});
+  const [isSampled,setIsSampled] = useState(false);
 
   const extractKeys=(data)=>{
     const result={};
@@ -84,7 +85,7 @@ export function DataProvider({children}){
       }
   
       const distances = {};
-      const allFovData = sampleAllele(Object.values(result).flat());
+      const allFovData = sampleAllele(Object.values(result).flat(),20000,setIsSampled);
       let currentIndex = 0;
       const chunkSize = 5; // Process 5 items at a time to keep UI responsive
   
@@ -166,6 +167,7 @@ export function DataProvider({children}){
     totalReadouts:totalReadouts,
     filename:filename,
     info:info,
+    isSampled:isSampled,
     setFilename:setFilename,
     setDataBysHandler:setDataBysHandler,
     filterDataBysHandler:filterHandler,
