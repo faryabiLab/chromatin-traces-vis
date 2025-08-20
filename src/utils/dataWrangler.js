@@ -118,7 +118,7 @@ export const dataProcess=(data,totalReadouts,interpolate=true)=>{
   return result;
 };
 
-export const sampleAllele=(data,sampleSize=6000)=>{
+export const sampleAllele=(data,sampleSize=20000)=>{
     if (data.length <= sampleSize) {
         return data;
     }

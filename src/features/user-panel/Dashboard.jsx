@@ -67,8 +67,6 @@ const Dashboard = () => {
 
   const toast = useToast();
 
-  const setInterpolate = traceCtx.interpolateHandler;
-
   const totalAllelesCount = useMemo(() => {
     if (totalKeys[fov]) {
       setAlleleList(totalKeys[fov]);
@@ -179,10 +177,6 @@ const Dashboard = () => {
     selectedHandler(fov.toString(), newAllele.toString());
   };
 
-  const handleToggle = (value) => {
-    setInterpolate(value);
-  };
-
   const distanceMap = useMemo(() => generatePairwiseDistanceMap(data), [data]);
 
   const downloadHandler = () => {
@@ -221,7 +215,7 @@ const Dashboard = () => {
   };
   return (
     <div className={styles.dashboard}>
-      <Stack direction="row" spacing="16px">
+      <Stack direction="row" spacing="8px">
         <div className={styles.select}>
           <label>FOV:</label>
           <Select
@@ -302,10 +296,6 @@ const Dashboard = () => {
           </TableContainer>
         </Box>
       )}
-      <div className={styles.switchContainer}>
-        <Text className={styles.label}>Interpolate:</Text>
-        <Switch onChange={(e) => handleToggle(e.target.checked)} />
-      </div>
       <Divider />
       <Tabs size="sm" variant="soft-rounded" colorScheme="blue">
         <TabList>
