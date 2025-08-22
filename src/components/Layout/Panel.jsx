@@ -37,7 +37,6 @@ const Panel = () => {
             <Box
               w={{ base: '95%', lg: '45%' }}
               minH={{ base: '50vh', lg: '100vh' }}
-              p={4}
               m={2}
               borderRadius="md"
             >

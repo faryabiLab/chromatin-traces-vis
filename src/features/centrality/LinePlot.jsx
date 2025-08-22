@@ -1,23 +1,27 @@
-import React, { useRef } from 'react';
+import React, { useRef,useContext } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import { Button, Box, VStack } from '@chakra-ui/react';
 import { DownloadIcon } from '@chakra-ui/icons';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { calculateDistancesToCenter } from '../../utils/displayUtils';
+import InterpolateSwitch from '../../components/UI/InterpolateSwitch';
+import { TraceContext } from '../../stores/trace-context';
 
-const CustomTooltip = ({ active, payload, label,interpolateList }) => {
+const CustomTooltip = ({ active, payload, label, interpolateList }) => {
   if (active && payload && payload.length) {
     return (
-      <div style={{
-        backgroundColor: 'rgba(255, 255, 255, 0.8)',
-        border: '1px solid #ccc',
-        padding: '10px',
-        borderRadius: '5px'
-      }}>
+      <div
+        style={{
+          backgroundColor: 'rgba(255, 255, 255, 0.8)',
+          border: '1px solid #ccc',
+          padding: '10px',
+          borderRadius: '5px',
+        }}
+      >
         <p>{`Readout: ${label}`}</p>
         <p>{`Distance: ${payload[0].value} nm`}</p>
-        {interpolateList.includes(label)&&<p>Interpolated</p>}
+        {interpolateList.includes(label) && <p>Interpolated</p>}
       </div>
     );
   }
@@ -25,10 +29,25 @@ const CustomTooltip = ({ active, payload, label,interpolateList }) => {
   return null;
 };
 
+const CustomDot = ({ cx, cy, payload, interpolateList }) => {
+  const traceCtx = useContext(TraceContext);
+  const globalInterpolate = traceCtx.interpolate;
+  const isInterpolated = interpolateList.includes(payload.readout);
+  return (
+    <circle
+      cx={cx}
+      cy={cy}
+      r={4}
+      fill={!globalInterpolate&&isInterpolated ? "white" : "#8884d8"}
+      stroke={"#8884d8"}
+    />
+  );
+};
+
 const LinePlot = ({ data }) => {
-  const interpolateList=[];
-  for(const item of data){
-    if(item.filling){
+  const interpolateList = [];
+  for (const item of data) {
+    if (item.filling) {
       interpolateList.push(item.readout);
     }
   }
@@ -39,7 +58,7 @@ const LinePlot = ({ data }) => {
     try {
       // Get the chart element
       const chartElement = chartRef.current;
-      
+
       if (!chartElement) {
         console.error('Chart element not found');
         return;
@@ -58,7 +77,7 @@ const LinePlot = ({ data }) => {
       const pdf = new jsPDF({
         orientation: 'landscape',
         unit: 'mm',
-        format: 'a4'
+        format: 'a4',
       });
 
       // Calculate dimensions to fit the chart properly
@@ -67,11 +86,11 @@ const LinePlot = ({ data }) => {
 
       // Add the image to PDF
       pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
-      
+
       // Add title
       pdf.setFontSize(16);
       pdf.text('Distance to Geometric Center', 15, imgHeight + 25);
-      
+
       // Add timestamp
       pdf.setFontSize(10);
       pdf.text(`Generated on: ${new Date().toLocaleString()}`, 15, imgHeight + 35);
@@ -85,7 +104,19 @@ const LinePlot = ({ data }) => {
 
   return (
     <VStack spacing={4} align="stretch">
-      <Box display="flex" justifyContent="flex-start">
+      <Box display="flex" justifyContent="flex-start" alignItems="center">
+        <div
+          style={{
+            display: 'flex',
+            direction: 'row',
+            alignItems: 'center',
+            gap: '16px',
+            margin: '16px',
+          }}
+        >
+          <label>Interpolate:</label>
+          <InterpolateSwitch />
+        </div>
         <Button
           leftIcon={<DownloadIcon />}
           colorScheme="blue"
@@ -96,7 +127,7 @@ const LinePlot = ({ data }) => {
           Download as PDF
         </Button>
       </Box>
-      
+
       <Box ref={chartRef}>
         <LineChart
           data={distances}
@@ -115,27 +146,28 @@ const LinePlot = ({ data }) => {
             stroke="#8884d8"
             strokeWidth={2}
             name="Distance (nm)"
+            dot={(props) => <CustomDot {...props} interpolateList={interpolateList} />}
           />
           <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-          <XAxis 
-            dataKey="readout" 
-            label={{ 
-              value: 'ORCA Readout', 
+          <XAxis
+            dataKey="readout"
+            label={{
+              value: 'ORCA Readout',
               position: 'bottom',
             }}
             interval={2}
           />
-          <YAxis 
-            label={{ 
-              value: 'Distance to Geometric Center (nm)', 
-              angle: -90, 
+          <YAxis
+            label={{
+              value: 'Distance to Geometric Center (nm)',
+              angle: -90,
               position: 'insideLeft',
               textAnchor: 'middle',
               dy: 150,
               dx: -10,
             }}
           />
-          <Tooltip content={<CustomTooltip interpolateList={interpolateList}/>} />
+          <Tooltip content={<CustomTooltip interpolateList={interpolateList} />} />
         </LineChart>
       </Box>
     </VStack>

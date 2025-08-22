@@ -10,16 +10,15 @@ import {
   NumberDecrementStepper,
   Box,
   useBoolean,
-  HStack,
   Button,
   useToast,
   Spinner,
-  Switch,
 } from '@chakra-ui/react';
 import { DownloadIcon } from '@chakra-ui/icons';
 import jsPDF from 'jspdf';
 import { getFilledReadouts, generateRainbowColors } from '../../utils/displayUtils';
 import styles from './heatmap.module.css';
+import InterpolateSwitch from '../../components/UI/InterpolateSwitch';
 
 const MARGIN = { top: 10, right: 20, bottom: 80, left: 50 };
 const Heatmap = ({ data, width, height, geoInfo }) => {
@@ -32,7 +31,6 @@ const Heatmap = ({ data, width, height, geoInfo }) => {
   const traceCtx = useContext(TraceContext);
   const clicked = traceCtx.clicked;
   const interpolate = traceCtx.interpolate;
-  const setInterpolate = traceCtx.interpolateHandler;
   const interpolateList = [];
   const traceData = traceCtx.data;
   for (const item of traceData) {
@@ -49,9 +47,6 @@ const Heatmap = ({ data, width, height, geoInfo }) => {
 
   const handleColorChange = (color) => {
     setColor(color.hex);
-  };
-  const handleToggle = (value) => {
-    setInterpolate(value);
   };
 
   const [min, max] = d3.extent(data.map((d) => d.value));
@@ -353,7 +348,7 @@ const Heatmap = ({ data, width, height, geoInfo }) => {
     <div className={styles.container}>
       <div className={styles.controlsContainer}>
         <label className={styles.label}>Interpolate:</label>
-        <Switch onChange={(e) => handleToggle(e.target.checked)} />
+        <InterpolateSwitch/>
         <label className={styles.label}>Color:</label>
         <Box
           as="button"
