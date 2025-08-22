@@ -364,7 +364,7 @@ const Heatmap = ({ data, width, height, geoInfo }) => {
             <TwitterPicker color={color} onChange={handleColorChange} triangle="hide" />
           </div>
         )}
-
+        <div className={styles.controlsItem}>
         <label className={styles.label}>Color Scale Domain: 0 ~ </label>
         <NumberInput
           size="sm"
@@ -385,7 +385,7 @@ const Heatmap = ({ data, width, height, geoInfo }) => {
           </NumberInputStepper>
         </NumberInput>
         <label className={styles.label}>nm</label>
-
+        </div>
         <Button
           leftIcon={isDownloading ? <Spinner size="sm" /> : <DownloadIcon />}
           colorScheme="blue"
