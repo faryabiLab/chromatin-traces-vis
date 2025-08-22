@@ -255,10 +255,7 @@ const Heatmap = ({ data, width, height, geoInfo }) => {
   const xLabels = allXGroups.map((name, i) => {
     const xPos = xScale(name) ?? 0;
 
-    const shouldShowLabel = 
-    name === hightlightA || 
-    allXGroups.length <= 30 || 
-    i % 2 === 0;
+    const shouldShowLabel = name === hightlightA || allXGroups.length <= 30 || i % 2 === 0;
 
     if (!shouldShowLabel) return null;
 
@@ -284,7 +281,7 @@ const Heatmap = ({ data, width, height, geoInfo }) => {
     const isHighlighted = name === hightlightB;
     const isImputed = imputed.includes(name);
     const isHidden = allYGroups.length > 30 ? i % 2 : false;
-  
+
     // Always show highlighted items
     if (isHighlighted) {
       return (
@@ -298,11 +295,12 @@ const Heatmap = ({ data, width, height, geoInfo }) => {
           fill="red"
           fontWeight="bold"
         >
-          {isImputed ? '*' : ''}{name}
+          {isImputed ? '*' : ''}
+          {name}
         </text>
       );
     }
-  
+
     // When interpolation is on, for imputed numbers that are hidden, show only asterisk
     if (interpolate && isImputed && isHidden) {
       return (
@@ -320,7 +318,7 @@ const Heatmap = ({ data, width, height, geoInfo }) => {
         </text>
       );
     }
-  
+
     // Show numbers that are not hidden
     if (!isHidden) {
       return (
@@ -334,31 +332,33 @@ const Heatmap = ({ data, width, height, geoInfo }) => {
           fill="black"
           fontWeight="normal"
         >
-          {isImputed ? '*' : ''}{name}
+          {isImputed ? '*' : ''}
+          {name}
         </text>
       );
     }
-  
+
     return null;
   });
-  
-  
 
   return (
     <div className={styles.container}>
       <div className={styles.controlsContainer}>
-        <label className={styles.label}>Interpolate:</label>
-        <InterpolateSwitch/>
-        <label className={styles.label}>Color:</label>
-        <Box
-          as="button"
-          borderRadius="lg"
-          px={2}
-          h={4}
-          onClick={setShowColorPicker.toggle}
-          bg={color}
-          margin={3}
-        />
+        <div className={styles.controlsItem}>
+          <label className={styles.label}>Interpolate:</label>
+          <InterpolateSwitch />
+        </div>
+        <div className={styles.controlsItem}>
+          <label className={styles.label}>Color:</label>
+          <Box
+            as="button"
+            borderRadius="lg"
+            px={2}
+            h={4}
+            onClick={setShowColorPicker.toggle}
+            bg={color}
+          />
+        </div>
         {showColorPicker && (
           <div style={{ position: 'absolute', zIndex: 2, marginTop: '15%' }}>
             <TwitterPicker color={color} onChange={handleColorChange} triangle="hide" />

@@ -88,7 +88,7 @@ const BoxPlot = ({ data }) => {
         }}
       >
         <label>Interpolate:</label>
-        <InterpolateSwitch />
+        <InterpolateSwitch isDisabled={true}/>
       </div>
       <span className={styles.label}>
         Radius of Gyration: {calculateTraceRg(data).toFixed(2)} nm
