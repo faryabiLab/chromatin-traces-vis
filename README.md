@@ -6,7 +6,8 @@ This is a web application to visualize chromatin traces and provide interactive 
 
 <img width="1999" alt="image" src="https://github.com/user-attachments/assets/a743fa08-9045-4988-bcde-9df53f5d2485" />
 
-<img width="2122" height="1098" alt="image" src="https://github.com/user-attachments/assets/7b6b0503-72c6-4f4b-949c-28ea0afebe6b" />
+<img width="2165" height="1090" alt="image" src="https://github.com/user-attachments/assets/f745463b-6913-4b12-a4fa-64da5ca0f6ca" />
+
 
 
 
@@ -47,8 +48,7 @@ The sample dataset include three field of views (FOV):
 This program is using linear interpolation to impute the missing values.
 When the interpolation switch is off by default, the missing readouts are colored gray on the model and the distance heatmap.
 
-<img width="2068" height="1088" alt="image" src="https://github.com/user-attachments/assets/4671f769-61f2-406c-8f9a-5ac9c7590214" />
-
+<img width="2066" height="1027" alt="image" src="https://github.com/user-attachments/assets/e52e2479-cafc-4ee5-9977-8386096e3dfa" />
 
 
 ## 📋 How to Use
