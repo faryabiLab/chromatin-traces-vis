@@ -72,7 +72,8 @@ When the interpolation switch is off by default, the missing readouts are colore
 
 1.   Use the shortcuts to view available chromatin traces. ![Frame 1](https://github.com/user-attachments/assets/8d4fc776-13d8-4089-89e9-ba1e9048af47)
 
-2.   You can fill the form to submit metadata to us. ![Frame 4](https://github.com/user-attachments/assets/acf361ef-d8c7-420b-9050-46eeaf4085c5)
+2.   Please submit your metadata and contact information through the form. Our team will reach out regarding data transfer and curation. <img width="1995" height="1044" alt="image" src="https://github.com/user-attachments/assets/8c1fc7ad-4791-47c5-99e1-a5aebfbb9df9" />
+
 
 3.   Keyword is pre-set for your convenience. You can clear the search bar to view the whole database. <img width="2050" alt="image" src="https://github.com/user-attachments/assets/72e95d50-d3d5-4d87-815d-18e32b4a01d2" />
 
