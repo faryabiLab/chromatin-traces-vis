@@ -2,7 +2,7 @@ import {useState} from 'react';
 import {DataContext} from './data-context';
 import * as d3 from 'd3';
 import { calculatePairDistance } from '../utils/displayUtils';
-import { dataProcess } from '../utils/dataWrangler';
+import { dataProcess, sampleAllele } from '../utils/dataWrangler';
 import { calculateTraceRg, calculateMedian } from '../utils/calculationUtils';
 export function DataProvider({children}){
   const [dataBys,setDataBys] = useState(null);
@@ -11,6 +11,7 @@ export function DataProvider({children}){
   const [totalKeys,setTotalKeys] = useState(null);
   const [totalReadouts,setTotalReadouts] = useState(0);
   const [info,setInfo] = useState({});
+  const [isSampled,setIsSampled] = useState(false);
 
   const extractKeys=(data)=>{
     const result={};
@@ -62,7 +63,8 @@ export function DataProvider({children}){
     
     Object.values(result).forEach(fovGroup => {
         fovGroup.forEach(([_, points]) => {
-            rgValues.push(calculateTraceRg(dataProcess(points,totalReadouts)));
+            const processedPoints = dataProcess(points, totalReadouts);
+            if(processedPoints) rgValues.push(calculateTraceRg(processedPoints));
         });
     });
 
@@ -83,7 +85,7 @@ export function DataProvider({children}){
       }
   
       const distances = {};
-      const allFovData = Object.values(result).flat();
+      const allFovData = sampleAllele(Object.values(result).flat(),20000,setIsSampled);
       let currentIndex = 0;
       const chunkSize = 5; // Process 5 items at a time to keep UI responsive
   
@@ -100,7 +102,10 @@ export function DataProvider({children}){
           //use non-interpolated data to calulate median distance map
           const processedPoints = dataProcess(points, totalReadouts,false);
           const pointsByReadout = {};
-          
+          // Skip if empty allele
+          if (!processedPoints) {
+            continue;
+          }
           processedPoints.forEach(point => {
             pointsByReadout[point.readout] = point;
           });
@@ -162,6 +167,7 @@ export function DataProvider({children}){
     totalReadouts:totalReadouts,
     filename:filename,
     info:info,
+    isSampled:isSampled,
     setFilename:setFilename,
     setDataBysHandler:setDataBysHandler,
     filterDataBysHandler:filterHandler,

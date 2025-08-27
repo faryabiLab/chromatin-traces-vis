@@ -22,6 +22,8 @@ import {
   FormErrorMessage,
   Select,
   useToast,
+  Alert,
+  AlertIcon,
 } from '@chakra-ui/react';
 
 const DataEntryModal = ({ isOpen, onClose }) => {
@@ -229,6 +231,10 @@ const DataEntryModal = ({ isOpen, onClose }) => {
         <ModalCloseButton />
         <ModalBody>
           <VStack spacing={4} align="stretch">
+            <Alert status="info">
+              <AlertIcon />
+              You will be contacted after submitting the form for data transfer and curation.
+            </Alert>
             {/* Required Name Field */}
             <FormControl isRequired isInvalid={!!errors.name}>
               <FormLabel>Name:</FormLabel>
