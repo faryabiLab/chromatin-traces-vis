@@ -58,8 +58,7 @@ When the interpolation switch is off by default, the missing readouts are colore
 1.   Click the button to start uploading. ![Frame 15](https://github.com/user-attachments/assets/9445d938-a7a5-4154-a4bc-9950ab0c7493)
 
 2.   Enter the number of Total Readouts. **This step is required** in order to fill in all the missing values. All the alleles will have this number of total readouts. You can enter other genomics infomation to display them on the distance map.<img width="2085" height="1089" alt="image" src="https://github.com/user-attachments/assets/79489cae-7bbb-43ea-b139-ee7c4e4f1c90" />
-<img width="1035" height="794" alt="image" src="https://github.com/user-attachments/assets/999b3807-c171-413b-a072-46a91922fdda" />
-
+<img width="1995" height="1044" alt="image" src="https://github.com/user-attachments/assets/24420225-84a8-48e6-aaa3-7930c1c4c3e9" />
 
 
 3.   Drop your CSV file or click to upload. Your file **WILL NOT** be saved to our database.<img width="1799" alt="image" src="https://github.com/user-attachments/assets/26a864b4-0a14-4499-b4c4-aedb98cd06e0" />
