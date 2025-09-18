@@ -441,7 +441,7 @@ const Plot = () => {
             zIndex: 1,
           }}
         >
-          <button onClick={saveAsVectorPDF} className={styles.saveBtn}>
+          <button onClick={saveAsImage} className={styles.saveBtn}>
             Download PDF
           </button>
         </div>
