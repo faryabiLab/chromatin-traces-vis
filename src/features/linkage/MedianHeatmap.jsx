@@ -4,7 +4,6 @@ import * as d3 from 'd3';
 import { TwitterPicker } from 'react-color';
 import {
   useBoolean,
-  HStack,
   Box,
   NumberInput,
   NumberInputField,
@@ -23,7 +22,9 @@ import styles from './heatmap.module.css';
 
 import { generateRainbowColors } from '../../utils/displayUtils';
 
-const MedianHeatmap = ({ width = 600, height = 600, geoInfo }) => {
+import InterpolateSwitch from '../../components/UI/InterpolateSwitch';
+
+const MedianHeatmap = ({ width = 700, height = 700, geoInfo }) => {
   const dataCtx = useContext(DataContext);
   const [medianDistanceMap, setMedianDistanceMap] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -282,6 +283,11 @@ const MedianHeatmap = ({ width = 600, height = 600, geoInfo }) => {
       // Calculate cell size
       const cellSize = Math.min(innerWidth, innerHeight) / size;
 
+      const shouldShowLabel = (index, size) => {
+        if (size <= 30) return true;
+        return index % 2 === 0;
+      };
+
       // Create cells
       const cells = g
         .selectAll('g')
@@ -328,6 +334,7 @@ const MedianHeatmap = ({ width = 600, height = 600, geoInfo }) => {
         .attr('y', (_, i) => i * cellSize + cellSize / 2)
         .attr('text-anchor', 'end')
         .attr('dominant-baseline', 'middle')
+        .style('display', (_, i) => (shouldShowLabel(i, matrix.length) ? null : 'none'))
         .text((_, i) => i + 1);
 
       g.selectAll('.col-label')
@@ -339,6 +346,7 @@ const MedianHeatmap = ({ width = 600, height = 600, geoInfo }) => {
         .attr('x', (_, i) => i * cellSize + cellSize / 2)
         .attr('y', -10)
         .attr('text-anchor', 'middle')
+        .style('display', (_, i) => (shouldShowLabel(i, matrix.length) ? null : 'none'))
         .text((_, i) => i + 1);
 
       // Calculate the number of cells in the matrix
@@ -436,62 +444,69 @@ const MedianHeatmap = ({ width = 600, height = 600, geoInfo }) => {
   return (
     <div className={styles.container}>
       <div className={styles.controlsContainer}>
-        <label className={styles.label}>Color:</label>
-        <Box
-          as="button"
-          borderRadius="lg"
-          px={2}
-          h={4}
-          onClick={setShowColorPicker.toggle}
-          bg={color}
-        />
+        <div className={styles.controlsItem}>
+          <label className={styles.label}>Interpolate:</label>
+          <InterpolateSwitch isDisabled={true} />
+        </div>
+        <div className={styles.controlsItem}>
+          <label className={styles.label}>Color:</label>
+          <Box
+            as="button"
+            borderRadius="lg"
+            px={2}
+            h={4}
+            onClick={setShowColorPicker.toggle}
+            bg={color}
+          />
+        </div>
         {showColorPicker && (
           <div style={{ position: 'absolute', zIndex: 2, marginTop: '15%' }}>
             <TwitterPicker color={color} onChange={handleColorChange} triangle="hide" />
           </div>
         )}
-
-        <label className={styles.label}>Color Scale Domain: </label>
-        <NumberInput
-          size="sm"
-          maxW={120}
-          step={50}
-          min={0}
-          value={Math.ceil(parseFloat(colorMin))}
-          onChange={(valueString) => {
-            const value = parseInt(valueString);
-            if (!isNaN(value) && value >= 0) {
-              setColorMin(value);
-            }
-          }}
-        >
-          <NumberInputField />
-          <NumberInputStepper>
-            <NumberIncrementStepper />
-            <NumberDecrementStepper />
-          </NumberInputStepper>
-        </NumberInput>
-        <label className={styles.label}>~</label>
-        <NumberInput
-          size="sm"
-          maxW={120}
-          step={50}
-          min={0}
-          value={Math.ceil(parseFloat(colorMax))}
-          onChange={(valueString) => {
-            const value = parseInt(valueString);
-            if (!isNaN(value) && value >= 0) {
-              setColorMax(value);
-            }
-          }}
-        >
-          <NumberInputField />
-          <NumberInputStepper>
-            <NumberIncrementStepper />
-            <NumberDecrementStepper />
-          </NumberInputStepper>
-        </NumberInput>
-        <label className={styles.label}>nm</label>
+        <div className={styles.controlsItem}>
+          <label className={styles.label}>Color Scale Domain: </label>
+          <NumberInput
+            size="sm"
+            maxW={120}
+            step={50}
+            min={0}
+            value={Math.ceil(parseFloat(colorMin))}
+            onChange={(valueString) => {
+              const value = parseInt(valueString);
+              if (!isNaN(value) && value >= 0) {
+                setColorMin(value);
+              }
+            }}
+          >
+            <NumberInputField />
+            <NumberInputStepper>
+              <NumberIncrementStepper />
+              <NumberDecrementStepper />
+            </NumberInputStepper>
+          </NumberInput>
+          <label className={styles.label}>~</label>
+          <NumberInput
+            size="sm"
+            maxW={120}
+            step={50}
+            min={0}
+            value={Math.ceil(parseFloat(colorMax))}
+            onChange={(valueString) => {
+              const value = parseInt(valueString);
+              if (!isNaN(value) && value >= 0) {
+                setColorMax(value);
+              }
+            }}
+          >
+            <NumberInputField />
+            <NumberInputStepper>
+              <NumberIncrementStepper />
+              <NumberDecrementStepper />
+            </NumberInputStepper>
+          </NumberInput>
+          <label className={styles.label}>nm</label>
+        </div>
         <Button
           leftIcon={isDownloading ? <Spinner size="sm" /> : <DownloadIcon />}
           colorScheme="blue"
@@ -507,6 +522,11 @@ const MedianHeatmap = ({ width = 600, height = 600, geoInfo }) => {
       <div ref={heatmapRef} className={styles.heatmapContainer}>
         <svg ref={svgRef}></svg>
       </div>
+      {dataCtx.isSampled && (
+        <label className={styles.label}>
+          Showing a random sample of 20,000 alleles for optimal performance.{' '}
+        </label>
+      )}
     </div>
   );
 };

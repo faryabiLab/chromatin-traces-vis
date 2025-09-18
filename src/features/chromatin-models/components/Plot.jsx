@@ -33,7 +33,7 @@ const Plot = () => {
   const isLinkage = traceCtx.mode === '2' ? true : false;
 
   //color scale
-  const rainbowColors = generateRainbowColors(data.length);
+  const rainbowColors = data&&generateRainbowColors(data.length);
 
   //linkage
   const clickedHandler = traceCtx.clickedHandler;
@@ -441,7 +441,7 @@ const Plot = () => {
             zIndex: 1,
           }}
         >
-          <button onClick={saveAsVectorPDF} className={styles.saveBtn}>
+          <button onClick={saveAsImage} className={styles.saveBtn}>
             Download PDF
           </button>
         </div>

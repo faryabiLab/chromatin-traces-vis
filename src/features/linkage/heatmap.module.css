@@ -7,9 +7,17 @@
 
 .controlsContainer {
   margin-top: 6px;
+  margin-bottom: 6px;
   display: flex;
   flex-direction: row;
-  gap: 16px;
+  gap: 32px;
+  justify-content: center;
+  align-items: center;
+}
+.controlsItem {
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
   justify-content: center;
   align-items: center;
 }

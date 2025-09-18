@@ -10,7 +10,6 @@ import {
   NumberDecrementStepper,
   Box,
   useBoolean,
-  HStack,
   Button,
   useToast,
   Spinner,
@@ -19,6 +18,7 @@ import { DownloadIcon } from '@chakra-ui/icons';
 import jsPDF from 'jspdf';
 import { getFilledReadouts, generateRainbowColors } from '../../utils/displayUtils';
 import styles from './heatmap.module.css';
+import InterpolateSwitch from '../../components/UI/InterpolateSwitch';
 
 const MARGIN = { top: 10, right: 20, bottom: 80, left: 50 };
 const Heatmap = ({ data, width, height, geoInfo }) => {
@@ -255,6 +255,10 @@ const Heatmap = ({ data, width, height, geoInfo }) => {
   const xLabels = allXGroups.map((name, i) => {
     const xPos = xScale(name) ?? 0;
 
+    const shouldShowLabel = name === hightlightA || allXGroups.length <= 30 || i % 2 === 0;
+
+    if (!shouldShowLabel) return null;
+
     return (
       <text
         key={i}
@@ -273,42 +277,94 @@ const Heatmap = ({ data, width, height, geoInfo }) => {
 
   const yLabels = allYGroups.map((name, i) => {
     const yPos = yScale(name) ?? 0;
-    return (
-      <text
-        key={i}
-        x={-5}
-        y={yPos + yScale.bandwidth() / 2}
-        textAnchor="end"
-        dominantBaseline="middle"
-        fontSize={name === hightlightB ? 18 : 10}
-        fill={name === hightlightB ? 'red' : 'black'}
-        fontWeight={name === hightlightB ? 'bold' : 'normal'}
-      >
-        {imputed.includes(name) ? '*' : ''}
-        {name}
-      </text>
-    );
+    const centerY = yPos + yScale.bandwidth() / 2;
+    const isHighlighted = name === hightlightB;
+    const isImputed = imputed.includes(name);
+    const isHidden = allYGroups.length > 30 ? i % 2 : false;
+
+    // Always show highlighted items
+    if (isHighlighted) {
+      return (
+        <text
+          key={i}
+          x={-5}
+          y={centerY}
+          textAnchor="end"
+          dominantBaseline="middle"
+          fontSize={18}
+          fill="red"
+          fontWeight="bold"
+        >
+          {isImputed ? '*' : ''}
+          {name}
+        </text>
+      );
+    }
+
+    // When interpolation is on, for imputed numbers that are hidden, show only asterisk
+    if (interpolate && isImputed && isHidden) {
+      return (
+        <text
+          key={i}
+          x={-5}
+          y={centerY + 2}
+          textAnchor="end"
+          dominantBaseline="middle"
+          fontSize={10}
+          fill="black"
+          fontWeight="normal"
+        >
+          *
+        </text>
+      );
+    }
+
+    // Show numbers that are not hidden
+    if (!isHidden) {
+      return (
+        <text
+          key={i}
+          x={-5}
+          y={centerY}
+          textAnchor="end"
+          dominantBaseline="middle"
+          fontSize={10}
+          fill="black"
+          fontWeight="normal"
+        >
+          {isImputed ? '*' : ''}
+          {name}
+        </text>
+      );
+    }
+
+    return null;
   });
 
   return (
     <div className={styles.container}>
       <div className={styles.controlsContainer}>
-        <label className={styles.label}>Color:</label>
-        <Box
-          as="button"
-          borderRadius="lg"
-          px={2}
-          h={4}
-          onClick={setShowColorPicker.toggle}
-          bg={color}
-          margin={3}
-        />
+        <div className={styles.controlsItem}>
+          <label className={styles.label}>Interpolate:</label>
+          <InterpolateSwitch />
+        </div>
+        <div className={styles.controlsItem}>
+          <label className={styles.label}>Color:</label>
+          <Box
+            as="button"
+            borderRadius="lg"
+            px={2}
+            h={4}
+            onClick={setShowColorPicker.toggle}
+            bg={color}
+          />
+        </div>
         {showColorPicker && (
           <div style={{ position: 'absolute', zIndex: 2, marginTop: '15%' }}>
             <TwitterPicker color={color} onChange={handleColorChange} triangle="hide" />
           </div>
         )}
-
+        <div className={styles.controlsItem}>
         <label className={styles.label}>Color Scale Domain: 0 ~ </label>
         <NumberInput
           size="sm"
@@ -329,7 +385,7 @@ const Heatmap = ({ data, width, height, geoInfo }) => {
           </NumberInputStepper>
         </NumberInput>
         <label className={styles.label}>nm</label>
-
+        </div>
         <Button
           leftIcon={isDownloading ? <Spinner size="sm" /> : <DownloadIcon />}
           colorScheme="blue"

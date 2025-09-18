@@ -74,12 +74,17 @@ export const dataProcess=(data,totalReadouts,interpolate=true)=>{
   let result=[];
   for(let i=0;i<data.length;i++){
       const row=data[i];
+      const readout=+row.readout;
+      if(readout<=totalReadouts){
       result.push({
-          readout:+row.readout,
+          readout:readout,
           pos:{'x':+row.x,'y':+row.y,'z':+row.z},
           filling:false,
       })
+    }
   }
+
+  if(result.length===0){return null}
 
   result.sort((a, b) => a.readout - b.readout);
   
@@ -107,10 +112,25 @@ export const dataProcess=(data,totalReadouts,interpolate=true)=>{
       );
       result = [...result, ...tailFilling];
   }
+
+
   
   return result;
 };
 
-
+export const sampleAllele=(data,sampleSize=20000,setIsSampled)=>{
+    if (data.length <= sampleSize) {
+        return data;
+    }
+    setIsSampled(true);
+    // Fisher-Yates (Knuth) shuffle algorithm with early termination
+    const result = [...data];
+    for (let i = 0; i < sampleSize; i++) {
+        const j = i + Math.floor(Math.random() * (result.length - i));
+        [result[i], result[j]] = [result[j], result[i]];
+    }
+    
+    return result.slice(0, sampleSize);
+}
 
 

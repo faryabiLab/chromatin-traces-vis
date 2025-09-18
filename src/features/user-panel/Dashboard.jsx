@@ -1,10 +1,8 @@
 import {
   Select,
-  Heading,
   Button,
   IconButton,
   Stack,
-  Divider,
   Tabs,
   TabList,
   TabPanels,
@@ -22,8 +20,6 @@ import {
   Td,
   TableContainer,
   Box,
-  Switch,
-  Text,
   useToast,
 } from '@chakra-ui/react';
 import { ArrowLeftIcon, ArrowRightIcon, DownloadIcon } from '@chakra-ui/icons';
@@ -41,6 +37,7 @@ import LinePlot from '../centrality/LinePlot';
 import BoxPlot from '../radiusGyration/BoxPlot';
 import MedianHeatmap from '../linkage/MedianHeatmap';
 import { extractFields } from '../../utils/displayUtils';
+import InterpolateSwitch from '../../components/UI/InterpolateSwitch';
 const Dashboard = () => {
   const dataCtx = useContext(DataContext);
   const traceCtx = useContext(TraceContext);
@@ -66,8 +63,6 @@ const Dashboard = () => {
   const [geoInfo, setGeoInfo] = useState(null);
 
   const toast = useToast();
-
-  const setInterpolate = traceCtx.interpolateHandler;
 
   const totalAllelesCount = useMemo(() => {
     if (totalKeys[fov]) {
@@ -179,10 +174,6 @@ const Dashboard = () => {
     selectedHandler(fov.toString(), newAllele.toString());
   };
 
-  const handleToggle = (value) => {
-    setInterpolate(value);
-  };
-
   const distanceMap = useMemo(() => generatePairwiseDistanceMap(data), [data]);
 
   const downloadHandler = () => {
@@ -221,64 +212,63 @@ const Dashboard = () => {
   };
   return (
     <div className={styles.dashboard}>
-      <Heading as="h1" className={styles.header}>
-        Optical Looping Interactive Viewing Engine (OLIVE)
-      </Heading>
-      <Stack direction="row" spacing="16px">
-        <div className={styles.select}>
-          <label>FOV:</label>
-          <Select
-            value={fov}
-            onChange={(e) => {
-              setFov(e.target.value);
-              setAllele(0);
-            }}
-          >
-            {renderOptions(20)}
-          </Select>
-        </div>
-        <div className={styles.select}>
-          <label>Allele:</label>
-          <Select
-            value={allele}
-            onChange={(e) => {
-              setAllele(e.target.value);
-            }}
-          >
-            {renderAlleleOptions()}
-          </Select>
-        </div>
-        <div className={styles.buttons}>
-          <IconButton
-            colorScheme="black"
-            variant="outline"
-            aria-label="ArrowLeftIcon"
-            icon={<DownloadIcon />}
-            onClick={downloadHandler}
-          />
-          <IconButton
-            isDisabled={allele === 0 ? true : false}
-            colorScheme="teal"
-            variant="outline"
-            aria-label="ArrowLeftIcon"
-            icon={<ArrowLeftIcon />}
-            onClick={preAlleleHandler}
-          />
-          <IconButton
-            isDisabled={allele === dataCtx.keys[fov].length - 1 ? true : false}
-            colorScheme="teal"
-            variant="outline"
-            aria-label="ArrowRightIcon"
-            icon={<ArrowRightIcon />}
-            onClick={nextAlleleHandler}
-          />
-          <Button colorScheme="red" variant="outline" onClick={refreshPage}>
-            Return
-          </Button>
-        </div>
-      </Stack>
+      <Box ml={4}>
+        <Stack direction="row" spacing="8px">
+          <div className={styles.select}>
+            <label>FOV:</label>
+            <Select
+              value={fov}
+              onChange={(e) => {
+                setFov(e.target.value);
+                setAllele(0);
+              }}
+            >
+              {renderOptions(20)}
+            </Select>
+          </div>
+          <div className={styles.select}>
+            <label>Allele:</label>
+            <Select
+              value={allele}
+              onChange={(e) => {
+                setAllele(e.target.value);
+              }}
+            >
+              {renderAlleleOptions()}
+            </Select>
+          </div>
+          <div className={styles.buttons}>
+            <IconButton
+              colorScheme="black"
+              variant="outline"
+              aria-label="ArrowLeftIcon"
+              icon={<DownloadIcon />}
+              onClick={downloadHandler}
+            />
+            <IconButton
+              isDisabled={allele === 0 ? true : false}
+              colorScheme="teal"
+              variant="outline"
+              aria-label="ArrowLeftIcon"
+              icon={<ArrowLeftIcon />}
+              onClick={preAlleleHandler}
+            />
+            <IconButton
+              isDisabled={allele === dataCtx.keys[fov].length - 1 ? true : false}
+              colorScheme="teal"
+              variant="outline"
+              aria-label="ArrowRightIcon"
+              icon={<ArrowRightIcon />}
+              onClick={nextAlleleHandler}
+            />
+            <Button colorScheme="red" variant="outline" onClick={refreshPage}>
+              Return
+            </Button>
+          </div>
+        </Stack>
+      </Box>
       {metadata && (
-        <Box p={0}>
+        <Box>
           <TableContainer>
             <Table variant="simple" size="sm">
               <Thead>
@@ -305,12 +295,8 @@ const Dashboard = () => {
           </TableContainer>
         </Box>
       )}
-      <div className={styles.switchContainer}>
-        <Text className={styles.label}>Interpolate:</Text>
-        <Switch onChange={(e) => handleToggle(e.target.checked)} />
-      </div>
-      <Divider />
-      <Tabs size="sm" variant="soft-rounded" colorScheme="blue">
+
+      <Tabs size="sm" variant="enclosed" colorScheme="blue">
         <TabList>
           <Tab onClick={() => shiftPanelHandler()}>Distance Analysis</Tab>
           <Tab onClick={() => shiftPanelHandler()}>Distance Map</Tab>
@@ -320,6 +306,10 @@ const Dashboard = () => {
         </TabList>
         <TabPanels>
           <TabPanel>
+          <div style={{ display: 'flex', direction: 'row', alignItems: 'center',gap: '16px',margin: '16px' }}>
+            <label>Interpolate:</label>
+            <InterpolateSwitch />
+          </div>
             <RadioGroup onChange={setMode} value={mode}>
               <VStack>
                 <HStack>
@@ -344,7 +334,7 @@ const Dashboard = () => {
           </TabPanel>
           <TabPanel>
             {distanceMap && (
-              <Heatmap data={distanceMap} geoInfo={geoInfo} width={600} height={600} />
+              <Heatmap data={distanceMap} geoInfo={geoInfo} width={700} height={700} />
             )}
           </TabPanel>
           <TabPanel>{data && <LinePlot data={data} />}</TabPanel>
