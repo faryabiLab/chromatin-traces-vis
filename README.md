@@ -53,7 +53,7 @@ When the interpolation switch is off by default, the missing readouts are colore
 
 ## 📋 How to Use
 
-### Step 1: Upload Your CSV File
+### Step 1: Upload Your CSV File (Your file WILL NOT be saved to our database)
 
 1.   Click the button to start uploading. ![Frame 15](https://github.com/user-attachments/assets/9445d938-a7a5-4154-a4bc-9950ab0c7493)
 
